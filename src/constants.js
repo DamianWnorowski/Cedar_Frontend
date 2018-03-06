@@ -96,17 +96,6 @@ export const MOVIES = [
 ];
 
 
-  
-export const caption = {
-    width:'100%',
-    bottom: '0',
-    position: 'absolute',
-    background:'#000',
-    background: '-webkit-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0)',
-    background: '-moz-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0)',
-    background: '-o-linear-gradient(bottom, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0)',
-    background: 'linear-gradient(to top, #000 40%, rgba(0, 0, 0, 0) 100%) repeat scroll 0 0 rgba(0, 0, 0, 0)'
-}
 
 // const allMovies = MOVIES.map((MOVIES, i) =>
 //   <img src={imgUrl + MOVIES.poster_path} height="33%" width="33.3%" />

@@ -4,21 +4,13 @@ import * as constants from  './constants.js'
 
 import Nav from './nav.js'
 import MovieDetails from './movieDetails.js';
-import { Grid, Image, Input, Button, Container, Menu, List, Header,Divider, Transition, Segment, Label, Breadcrumb, Icon} from 'semantic-ui-react'
+import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
 
-const MOVIES = constants.MOVIES;
 
 
 class App extends Component {
-  state = {
-
-  }
-
-
+  
   render() {
-    const { actors } = this.state
-    let properties1 = {movies: MOVIES, title: 'Featured', num: 0}; 
-    const movieInfo = MOVIES[6]
     return (
 
       <div style={{}}>
@@ -28,48 +20,9 @@ class App extends Component {
         <Segment
           inverted
           vertical
-          style={{ margin: '5em 0em 0em', padding: '5em 0em' }}
+          style={{ margin: '5em 0em 0em', }}
         >
           <Container textAlign='center'>
-            <Grid divided inverted stackable>
-              <Grid.Row>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Group 1' />
-                  <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Group 2' />
-                  <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Group 3' />
-                  <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Footer Header' />
-                  <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-
-            <Divider inverted section />
-            <Image
-              centered
-              size='mini'
-              src='/logo.png'
-            />
             <List horizontal inverted divided link>
               <List.Item as='a' href='#'>Site Map</List.Item>
               <List.Item as='a' href='#'>Contact Us</List.Item>
