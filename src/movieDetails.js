@@ -77,15 +77,19 @@ class MovieDetails extends Component {
                                     </Grid.Column>
                                 </Grid>
                                 <Grid style={{marginTop:0}}>
-                                    <Grid.Column width={5}>
+                                    <Grid.Column width={8}>
                                         {movieStats}
                                     </Grid.Column>
-                                    <Grid.Column width={3}>
-                                    <CircularProgressbar initialAnimation percentage={80} />
-                                    </Grid.Column>
-                                    <Grid.Column width={3}>
-                                    <CircularProgressbar initialAnimation percentage={20} />
-                                    </Grid.Column>
+                                    <Grid.Column verticalAlign width={6}>
+                                        <Grid style={{}}>
+                                            <Grid.Column width={8}>
+                                                <CircularProgressbar initialAnimation percentage={80} />
+                                            </Grid.Column>
+                                            <Grid.Column width={8}>
+                                                <CircularProgressbar verticalAlign initialAnimation percentage={20} />
+                                            </Grid.Column>
+                                        </Grid>
+                                   </Grid.Column>
                                 </Grid>
                                 
                             </Grid.Column>
