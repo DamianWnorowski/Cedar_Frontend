@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import * as constants from  './constants.js'
+import Home from './home.js'
 
 import Nav from './nav.js'
 import MovieDetails from './movieDetails.js';
@@ -15,7 +16,8 @@ class App extends Component {
 
       <div style={{}}>
         <Nav />
-        <MovieDetails />
+        <Home />
+        {/* <MovieDetails /> */}
 
         <Segment
           inverted

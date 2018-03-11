@@ -27,3 +27,10 @@
   to { transform: rotate(360deg); }
 }
 
+.style1 {
+  background-color:rgba(2, 199, 255, 0.1);
+}
+
+.style2 {
+  background-color:rgba(2, 199, 255, 0.2);
+}

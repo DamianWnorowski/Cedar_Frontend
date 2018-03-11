@@ -6,7 +6,18 @@ import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
 import GradientSVG from './gradientSVG.js'
 import CircularProgressbar from 'react-circular-progressbar'
-import { Grid, Image,  Container,  Header,   Breadcrumb, Icon} from 'semantic-ui-react'
+import { 
+    Grid, 
+    Image,  
+    Container,  
+    Header,   
+    Breadcrumb, 
+    Icon,
+    Form,
+    TextArea,
+    Button,
+    Rating,
+} from 'semantic-ui-react'
 
 const MOVIES = constants.MOVIES;
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
@@ -56,10 +67,10 @@ class MovieDetails extends Component {
                 <Container  style={{ marginTop: '6em'}}>
                 </Container>
                 <Container  style={{backgroundColor:'black', color:'white', padding:'2em'}}>
-                    <Grid>
+                    <Grid >
                         <Grid.Row>
                             <Grid.Column width={5}>
-                            <div style={{ backgroundColor:'#02c7ff',paddingBottom:'1em',paddingRight:'1em',marginLeft:'-3em',marginRight:'2em', marginTop:'-4em'}}>
+                            <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-2em',marginRight:'2em', marginTop:'-4em'}}>
                                 <Image alt="example" 
                                     src={imgUrl + movieInfo.poster_path} 
                                     label={{ as: 'a', color: 'blue',size:'medium',  icon: 'play',content: 'Play Trailer', ribbon: true }}
@@ -75,18 +86,51 @@ class MovieDetails extends Component {
                                     <Grid.Column width={12} style={{ marginTop:'-1em',marginLeft:'0em',padding:0,paddingBottom:'2em'}}>
                                     <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>{movieInfo.overview}</p>
                                     </Grid.Column>
+                                    
                                 </Grid>
-                                <Grid style={{marginTop:0}}>
-                                    <Grid.Column width={8}>
+                                <Grid stackable >
+                                    <Grid.Column style={{paddingTop:0, paddingBottom:0}} width={8}>
                                         {movieStats}
                                     </Grid.Column>
-                                    <Grid.Column verticalAlign width={6}>
-                                        <Grid style={{}}>
-                                            <Grid.Column width={8}>
+                                    
+                                    <Grid.Column style={{ paddingTop:0, paddingBottom:0}} verticalAlign width={8}>
+                                        <Grid inverted style={{}}>
+                                            <Grid.Row style={{paddingBottom:0}}>
+                                            <Grid.Column width={6} style={{padding:'1em',backgroundColor: 'rgba(2, 199, 255, 0.1)'}}>
+                                                <Header textAlign='center' as='h4' style={{color:'white'}}>User Ratings</Header>
                                                 <CircularProgressbar initialAnimation percentage={80} />
+                                                <p style={{textAlign:'center', margin:0}}>avg. rating:</p>
+                                                <p style={{textAlign:'center'}}>total ratings:</p>
                                             </Grid.Column>
-                                            <Grid.Column width={8}>
+                                            <Grid.Column width={6} style={{padding:'1em',backgroundColor: 'rgba(2, 199, 255, 0.2)'}}>
+                                                <Header textAlign='center' as='h4' style={{color:'white'}}>Critic Rating</Header>
                                                 <CircularProgressbar verticalAlign initialAnimation percentage={20} />
+                                                <p style={{textAlign:'center', margin:0}}>avg. rating:</p>
+                                                <p style={{textAlign:'center'}}>total ratings:</p>
+                                            </Grid.Column>
+                                            </Grid.Row>
+                                            <Grid.Column width={16} style={{padding:0}}>
+                                                <Container style={{paddingTop:'2em', paddingBottom:'1em',}}>
+                                                    <Breadcrumb>
+                                                        <Breadcrumb.Section style={{borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', marginLeft:'-2em'}}>
+                                                            <Header style={{color:'#02c7ff', marginLeft:'1em'}}>Leave a Review</Header>
+                                                        </Breadcrumb.Section>
+                                                        <Breadcrumb.Divider 
+                                                            icon={<Icon color='grey' name='right chevron' />} 
+                                                        />
+                                                        <Breadcrumb.Section  link>
+                                                            <Rating icon='star' defaultRating={1} maxRating={5} />
+                                                        </Breadcrumb.Section>
+                                                    </Breadcrumb>
+                                                </Container>
+                                                <Grid  style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
+                                                    <Form style={{margin:0, width:'100%', padding:'.3em'}}>
+                                                        <TextArea autoHeight placeholder='Tell us more' />
+                                                        <Button  color='blue' compact size='tiny' floated='right' >Post</Button>
+                                                    </Form>
+                                                </Grid>
+                                            
+        
                                             </Grid.Column>
                                         </Grid>
                                    </Grid.Column>
@@ -95,6 +139,7 @@ class MovieDetails extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
+                    
                     <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/>
                     <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
                 </Container>
