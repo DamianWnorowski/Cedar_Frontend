@@ -16,8 +16,8 @@ class App extends Component {
 
       <div style={{}}>
         <Nav />
-        <Home />
-        {/* <MovieDetails /> */}
+        {/* <Home /> */}
+        <MovieDetails />
 
         <Segment
           inverted

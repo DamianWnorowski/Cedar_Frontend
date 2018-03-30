@@ -30,7 +30,7 @@ class MediaList extends Component{
     
     scrollNext = () => {
         if(this.state.scrollEnd+this.state.numShow-1 > this.state.displayInfo.length){
-            console.log("length", this.state.displayInfo.length)
+
 
             this.setState({
                 items: this.state.displayInfo.slice(this.state.displayInfo.length-this.state.numShow, this.state.displayInfo.length),
@@ -92,7 +92,6 @@ class MediaList extends Component{
     }
 
     render(){
-        console.log("scroll",this.state.scrollStart)
         if(this.state.scroll){
             return(
                 <div>

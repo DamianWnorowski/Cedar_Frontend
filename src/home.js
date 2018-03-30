@@ -3,27 +3,21 @@ import React, { Component } from 'react'
 import './App.css'
 import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
-import GradientSVG from './gradientSVG.js'
+// import GradientSVG from './gradientSVG.js'
 import MediaTable from './mediaTable.js'
-import CircularProgressbar from 'react-circular-progressbar'
+// import CircularProgressbar from 'react-circular-progressbar'
 import { 
     Grid, 
     Image,  
     Container,  
     Header,   
-    Breadcrumb, 
-    Icon,
-    Form,
-    TextArea,
-    Button,
-    Rating,
 } from 'semantic-ui-react'
 const MOVIES = constants.MOVIES;
 
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
-const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
+// const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
-const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];
+// const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];
 const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
 
 const tableItem1= {rating: '60%', title: 'cinderella', sales: '100M'}
@@ -45,7 +39,7 @@ const tableMap = tableList.map(item =>{
     }else{
         altColor = true
     }
-    console.log(altColor)
+
 
     return (<Grid.Row 
     key = {item.title+'9'}
@@ -70,7 +64,7 @@ const tableMapTv = tableList.map(item =>{
     }else{
         altColor = true
     }
-    console.log(altColor)
+
 
     return (<Grid.Row 
     key = {item.title+'9'}
@@ -89,16 +83,16 @@ const tableMapTv = tableList.map(item =>{
 });
 
 
-const testMap = users.map(user => 
-    <Grid.Column  key={user}>
-        <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
-        <Image 
-        fluid
-        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
-        /> 
-        </Container>
-    </Grid.Column>
-);
+// const testMap = users.map(user => 
+//     <Grid.Column  key={user}>
+//         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
+//         <Image 
+//         fluid
+//         src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
+//         /> 
+//         </Container>
+//     </Grid.Column>
+// );
 
 const movieMap = MOVIES.map(movies => 
     <Grid.Column  key={movies.title + "1"}>

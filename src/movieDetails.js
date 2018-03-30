@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import './App.css'
+import axios from 'axios'
 import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
 import GradientSVG from './gradientSVG.js'
@@ -24,7 +25,7 @@ const imgUrl = "https://image.tmdb.org/t/p/w500/";
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];
-const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
+// const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
 
 const testMap = users.map(user => 
     <Grid.Column  key={user}>
@@ -50,7 +51,7 @@ const actorMap = users.map(actor =>
     </Grid.Column>
 );
 
-const movieStats = movieTest.map(text => 
+const movieStats = (movieInfo) =>  movieTest.map(text => 
     <Container key={text} style={{paddingTop:'.1em'}}>
         <Breadcrumb>
             <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>{text[0]}</p></Breadcrumb.Section>
@@ -61,7 +62,23 @@ const movieStats = movieTest.map(text =>
 );
 
 class MovieDetails extends Component {
+
+    state = {
+        movieInfo: {},
+      }
+  
+      componentDidMount() {
+          console.log("Mounted")
+        axios.get(`http://localhost:8080/movie?id=123`)
+          .then(res => {
+            const movieInfo = res.data;
+            console.log(movieInfo);
+            this.setState({ movieInfo });
+          })
+      }
+
     render() {
+        const movieInfo = this.state.movieInfo   
         return (
             <div>
                 <Container  style={{ marginTop: '6em'}}>
@@ -90,7 +107,7 @@ class MovieDetails extends Component {
                                 </Grid>
                                 <Grid stackable >
                                     <Grid.Column style={{paddingTop:0, paddingBottom:0}} width={8}>
-                                        {movieStats}
+                                        {movieStats(movieInfo)}
                                     </Grid.Column>
                                     
                                     <Grid.Column style={{ paddingTop:0, paddingBottom:0}} verticalAlign width={8}>

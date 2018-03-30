@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Grid,  Input, Container, Menu, Header,Popup,  Button , Card, Dropdown, Form, Segment} from 'semantic-ui-react'
+import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment} from 'semantic-ui-react'
 
 class Nav extends Component {
     constructor(props){
