@@ -21,7 +21,7 @@ import {
 } from 'semantic-ui-react'
 
 const MOVIES = constants.MOVIES;
-const imgUrl = "https://image.tmdb.org/t/p/w500/";
+const imgUrl = "https://image.tmdb.org/t/p/";
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];

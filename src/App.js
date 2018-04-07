@@ -32,8 +32,6 @@ class App extends Component {
 
 
 
-
-
 //       <div>
 //       <div fluid style={{color:'white', backgroundColor:'black'}}>
 //       <Grid container 
