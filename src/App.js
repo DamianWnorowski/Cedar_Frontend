@@ -22,24 +22,11 @@ class App extends Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/movie" component={MovieDetails} />
+            <Route exact path="/movie/:movieId" component={MovieDetails} />
             <Route exact path="/browse" component={MediaTable} />
           </Switch>
           <Footer />
-          {/* <Segment
-            inverted
-            vertical
-            style={{ margin: '5em 0em 0em', }}
-          >
-            <Container textAlign='center'>
-              <List horizontal inverted divided link>
-                <List.Item as='a' href='#'>Site Map</List.Item>
-                <List.Item as='a' href='#'>Contact Us</List.Item>
-                <List.Item as='a' href='#'>Terms and Conditions</List.Item>
-                <List.Item as='a' href='#'>Privacy Policy</List.Item>
-              </List>
-            </Container>
-          </Segment> */}
+          
         </div>
       </Router>
 

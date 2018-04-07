@@ -68,8 +68,9 @@ class MovieDetails extends Component {
       }
   
       componentDidMount() {
-          console.log("Mounted")
-        axios.get(`http://localhost:8080/movie?id=123`)
+        const { match: { params } } = this.props;
+          console.log("Mounted", params.movieId)
+        axios.get(`http://localhost:8080/movie?id=` + params.movieId )
           .then(res => {
             const movieInfo = res.data;
             console.log(movieInfo);
