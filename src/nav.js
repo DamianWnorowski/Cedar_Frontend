@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment} from 'semantic-ui-react'
+import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment} from 'semantic-ui-react';
+
+const home = 'home';
+const browse = 'browse';
 
 class Nav extends Component {
     constructor(props){
@@ -18,7 +21,9 @@ class Nav extends Component {
     //     })
 
     // }
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+    handleItemClick = (e, { name }) => {
+        this.setState({ activeItem: name })
+    }
 
     render() {
         const { activeItem } = this.state
@@ -38,8 +43,8 @@ class Nav extends Component {
                     placeholder='Search...'
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
-                    <Menu.Item  color={'blue'} style={{color:'white'}} name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
-                    <Menu.Item  color={'blue'} style={{color:'white'}} name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
+                    <Menu.Item  color={'blue'} style={{color:'white'}} href = '/' name={home} active={activeItem === {home}} onClick={this.handleItemClick} />
+                    <Menu.Item  color={'blue'} style={{color:'white'}} href= {browse} name={browse} active={activeItem === {browse}} onClick={this.handleItemClick} />
                     <Menu.Item  color={'blue'} style={{color:'white'}} name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
