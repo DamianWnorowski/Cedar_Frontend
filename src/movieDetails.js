@@ -1,5 +1,3 @@
-
-
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
@@ -112,7 +110,7 @@ class MovieDetails extends Component {
                                         </div>
                                     </Grid.Column>
                                     <Grid.Column width={12} style={{ marginTop:'-1em',marginLeft:'0em',padding:0,paddingBottom:'2em'}}>
-                                    <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>{movieInfo.overview}</p>
+                                    <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>{movieInfo.description}</p>
                                     </Grid.Column>
                                     
                                 </Grid>

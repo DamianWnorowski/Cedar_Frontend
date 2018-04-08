@@ -114,18 +114,7 @@ class Home extends Component {
         movieInfo: {},
     }
 
-    componentDidMount() {
-        const { match: { params } } = this.props;
-          console.log("Mounted", params.movieId)
-        axios.get(`http://localhost:8080/api/topboxoffice`)
-          .then(res => {
-              
-            const movieInfo = res.data;
-            console.log( movieInfo );
-            this.setState({ movieInfo });
-          })
-      }
-
+    
 
     render(){
         return(
@@ -175,6 +164,7 @@ class Home extends Component {
                         <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={movieMap} numShow={5}/>
                     </Grid.Column>
                     <Grid.Column width={6}>
+                        {/* <TopBoxOffice />     */}
                         <MediaTable gridSize={12} displayInfo={tableMap} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
                         <MediaTable gridSize={12} displayInfo={tableMapTv} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
                     </Grid.Column>
