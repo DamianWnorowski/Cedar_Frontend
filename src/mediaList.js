@@ -3,12 +3,6 @@ import './App.css';
 
 import { Grid,  Container,   Header,  Icon, Breadcrumb, Button, Transition, List} from 'semantic-ui-react'
 
-
-
-
-
-
-
 class MediaList extends Component{
 
     constructor(props){

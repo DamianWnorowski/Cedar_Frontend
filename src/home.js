@@ -1,6 +1,8 @@
 
 import React, { Component } from 'react'
 import './App.css'
+import axios from 'axios'
+import TopBoxOffice from './topBoxOffice.js'
 import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
 // import GradientSVG from './gradientSVG.js'
@@ -39,8 +41,6 @@ const tableMap = tableList.map(item =>{
     }else{
         altColor = true
     }
-
-
     return (<Grid.Row 
     key = {item.title+'9'}
     columns='equal'  
@@ -109,6 +109,24 @@ const movieMap = MOVIES.map(movies =>
 
 
 class Home extends Component {
+    
+    state = {
+        movieInfo: {},
+    }
+
+    componentDidMount() {
+        const { match: { params } } = this.props;
+          console.log("Mounted", params.movieId)
+        axios.get(`http://localhost:8080/api/topboxoffice`)
+          .then(res => {
+              
+            const movieInfo = res.data;
+            console.log( movieInfo );
+            this.setState({ movieInfo });
+          })
+      }
+
+
     render(){
         return(
             <div>

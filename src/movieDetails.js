@@ -24,7 +24,14 @@ const MOVIES = constants.MOVIES;
 const imgUrl = "https://image.tmdb.org/t/p/";
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
-const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];
+const movieTest = [
+    ['Genre', 'genre'], 
+    ['Release Date', 'date'], 
+    ['Directed By', 'directed'],
+    ['Written By','written'],
+    ['Box Office', 'boxOffice'],
+    ['Run Time','runtime'],
+    ['Studio', 'studio']];
 // const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
 
 const testMap = users.map(user => 
@@ -72,8 +79,11 @@ class MovieDetails extends Component {
           console.log("Mounted", params.movieId)
         axios.get(`http://localhost:8080/movie?id=` + params.movieId )
           .then(res => {
+              
             const movieInfo = res.data;
-            console.log(movieInfo);
+            movieInfo.written = movieInfo['writer'].name;
+            movieInfo.directed = movieInfo['director'].name;
+            console.log( movieInfo.userRating );
             this.setState({ movieInfo });
           })
       }
@@ -116,13 +126,13 @@ class MovieDetails extends Component {
                                             <Grid.Row style={{paddingBottom:0}}>
                                             <Grid.Column width={6} style={{padding:'1em',backgroundColor: 'rgba(2, 199, 255, 0.1)'}}>
                                                 <Header textAlign='center' as='h4' style={{color:'white'}}>User Ratings</Header>
-                                                <CircularProgressbar initialAnimation percentage={80} />
+                                                <CircularProgressbar initialAnimation percentage={movieInfo.userRating} />
                                                 <p style={{textAlign:'center', margin:0}}>avg. rating:</p>
                                                 <p style={{textAlign:'center'}}>total ratings:</p>
                                             </Grid.Column>
                                             <Grid.Column width={6} style={{padding:'1em',backgroundColor: 'rgba(2, 199, 255, 0.2)'}}>
                                                 <Header textAlign='center' as='h4' style={{color:'white'}}>Critic Rating</Header>
-                                                <CircularProgressbar verticalAlign initialAnimation percentage={20} />
+                                                <CircularProgressbar verticalAlign initialAnimation percentage={movieInfo.criticRating} />
                                                 <p style={{textAlign:'center', margin:0}}>avg. rating:</p>
                                                 <p style={{textAlign:'center'}}>total ratings:</p>
                                             </Grid.Column>

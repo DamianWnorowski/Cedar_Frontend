@@ -19,6 +19,7 @@ class MediaTable extends Component{
             gridSize: this.props.gridSize,
         }
     }
+    
 
     showAll = () => {
         this.setState({
