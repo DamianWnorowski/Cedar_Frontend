@@ -43,8 +43,8 @@ class Nav extends Component {
                     placeholder='Search...'
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
-                    <Menu.Item  color={'blue'} style={{color:'white'}} href = '/' name={home} active={activeItem === {home}} onClick={this.handleItemClick} />
-                    <Menu.Item  color={'blue'} style={{color:'white'}} href= {browse} name={browse} active={activeItem === {browse}} onClick={this.handleItemClick} />
+                    <Menu.Item  color={'blue'} style={{color:'white'}} href = '/' name={home} active={activeItem === home} onClick={this.handleItemClick} />
+                    <Menu.Item  color={'blue'} style={{color:'white'}} href= {browse} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
                     <Menu.Item  color={'blue'} style={{color:'white'}} name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
@@ -61,7 +61,7 @@ class Nav extends Component {
                                 <Form inverted>
                                     <Form.Input fluid label='Username' placeholder='Username' />
                                     <Form.Input fluid label='Password' placeholder='Password' />
-                                <Button type='submit'>Login</Button>
+                                <Button href='/profile' type='submit'>Login</Button>
                                 </Form>
                             </Segment>
                         </Popup>

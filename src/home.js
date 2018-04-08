@@ -114,62 +114,37 @@ class Home extends Component {
         movieInfo: {},
     }
 
-    
-
     render(){
         return(
             <div>
-            
                 <Container  style={{backgroundColor:'black', color:'white', padding:'', marginTop:'-1em'}}>
-                {/* <div  style={{position:'relative'}}> */}
-                    {/* <div style={{position:'absolute'}}> */}
                         <Image  fluid src={'https://wallpapersite.com/images/pages/pic_w/6573.jpg'} />
-                    {/* </div> */}
-                    {/* <div style={{width:'100%'}}> */}
                     <Grid style={{}}>
                     <Grid.Row style={{}} >
-                    <Grid.Column width={5}>
-                        <div style={{left: '20%', position: 'absolute',transform: 'translate(-0%, -95%)',backgroundColor:'#02c7ff', paddingBottom:'.1em', paddingRight:'.1em'}}>
-                            <Image  src={imgUrl + movieInfo.poster_path} />
-                        </div>
-                    </Grid.Column>
-
-                    <Grid.Column width={5} style={{marginLeft:'-1em', marginTop:'-4em'}}>
-                        {/* <div style={{marginLeft:'-1em',marginTop:'-0em'}}> */}
-                            <Header as='h1' style={{backgroundColor:'#02c7ff', color:'Black'}}>{movieInfo.title}</Header>
-                        {/* </div> */}
-                    </Grid.Column>
-                        
-                            
-                        </Grid.Row>
-                        
+                        <Grid.Column width={5}>
+                            <div style={{left: '20%', position: 'absolute',transform: 'translate(-0%, -95%)',backgroundColor:'#02c7ff', paddingBottom:'.1em', paddingRight:'.1em'}}>
+                                <Image  src={imgUrl + movieInfo.poster_path} />
+                            </div>
+                        </Grid.Column>
+                        <Grid.Column width={5} style={{marginLeft:'-1em', marginTop:'-4em'}}>
+                                <Header as='h1' style={{backgroundColor:'#02c7ff', color:'Black'}}>{movieInfo.title}</Header>
+                        </Grid.Column>
+                    </Grid.Row>
                     </Grid>
-
-                    {/* </div> */}
-                    
-                    
-                {/* </div> */}
                 </Container>
                 <Container style={{backgroundColor:'black', color:'white', padding:'2em', marginTop:'-1em'}}>
-                <Grid doubling style={{marginLeft:'-2em', marginRight:'-2em', marginTop:'-2em'}}>
-                    <Grid.Column double width={6} style={{}}>
-
-                    
-
-                    </Grid.Column>
-                </Grid>
-                <Grid>
-                    <Grid.Column width={10}>
-                        <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={movieMap} numShow={5}/>
-                        <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={movieMap} numShow={5}/>
-                    </Grid.Column>
-                    <Grid.Column width={6}>
-                        {/* <TopBoxOffice />     */}
-                        <MediaTable gridSize={12} displayInfo={tableMap} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
-                        <MediaTable gridSize={12} displayInfo={tableMapTv} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
-                    </Grid.Column>
-                </Grid>
-            </Container>
+                    <Grid>
+                        <Grid.Column width={10}>
+                            <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={movieMap} numShow={5}/>
+                            <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={movieMap} numShow={5}/>
+                        </Grid.Column>
+                        <Grid.Column width={6}>
+                            {/* <TopBoxOffice />     */}
+                            <MediaTable gridSize={12} displayInfo={tableMap} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
+                            <MediaTable gridSize={12} displayInfo={tableMapTv} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
+                        </Grid.Column>
+                    </Grid>
+                </Container>
             </div>
         );
     }
