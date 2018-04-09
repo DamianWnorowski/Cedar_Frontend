@@ -45,7 +45,6 @@ class Nav extends Component {
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                     <Menu.Item  color={'blue'} style={{color:'white'}} href = '/' name={home} active={activeItem === home} onClick={this.handleItemClick} />
                     <Menu.Item  color={'blue'} style={{color:'white'}} href= {browse} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
-                    <Menu.Item  color={'blue'} style={{color:'white'}} name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
                 <Grid.Column width={3}>

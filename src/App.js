@@ -9,6 +9,7 @@ import MediaTable from './mediaTable.js';
 import MovieDetails from './movieDetails.js';
 import Browse from './browse.js';
 import Profile from './profile.js';
+import CelebrityDetails from './celebrityDetails.js'
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
 
 
@@ -26,6 +27,7 @@ class App extends Component {
             <Route exact path="/movie/:movieId" component={MovieDetails} />
             <Route exact path="/browse" component={Browse} />
             <Route exact path="/profile" component={Profile}/>
+            <Route exact path='/celebrity' component={CelebrityDetails} />
           </Switch>
           <Footer />
         </div>
