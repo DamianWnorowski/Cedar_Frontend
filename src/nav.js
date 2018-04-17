@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Link } from 'react-router-dom';
 import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment} from 'semantic-ui-react';
 
 const home = 'home';
@@ -43,8 +44,8 @@ class Nav extends Component {
                     placeholder='Search...'
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
-                    <Menu.Item  color={'blue'} style={{color:'white'}} href = '/' name={home} active={activeItem === home} onClick={this.handleItemClick} />
-                    <Menu.Item  color={'blue'} style={{color:'white'}} href= {browse} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
+                    <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
+                    <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
                 <Grid.Column width={3}>
@@ -78,8 +79,8 @@ class Nav extends Component {
                                     <Form.Input fluid label='Last name' placeholder='Last name' />
                                     <Form.Input fluid label='Email' placeholder='Email' />
                                     <Form.Input fluid label='Password' placeholder='Password' />
-                                <Form.Checkbox label='I agree to the Terms and Conditions' />
-                                <Button type='submit'>Submit</Button>
+                                    <Form.Checkbox label='I agree to the Terms and Conditions' />
+                                    <Button type='submit'>Submit</Button>
                                 </Form>
                             </Segment>
                         </Popup>

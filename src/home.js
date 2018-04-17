@@ -114,6 +114,21 @@ class Home extends Component {
         movieInfo: {},
     }
 
+    componentDidMount(){
+        axios.get(`http://localhost:8080/api/moviesopeningthisweek`)
+            .then(res => {
+                console.log(res)
+            })
+        axios.get(`http://localhost:8080/api/comingsoontotheaters`)
+            .then(res => {
+            console.log(res)
+        })
+        axios.get(`http://localhost:8080/api/featuredmovie`)
+            .then(res => {
+            console.log(res)
+        })
+    }
+
     render(){
         return(
             <div>
