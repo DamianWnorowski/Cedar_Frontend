@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment} from 'semantic-ui-react';
+import axios from 'axios';
 
 const home = 'home';
 const browse = 'browse';
@@ -8,9 +9,15 @@ const browse = 'browse';
 class Nav extends Component {
     constructor(props){
         super(props)
-
+        
+        // TODO: maybe set state based on current user?
         this.state = { 
-            activeItem: 'home' 
+            activeItem: 'home',
+            id: '',
+            fname: '',
+            lname: '',
+            password: '',
+            email: ''
         }
     }
     
@@ -24,9 +31,43 @@ class Nav extends Component {
     handleItemClick = (e, { name }) => {
         this.setState({ activeItem: name })
     }
-
+    
+    // onChange will modify the state based on the name of the input
+    onChange = (e) => {
+        const state = this.state;
+        state[e.target.name] = e.target.value;
+        this.setState(state);
+    }
+    
+    handleRegisterSubmit = (e) => {
+        e.preventDefault();
+        const {fname, lname, password, email} = this.state;
+       
+        // TODO: DATA VERIFICATION (maybe in the onchange?)
+        axios.post(`http://localhost:8080/register`, {fname, lname, password, email})
+                .then((result) => {
+                    console.log(result);
+        })
+                .catch((error) => {
+                    console.log(error);
+        });               
+    }
+    
+    handleLoginSubmit = (e) => {
+        e.preventDefault();   
+        const {email, password} = this.state;
+        axios.post(`http://localhost:8080/login`, {email, password})
+                .then((result) => {
+                    console.log(result);
+        })
+                .catch((error) => {
+                    console.log(error);
+        });
+                        
+    }
+    
     render() {
-        const { activeItem } = this.state
+        const { activeItem } = this.state;
         return (
             <Menu  inverted style={{color:'white', backgroundColor:'black'}}>
             <Container>
@@ -58,10 +99,13 @@ class Nav extends Component {
                             hoverable
                         >
                             <Segment inverted style={{width:'200px'}}>
-                                <Form inverted>
-                                    <Form.Input fluid label='Username' placeholder='Username' />
-                                    <Form.Input fluid label='Password' placeholder='Password' />
-                                <Button href='/profile' type='submit'>Login</Button>
+                                <Form 
+                                    inverted
+                                    onSubmit={this.handleLoginSubmit}
+                                >
+                                    <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
+                                    <Form.Input fluid type="text" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
+                                <Button type='submit'>Login</Button>
                                 </Form>
                             </Segment>
                         </Popup>
@@ -73,12 +117,14 @@ class Nav extends Component {
                             hoverable
                         >
                             <Segment inverted >
-                                <Form inverted >
-                                    <Form.Input fluid label='Username' placeholder='Username' />
-                                    <Form.Input fluid label='First name' placeholder='First name' />
-                                    <Form.Input fluid label='Last name' placeholder='Last name' />
-                                    <Form.Input fluid label='Email' placeholder='Email' />
-                                    <Form.Input fluid label='Password' placeholder='Password' />
+                                <Form 
+                                    inverted
+                                    onSubmit={this.handleRegisterSubmit}
+                                >
+                                    <Form.Input fluid type="text" name="fname" label='First name' placeholder='First name' onChange={this.onChange}/>
+                                    <Form.Input fluid type="text" name="lname" label='Last name' placeholder='Last name' onChange={this.onChange}/>
+                                    <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
+                                    <Form.Input fluid type="text" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
                                 <Form.Checkbox label='I agree to the Terms and Conditions' />
                                 <Button type='submit'>Submit</Button>
                                 </Form>
