@@ -16,7 +16,7 @@ import {
 } from 'semantic-ui-react'
 const MOVIES = constants.MOVIES;
 
-const imgUrl = "https://image.tmdb.org/t/p/w500/";
+const imgUrl = "https://image.tmdb.org/t/p/";
 // const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 // const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];
@@ -105,6 +105,21 @@ const movieMap = MOVIES.map(movies =>
     </Grid.Column>
 );
 
+const movieScroll = (movieInfo) =>  {
+    const movies =  movieInfo.map(movies => 
+        <Grid.Column  key={movies.title + "1"}>
+            <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
+            <Image 
+            fluid
+            src={imgUrl + movies.poster_path}
+            /> 
+            </Container>
+        </Grid.Column>
+    )
+    console.log('movies' , movies)
+    return movies;
+};
+
 
 
 
@@ -112,16 +127,22 @@ class Home extends Component {
     
     state = {
         movieInfo: {},
+        renderMoviesComingSoon: false,
+        renderMoviesUpcoming: false,
     }
 
     componentDidMount(){
         axios.get(`http://localhost:8080/api/moviesopeningthisweek`)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
+                const moviesComingSoon = movieScroll(res.data);
+                this.setState({ moviesComingSoon, renderMoviesComingSoon: true });
             })
         axios.get(`http://localhost:8080/api/comingsoontotheaters`)
             .then(res => {
             console.log(res)
+            const moviesUpcoming = movieScroll(res.data);
+            this.setState({ moviesUpcoming, renderMoviesUpcoming: true });
         })
         axios.get(`http://localhost:8080/api/featuredmovie`)
             .then(res => {
@@ -130,7 +151,12 @@ class Home extends Component {
     }
 
     render(){
-        return(
+            const moviesComingSoon = this.state.moviesComingSoon;
+            console.log('cs', moviesComingSoon)
+            if(!this.state.renderMoviesComingSoon || !this.state.renderMoviesUpcoming){ 
+                return(<div />)
+            }
+            return(
             <div>
                 <Container  style={{backgroundColor:'black', color:'white', padding:'', marginTop:'-1em'}}>
                         <Image  fluid src={'https://wallpapersite.com/images/pages/pic_w/6573.jpg'} />
@@ -150,8 +176,8 @@ class Home extends Component {
                 <Container style={{backgroundColor:'black', color:'white', padding:'2em', marginTop:'-1em'}}>
                     <Grid>
                         <Grid.Column width={10}>
-                            <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={movieMap} numShow={5}/>
-                            <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={movieMap} numShow={5}/>
+                            <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={this.state.moviesUpcoming} numShow={5}/>
+                            <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={moviesComingSoon} numShow={5}/>
                         </Grid.Column>
                         <Grid.Column width={6}>
                             {/* <TopBoxOffice />     */}
