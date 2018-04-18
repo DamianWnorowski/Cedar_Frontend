@@ -19,7 +19,7 @@ import {
 } from 'semantic-ui-react'
 
 const MOVIES = constants.MOVIES;
-const imgUrl = "https://image.tmdb.org/t/p/";
+const imgUrl = constants.IMGURL;
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [
@@ -84,27 +84,21 @@ class MovieDetails extends Component {
         axios.post(`http://localhost:8080/api/ratecontent`, reviewForm,
         { 
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'multipart/x-www-form-urlencoded',
             }
         }).then(res => {
             console.log('ratecontent', res)
         })
-            
     }
-        
-      
   
       componentDidMount() {
         const { match: { params } } = this.props;
-          console.log("Mounted", params.movieId)
         axios.get(`http://localhost:8080/movie?id=` + params.movieId )
           .then(res => {
-              
-            const movieInfo = res.data;
-            // movieInfo.written = movieInfo['writer'].name;
-            // movieInfo.directed = movieInfo['director'].name;
-            console.log( movieInfo.userRating );
-            this.setState({ movieInfo });
+                const movieInfo = res.data;
+                movieInfo.written = movieInfo['writer'].name;
+                movieInfo.directed = movieInfo['director'].name;
+                this.setState({ movieInfo });
           })
       }
 
@@ -141,7 +135,7 @@ class MovieDetails extends Component {
                                         {movieStats(movieInfo)}
                                     </Grid.Column>
                                     
-                                    <Grid.Column style={{ paddingTop:0, paddingBottom:0}} verticalAlign width={8}>
+                                    <Grid.Column style={{ paddingTop:0, paddingBottom:0}} width={8}>
                                         <Grid inverted style={{}}>
                                             <Grid.Row style={{paddingBottom:0}}>
                                             <Grid.Column width={6} style={{padding:'1em',backgroundColor: 'rgba(2, 199, 255, 0.1)'}}>
@@ -174,11 +168,9 @@ class MovieDetails extends Component {
                                                 <Grid  style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
                                                     <Form  style={{margin:0, width:'100%', padding:'.3em'}}>
                                                         <TextArea onChange={this.onChange} autoHeight name='review' placeholder='Tell us more' />
-                                                        <Button  color='blue' compact size='tiny' floated='right' >Post</Button>
+                                                        <Button  color='blue' onSubmit={this.onSubmit} compact size='tiny' floated='right' >Post</Button>
                                                     </Form>
                                                 </Grid>
-                                            
-        
                                             </Grid.Column>
                                         </Grid>
                                    </Grid.Column>

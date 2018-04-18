@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import './App.css'
 import axios from 'axios'
 import TopBoxOffice from './topBoxOffice.js'
@@ -16,12 +17,8 @@ import {
 } from 'semantic-ui-react'
 const MOVIES = constants.MOVIES;
 
-const sqlq = MOVIES.map(movies => 
-    console.log('INSERT INTO movie VALUES('+movies.id +2+ ', ' + movies.vote_average*10 + ', \'2018-04-19 00:00:00\', \"' + movies.overview + '\" , '+ 
-       '\'Action\'' + ', \'' + movies.poster_path + '\', \'87min\', \'Paramount\', \'' + movies.title + '\', \'test\', ' + movies.vote_average*10 + ', 1,2,14000000,1);'  )
-);
 
-const imgUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
+const imgUrl = constants.IMGURL;
 const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
 const tableItem1= {rating: '60%', title: 'cinderella', sales: '100M'}
 const tableItem2= {rating: '90%', title: 'fire', sales: '150M'}
@@ -139,6 +136,8 @@ const movieScroll = (movieInfo) =>  {
         <Grid.Column  key={movies.title + "1"}>
             <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
             <Image 
+            as={ Link }
+            to={"/movie/" + movies.id}
             fluid
             src={imgUrl + movies.poster_path}
             /> 
@@ -200,8 +199,8 @@ class Home extends Component {
                 <Container style={{backgroundColor:'black', color:'white', padding:'2em', marginTop:'-1em'}}>
                     <Grid>
                         <Grid.Column width={10}>
-                            <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={(this.state.renderMoviesUpcoming)? this.state.moviesUpcoming : null} numShow={5}/>
-                            <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={this.state.moviesComingSoon} numShow={5}/>
+                            {(this.state.renderMoviesUpcoming)? <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={this.state.moviesUpcoming} numShow={5}/> : <div />}
+                            {(this.state.renderMoviesComingSoon)? <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={this.state.moviesComingSoon} numShow={5}/> : <div />}
                         </Grid.Column>
                         <Grid.Column width={6}>
                             <MediaTable gridSize={12} displayInfo={boxOfficeTable(tableList)} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
