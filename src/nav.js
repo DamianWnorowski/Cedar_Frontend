@@ -17,7 +17,8 @@ class Nav extends Component {
             fname: '',
             lname: '',
             password: '',
-            email: ''
+            email: '',
+            login: false,
         }
     }
     
@@ -58,10 +59,12 @@ class Nav extends Component {
         const {email, password} = this.state;
         axios.post(`http://localhost:8080/login`, {email, password})
                 .then((result) => {
-                    console.log(result);
+
+                    this.setState({login:true})
+                    console.log(result.data);
         })
                 .catch((error) => {
-                    console.log(error);
+                    console.log('err',error);
         });
                         
     }
@@ -90,6 +93,7 @@ class Nav extends Component {
                     </Menu>
                 </Grid.Column>
                 <Grid.Column width={3}>
+                    {(this.state.login)? <Header style={{color:'white'}}>{this.state.email}</Header> : 
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                         <Popup
                             inverted
@@ -130,7 +134,7 @@ class Nav extends Component {
                                 </Form>
                             </Segment>
                         </Popup>
-                    </Menu>
+                    </Menu>}
                 </Grid.Column>
                 </Grid.Row>
             </Grid>
