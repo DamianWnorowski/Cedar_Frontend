@@ -16,12 +16,13 @@ import {
 } from 'semantic-ui-react'
 const MOVIES = constants.MOVIES;
 
-const imgUrl = "https://image.tmdb.org/t/p/";
-// const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
-// const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
-// const movieTest = [['Genre', 'genre'], ['Release Date', 'released'], ['Directed By', 'directed'],['Written By','written'],['Box Office', 'boxoffice'],['Run Time','runtime'],['Studio', 'studio']];
-const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
+const sqlq = MOVIES.map(movies => 
+    console.log('INSERT INTO movie VALUES('+movies.id +2+ ', ' + movies.vote_average*10 + ', \'2018-04-19 00:00:00\', \"' + movies.overview + '\" , '+ 
+       '\'Action\'' + ', \'' + movies.poster_path + '\', \'87min\', \'Paramount\', \'' + movies.title + '\', \'test\', ' + movies.vote_average*10 + ', 1,2,14000000,1);'  )
+);
 
+const imgUrl = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
+const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
 const tableItem1= {rating: '60%', title: 'cinderella', sales: '100M'}
 const tableItem2= {rating: '90%', title: 'fire', sales: '150M'}
 const tableItem3= {rating: '30%', title: 'twitch', sales: '20M'}
@@ -64,46 +65,45 @@ const tableMapTv = tableList.map(item =>{
     }else{
         altColor = true
     }
-
-
-    return (<Grid.Row 
-    key = {item.title+'9'}
-    columns='equal'  
-    className={(altColor) ? 'style2' : 'style1'}
-    style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
-    >
-        <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
-        {item.rating}
-        </Grid.Column>
-        <Grid.Column width={12} style={{padding: 0,color:'#02c7ff'}}>
-        {item.title}
-        </Grid.Column>
-
-    </Grid.Row>)
+    return (
+        <Grid.Row 
+        key = {item.title+'9'}
+        columns='equal'  
+        className={(altColor) ? 'style2' : 'style1'}
+        style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
+        >
+            <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
+                {item.rating}
+                </Grid.Column>
+                <Grid.Column width={12} style={{padding: 0,color:'#02c7ff'}}>
+                {item.title}
+            </Grid.Column>
+        </Grid.Row>
+    )
 });
 
-
-// const testMap = users.map(user => 
-//     <Grid.Column  key={user}>
-//         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
-//         <Image 
-//         fluid
-//         src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
-//         /> 
-//         </Container>
-//     </Grid.Column>
-// );
-
-const movieMap = MOVIES.map(movies => 
-    <Grid.Column  key={movies.title + "1"}>
-        <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
-        <Image 
-        fluid
-        src={imgUrl + movies.poster_path}
-        /> 
-        </Container>
-    </Grid.Column>
-);
+const tableData = (data) => {
+    let altColor = false;
+    const table = data.map(item => {
+        altColor = !altColor
+        return (
+            <Grid.Row 
+            key = {item.title+'9'}
+            columns='equal'  
+            className={(altColor) ? 'style2' : 'style1'}
+            style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
+            >
+                <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
+                    {item.rating}
+                    </Grid.Column>
+                    <Grid.Column width={12} style={{padding: 0,color:'#02c7ff'}}>
+                    {item.title}
+                </Grid.Column>
+            </Grid.Row>
+        )
+    })
+    return table;
+}
 
 const movieScroll = (movieInfo) =>  {
     const movies =  movieInfo.map(movies => 
@@ -116,11 +116,8 @@ const movieScroll = (movieInfo) =>  {
             </Container>
         </Grid.Column>
     )
-    console.log('movies' , movies)
     return movies;
 };
-
-
 
 
 class Home extends Component {
@@ -134,25 +131,23 @@ class Home extends Component {
     componentDidMount(){
         axios.get(`http://localhost:8080/api/moviesopeningthisweek`)
             .then(res => {
-                console.log(res.data)
+                console.log('this week', res)
                 const moviesComingSoon = movieScroll(res.data);
                 this.setState({ moviesComingSoon, renderMoviesComingSoon: true });
             })
         axios.get(`http://localhost:8080/api/comingsoontotheaters`)
             .then(res => {
-            console.log(res)
+            console.log('coming to theaters', res)
             const moviesUpcoming = movieScroll(res.data);
             this.setState({ moviesUpcoming, renderMoviesUpcoming: true });
         })
         axios.get(`http://localhost:8080/api/featuredmovie`)
             .then(res => {
-            console.log(res)
+            console.log('featured', res)
         })
     }
 
     render(){
-            const moviesComingSoon = this.state.moviesComingSoon;
-            console.log('cs', moviesComingSoon)
             if(!this.state.renderMoviesComingSoon || !this.state.renderMoviesUpcoming){ 
                 return(<div />)
             }
@@ -177,10 +172,9 @@ class Home extends Component {
                     <Grid>
                         <Grid.Column width={10}>
                             <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={this.state.moviesUpcoming} numShow={5}/>
-                            <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={moviesComingSoon} numShow={5}/>
+                            <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={this.state.moviesComingSoon} numShow={5}/>
                         </Grid.Column>
                         <Grid.Column width={6}>
-                            {/* <TopBoxOffice />     */}
                             <MediaTable gridSize={12} displayInfo={tableMap} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
                             <MediaTable gridSize={12} displayInfo={tableMapTv} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
                         </Grid.Column>

@@ -1,6 +1,22 @@
 export const IMGURL = "https://image.tmdb.org/t/p/w500/";
 export const VIDEO_URL = "https://www.youtube.com/watch?v=";
 export const ACTORSNUM = 6;
+// const sqlq = MOVIES.map(movies => 
+//     console.log('INSERT INTO movie VALUES('+movies.id + ', ' + movies.vote_average*10 + ', \'2018-04-25 00:00:00\', \"' + movies.overview + '\" , '+ 
+//        '\'Action\'' + ', \'' + movies.poster_path + '\', \'87min\', \'Paramount\', \'' + movies.title + '\', \'test\', ' + movies.vote_average*10 + ', 1,2,14000000,1);'  )
+// );
+
+// const movieMap = MOVIES.map(movies => 
+//   <Grid.Column  key={movies.title + "1"}>
+//       <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
+//       <Image 
+//       fluid
+//       src={imgUrl + movies.poster_path}
+//       /> 
+//       </Container>
+//   </Grid.Column>
+// );
+
 export const MOVIES = [
     {"vote_count": 1, 
       "id": 705, 

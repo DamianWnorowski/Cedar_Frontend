@@ -71,6 +71,28 @@ class MovieDetails extends Component {
     state = {
         movieInfo: {},
       }
+
+    onChange = (e) => {
+        const name = e.target.name;
+        if(name == 'review') this.setState({review: e.target.value})
+    }
+
+    onSubmit = (e) => {
+        const reviewForm = new FormData();
+        reviewForm.set('review', this.state.review);
+        reviewForm.set('rating', 4)
+        axios.post(`http://localhost:8080/api/ratecontent`, reviewForm,
+        { 
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then(res => {
+            console.log('ratecontent', res)
+        })
+            
+    }
+        
+      
   
       componentDidMount() {
         const { match: { params } } = this.props;
@@ -79,8 +101,8 @@ class MovieDetails extends Component {
           .then(res => {
               
             const movieInfo = res.data;
-            movieInfo.written = movieInfo['writer'].name;
-            movieInfo.directed = movieInfo['director'].name;
+            // movieInfo.written = movieInfo['writer'].name;
+            // movieInfo.directed = movieInfo['director'].name;
             console.log( movieInfo.userRating );
             this.setState({ movieInfo });
           })
@@ -150,8 +172,8 @@ class MovieDetails extends Component {
                                                     </Breadcrumb>
                                                 </Container>
                                                 <Grid  style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
-                                                    <Form style={{margin:0, width:'100%', padding:'.3em'}}>
-                                                        <TextArea autoHeight placeholder='Tell us more' />
+                                                    <Form  style={{margin:0, width:'100%', padding:'.3em'}}>
+                                                        <TextArea onChange={this.onChange} autoHeight name='review' placeholder='Tell us more' />
                                                         <Button  color='blue' compact size='tiny' floated='right' >Post</Button>
                                                     </Form>
                                                 </Grid>
