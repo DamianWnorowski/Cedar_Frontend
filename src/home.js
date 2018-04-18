@@ -67,22 +67,51 @@ const tableMapTv = tableList.map(item =>{
     }
     return (
         <Grid.Row 
-        key = {item.title+'9'}
-        columns='equal'  
-        className={(altColor) ? 'style2' : 'style1'}
-        style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
-        >
-            <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
-                {item.rating}
-                </Grid.Column>
-                <Grid.Column width={12} style={{padding: 0,color:'#02c7ff'}}>
-                {item.title}
-            </Grid.Column>
-        </Grid.Row>
+    key = {item.title+'9'}
+    columns='equal'  
+    className={(altColor) ? 'style2' : 'style1'}
+    style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
+    >
+        <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
+        {item.rating}
+        </Grid.Column>
+        <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}>
+        {item.title}
+        </Grid.Column>
+        <Grid.Column style={{padding:0, paddingRight:'.5em'}} >
+        {item.sales}
+        </Grid.Column>
+    </Grid.Row>
     )
 });
 
-const tableData = (data) => {
+const boxOfficeTable = (data) => {
+    let altColor = false;
+    const table = data.map(item => {
+        altColor = !altColor
+        return (
+            <Grid.Row 
+            key = {item.title+'9'}
+            columns='equal'  
+            className={(altColor) ? 'style2' : 'style1'}
+            style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
+            >
+                <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
+                {item.rating}
+                </Grid.Column>
+                <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}>
+                {item.title}
+                </Grid.Column>
+                <Grid.Column style={{padding:0, paddingRight:'.5em'}} >
+                {item.sales}
+                </Grid.Column>
+            </Grid.Row>
+        )
+    })
+    return table;
+}
+
+const officeTable = (data) => {
     let altColor = false;
     const table = data.map(item => {
         altColor = !altColor
@@ -171,12 +200,12 @@ class Home extends Component {
                 <Container style={{backgroundColor:'black', color:'white', padding:'2em', marginTop:'-1em'}}>
                     <Grid>
                         <Grid.Column width={10}>
-                            <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={this.state.moviesUpcoming} numShow={5}/>
+                            <MediaList scroll nameHeader={<div>New movies<span style={{color:'white'}}>this week</span></div>} displayInfo={(this.state.renderMoviesUpcoming)? this.state.moviesUpcoming : null} numShow={5}/>
                             <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={this.state.moviesComingSoon} numShow={5}/>
                         </Grid.Column>
                         <Grid.Column width={6}>
-                            <MediaTable gridSize={12} displayInfo={tableMap} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
-                            <MediaTable gridSize={12} displayInfo={tableMapTv} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
+                            <MediaTable gridSize={12} displayInfo={boxOfficeTable(tableList)} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
+                            <MediaTable gridSize={12} displayInfo={officeTable(tableList)} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
                         </Grid.Column>
                     </Grid>
                 </Container>
