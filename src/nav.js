@@ -104,7 +104,7 @@ class Nav extends Component {
                                     onSubmit={this.handleLoginSubmit}
                                 >
                                     <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
-                                    <Form.Input fluid type="text" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
+                                    <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
                                 <Button type='submit'>Login</Button>
                                 </Form>
                             </Segment>
@@ -124,7 +124,7 @@ class Nav extends Component {
                                     <Form.Input fluid type="text" name="fname" label='First name' placeholder='First name' onChange={this.onChange}/>
                                     <Form.Input fluid type="text" name="lname" label='Last name' placeholder='Last name' onChange={this.onChange}/>
                                     <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
-                                    <Form.Input fluid type="text" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
+                                    <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
                                 <Form.Checkbox label='I agree to the Terms and Conditions' />
                                 <Button type='submit'>Submit</Button>
                                 </Form>
