@@ -81,10 +81,11 @@ class MovieDetails extends Component {
         const reviewForm = new FormData();
         reviewForm.set('review', this.state.review);
         reviewForm.set('rating', 4)
+        console.log("test23")
         axios.post(`http://localhost:8080/api/ratecontent`, reviewForm,
         { 
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'application/x-www-form-urlencoded',
             }
         }).then(res => {
             console.log('ratecontent', res)
@@ -101,8 +102,8 @@ class MovieDetails extends Component {
           .then(res => {
               
             const movieInfo = res.data;
-            // movieInfo.written = movieInfo['writer'].name;
-            // movieInfo.directed = movieInfo['director'].name;
+            movieInfo.written = movieInfo['writer'].name;
+            movieInfo.directed = movieInfo['director'].name;
             console.log( movieInfo.userRating );
             this.setState({ movieInfo });
           })
@@ -172,9 +173,9 @@ class MovieDetails extends Component {
                                                     </Breadcrumb>
                                                 </Container>
                                                 <Grid  style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
-                                                    <Form  style={{margin:0, width:'100%', padding:'.3em'}}>
+                                                    <Form onSubmit={this.onSubmit} style={{margin:0, width:'100%', padding:'.3em'}}>
                                                         <TextArea onChange={this.onChange} autoHeight name='review' placeholder='Tell us more' />
-                                                        <Button  color='blue' compact size='tiny' floated='right' >Post</Button>
+                                                        <Button type="submit" color='blue' compact size='tiny' floated='right' >Post</Button>
                                                     </Form>
                                                 </Grid>
                                             
