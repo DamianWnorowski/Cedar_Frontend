@@ -78,17 +78,25 @@ class MovieDetails extends Component {
     }
 
     onSubmit = (e) => {
-        const reviewForm = new FormData();
-        reviewForm.set('review', this.state.review);
-        reviewForm.set('rating', 4)
-        axios.post(`http://localhost:8080/api/ratecontent`, reviewForm,
-        { 
-            headers: {
-                'Content-Type': 'multipart/x-www-form-urlencoded',
-            }
-        }).then(res => {
-            console.log('ratecontent', res)
+        const body = this.state.review;
+        const rating = 2;
+        console.log("test23")
+        axios.post('http://localhost:8080/api/ratecontent',  {body,rating} )
+        .then((response) => {
+            console.log("Play response: ")
+            console.log('res',response)
         })
+        .catch((error) => {
+            console.log('err', error.status)
+        });
+        // axios.post(`http://localhost:8080/api/ratecontent`, reviewForm,
+        // { 
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     }
+        // }).then(res => {
+        //     console.log('ratecontent', res)
+        // })
     }
   
       componentDidMount() {
@@ -166,9 +174,9 @@ class MovieDetails extends Component {
                                                     </Breadcrumb>
                                                 </Container>
                                                 <Grid  style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
-                                                    <Form  style={{margin:0, width:'100%', padding:'.3em'}}>
+                                                    <Form onSubmit={this.onSubmit} style={{margin:0, width:'100%', padding:'.3em'}}>
                                                         <TextArea onChange={this.onChange} autoHeight name='review' placeholder='Tell us more' />
-                                                        <Button  color='blue' onSubmit={this.onSubmit} compact size='tiny' floated='right' >Post</Button>
+                                                        <Button type="submit" color='blue' compact size='tiny' floated='right' >Post</Button>
                                                     </Form>
                                                 </Grid>
                                             </Grid.Column>
