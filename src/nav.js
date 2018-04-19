@@ -31,7 +31,7 @@ class Nav extends Component {
         this.setState({search: e.target.value})
     }
     onSearchEnter = (e) => {
-        
+        console.log(e)
     }
     onSearch = (e) => {
         const search = this.state.search;
@@ -58,7 +58,7 @@ class Nav extends Component {
                     icon={<Icon name='search' circular link onClick={this.onSearch}/> }
                     placeholder='Search...'
                     onChange={this.onSearchText}
-                    onKeyPress={this.onSearchText}
+                    onKeyPress={this.onSearchEnter}
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                         <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
