@@ -11,6 +11,7 @@ class Nav extends Component {
     constructor(props){
         super(props)
 
+
         this.state = { 
             activeItem: 'home' 
         }
@@ -37,8 +38,10 @@ class Nav extends Component {
         console.log('searching: ', search);
         axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
+
                 console.log('search results: ', res.data)
           })
+          return <Link to='/search' />
     }
 
     render() {

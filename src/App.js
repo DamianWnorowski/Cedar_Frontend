@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import {createBrowserHistory, createHashHistory, createMemoryHistory} from 'history'
 import './App.css';
 import * as constants from  './constants.js';
 import Home from './home.js';

@@ -23,7 +23,7 @@ const imgUrl = constants.IMGURL;
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [
-    ['Genre', 'genre'], 
+    ['Genre', 'genres'], 
     ['Release Date', 'date'], 
     ['Directed By', 'directed'],
     ['Written By','written'],
