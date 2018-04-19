@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment} from 'semantic-ui-react';
+
+import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon} from 'semantic-ui-react';
 import axios from 'axios';
 
 const home = 'home';
@@ -70,14 +72,29 @@ class Nav extends Component {
                         
     }
     
+    onSearchText = (e) => {
+        this.setState({search: e.target.value})
+    }
+    onSearchEnterPress = (e) => {
+        if(e.key =='Enter') this.onSearch(e)
+    }
+    onSearch = (e) => {
+        const search = this.state.search;
+        console.log('searching: ', search);
+        axios.get(`http://localhost:8080/api/search?search=` + search)
+          .then(res => {
 
+                console.log('search results: ', res.data)
+          })
+          return <Link to='/search' />
+    }
+    
     render() {
         const { activeItem } = this.state
         return (
             <Menu  inverted style={{color:'white', backgroundColor:'black'}}>
             <Container>
-            <Grid container 
-            >
+            <Grid container>
                 <Grid.Row style={{ paddingTop:'2rem'}}>
                 <Grid.Column width={3}>
                     <Header textAlign='right' size='large' style={{color:'white'}}>Cedar</Header>
@@ -85,12 +102,14 @@ class Nav extends Component {
                 <Grid.Column width={10}>
                     <Input
                     fluid
-                    icon={{ name: 'search', circular: true, link: true }}
+                    icon={<Icon name='search' circular link onClick={this.onSearch}/> }
                     placeholder='Search...'
+                    onChange={this.onSearchText}
+                    onKeyPress={this.onSearchEnterPress}
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
-                    <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
-                    <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
+                        <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
+                        <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
                 <Grid.Column width={3}>
