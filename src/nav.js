@@ -27,16 +27,15 @@ class Nav extends Component {
         this.setState({ activeItem: name })
     }
     onSearchText = (e) => {
-        console.log(e)
         this.setState({search: e.target.value})
     }
-    onSearchEnter = (e) => {
-        console.log(e)
+    onSearchEnterPress = (e) => {
+        if(e.key =='Enter') this.onSearch(e)
     }
     onSearch = (e) => {
         const search = this.state.search;
         console.log('searching: ', search);
-        axios.get(`http://localhost:8080/api/searchsearch=` + search)
+        axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
                 console.log('search results: ', res.data)
           })
@@ -58,7 +57,7 @@ class Nav extends Component {
                     icon={<Icon name='search' circular link onClick={this.onSearch}/> }
                     placeholder='Search...'
                     onChange={this.onSearchText}
-                    onKeyPress={this.onSearchEnter}
+                    onKeyPress={this.onSearchEnterPress}
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                         <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
