@@ -70,6 +70,7 @@ class MovieDetails extends Component {
 
     state = {
         movieInfo: {},
+        rating: 0,
       }
 
     onChange = (e) => {
@@ -77,11 +78,16 @@ class MovieDetails extends Component {
         if(name == 'review') this.setState({review: e.target.value})
     }
 
+    onRate = (e, { rating, maxRating }) => {
+        this.setState({ rating })
+    }
+
     onSubmit = (e) => {
         const body = this.state.review;
-        const rating = 2;
-        console.log("test23")
-        axios.post('http://localhost:8080/api/ratecontent',  {body,rating} )
+        const rating = this.state.rating;
+        const content_id = this.state.movieInfo.content_id;
+        console.log("rate content: ", {body, rating, content_id})
+        axios.post('http://localhost:8080/api/ratecontent',  {body, rating, content_id} )
         .then((response) => {
             console.log("Play response: ")
             console.log('res',response)
@@ -169,7 +175,7 @@ class MovieDetails extends Component {
                                                             icon={<Icon color='grey' name='right chevron' />} 
                                                         />
                                                         <Breadcrumb.Section  link>
-                                                            <Rating icon='star' defaultRating={1} maxRating={5} />
+                                                            <Rating icon='star' defaultRating={1} maxRating={5} onRate={this.onRate} />
                                                         </Breadcrumb.Section>
                                                     </Breadcrumb>
                                                 </Container>

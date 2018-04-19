@@ -44,8 +44,8 @@ class Nav extends Component {
                     placeholder='Search...'
                     />
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
-                    <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
-                    <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
+                        <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
+                        <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
                 <Grid.Column width={3}>
