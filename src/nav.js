@@ -83,10 +83,8 @@ class Nav extends Component {
         console.log('searching: ', search);
         axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
-
                 console.log('search results: ', res.data)
           })
-          return <Link to='/search' />
     }
     
     render() {
@@ -99,10 +97,9 @@ class Nav extends Component {
                 <Grid.Column width={3}>
                     <Header textAlign='right' size='large' style={{color:'white'}}>Cedar</Header>
                 </Grid.Column>
-                <Grid.Column width={10}>
+                <Grid.Column width={8}>
                     <Input
                     fluid
-                    icon={<Icon name='search' circular link onClick={this.onSearch}/> }
                     placeholder='Search...'
                     onChange={this.onSearchText}
                     onKeyPress={this.onSearchEnterPress}
@@ -111,6 +108,9 @@ class Nav extends Component {
                         <Menu.Item as={ Link } to='/' color={'blue'} style={{color:'white'}} name={home} active={activeItem === home} onClick={this.handleItemClick} />
                         <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
                     </Menu>
+                </Grid.Column>
+                <Grid.Column width={2} style={{paddingLeft:0,paddingTop:5, marginLeft:'-3.5em'}}>
+                    <Link to={'/search/' + this.state.search}  ><Icon inverted name='search' color='blue' circular link onClick={this.onSearch}/></Link>
                 </Grid.Column>
                 <Grid.Column width={3}>
                     <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>

@@ -11,6 +11,7 @@ import MovieDetails from './movieDetails.js';
 import Browse from './browse.js';
 import Profile from './profile.js';
 import CelebrityDetails from './celebrityDetails.js'
+import searchPage from './searchPage.js'
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
 
 
@@ -29,6 +30,7 @@ class App extends Component {
             <Route exact path="/browse" component={Browse} />
             <Route exact path="/profile" component={Profile}/>
             <Route exact path='/celebrity' component={CelebrityDetails} />
+            <Route exact path='/search/:search' component={searchPage} />
           </Switch>
           <Footer />
         </div>
