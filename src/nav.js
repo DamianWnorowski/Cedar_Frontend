@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon} from 'semantic-ui-react';
@@ -8,6 +7,18 @@ import axios from 'axios';
 
 const home = 'home';
 const browse = 'browse';
+
+//(function() {
+//     token = store.getState().session.token;
+//     if (token) {
+//         axios.defaults.headers.common['Authorization'] = token;
+//     } else {
+//         axios.defaults.headers.common['Authorization'] = null;
+//         /*if setting null does not remove `Authorization` header then try     
+//           delete axios.defaults.headers.common['Authorization'];
+//         */
+//     }
+//})();
 
 class Nav extends Component {
     constructor(props){
@@ -62,12 +73,12 @@ class Nav extends Component {
         const {email, password} = this.state;
         axios.post(`http://localhost:8080/login`, {email, password})
                 .then((result) => {
-
                     this.setState({login:true})
+                    axios.defaults.headers.common['Authorization'] = "Bearer " + result.data
                     console.log(result.data);
         })
                 .catch((error) => {
-                    console.log('err',error);
+                    console.log('err',error)
         });
                         
     }
