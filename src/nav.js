@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import decode from 'jwt-decode';
-import AuthService from './auth.js'
 import { Link } from 'react-router-dom';
 
 import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
