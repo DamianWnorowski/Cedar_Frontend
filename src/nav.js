@@ -2,12 +2,24 @@ import React, { Component } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
 
-import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon} from 'semantic-ui-react';
+import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
 import axios from 'axios';
 import setAuthToken from './setAuthToken'
 
 const home = 'home';
 const browse = 'browse';
+
+const triggerLogin = (username) => (
+    <span style={{ fontSize:'1.3em'}}>
+     Hello , {username}
+    </span>
+  )
+
+const options = [
+    { key: 'user', text: 'Account', icon: 'user' },
+    { key: 'settings', text: 'Settings', icon: 'settings' },
+    { key: 'sign-out', text: 'Sign Out', icon: 'sign out' },
+]
 
 class Nav extends Component {
     constructor(props){
@@ -54,17 +66,17 @@ class Nav extends Component {
         e.preventDefault();   
         const {email, password} = this.state;
         axios.post(`http://localhost:8080/login`, {email, password})
-                .then((result) => {
-                    this.setState({login:true})
-                    const token = result.data.userToken
-                    const email = result.data.userEmail
-                    const blacklist = result.data.userBlacklist
-                    localStorage.setItem('jwtToken', token)
-                    setAuthToken(token)
-                    console.log(result.data);
+            .then((result) => {
+                const token = result.data.userToken
+                const email = result.data.userEmail
+                const blacklist = result.data.userBlacklist
+                this.setState({login:true, email, blacklist})
+                localStorage.setItem('jwtToken', token)
+                setAuthToken(token)
+                console.log(result.data);
         })
-                .catch((error) => {
-                    console.log('err',error)
+            .catch((error) => {
+                console.log('err',error)
         });
                         
     }
@@ -94,7 +106,7 @@ class Nav extends Component {
                 <Grid.Column width={3}>
                     <Header textAlign='right' size='large' style={{color:'white'}}>Cedar</Header>
                 </Grid.Column>
-                <Grid.Column width={8}>
+                <Grid.Column width={9}>
                     <Input
                     fluid
                     placeholder='Search...'
@@ -106,51 +118,56 @@ class Nav extends Component {
                         <Menu.Item as={ Link } to='/browse' color={'blue'} style={{color:'white'}} name={browse} active={activeItem ===  browse} onClick={this.handleItemClick} />
                     </Menu>
                 </Grid.Column>
-                <Grid.Column width={2} style={{paddingLeft:0,paddingTop:5, marginLeft:'-3.5em'}}>
+                <Grid.Column width={1} style={{paddingLeft:0,paddingTop:5, marginLeft:'-3.5em'}}>
                     <Link to={'/search/' + this.state.search}  ><Icon inverted name='search' color='blue' circular link onClick={this.onSearch}/></Link>
                 </Grid.Column>
                 <Grid.Column width={3}>
-                    <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
-                        <Popup
-                            inverted
-                            on='click'
-                            trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Login'/>}
-                            flowing
-                            hoverable
-                        >
-                            <Segment inverted style={{width:'200px'}}>
-                                <Form 
-                                    inverted 
-                                    onSubmit={this.handleLoginSubmit}
-                                >
-                                <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
-                                <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
-                                <Button type='submit'>Login</Button>
-                                </Form>
-                            </Segment>
-                        </Popup>
-                        <Popup
-                            inverted
-                            on='click'
-                            trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Signup'/>}
-                            flowing
-                            hoverable
-                        >
-                            <Segment inverted >
-                                <Form 
-                                    inverted 
-                                    onSubmit={this.handleRegisterSubmit}
-                                >
-                                    <Form.Input fluid type="text" name="firstName" label='First name' placeholder='First name' onChange={this.onChange}/>
-                                    <Form.Input fluid type="text" name="lastName" label='Last name' placeholder='Last name' onChange={this.onChange}/>
+                    {(this.state.login)? 
+                        <Dropdown style={{paddingTop:'.5em'}} trigger={triggerLogin(this.state.email)} options={options} />
+                    :
+                        <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
+                            <Popup
+                                inverted
+                                on='click'
+                                trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Login'/>}
+                                flowing
+                                hoverable
+                            >
+                                <Segment inverted style={{width:'200px'}}>
+                                    <Form 
+                                        inverted 
+                                        onSubmit={this.handleLoginSubmit}
+                                    >
                                     <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
                                     <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
-                                    <Form.Checkbox label='I agree to the Terms and Conditions' />
-                                    <Button type='submit'>Submit</Button>
-                                </Form>
-                            </Segment>
-                        </Popup>
-                    </Menu>
+                                    <Button type='submit'>Login</Button>
+                                    </Form>
+                                </Segment>
+                            </Popup>
+                            <Popup
+                                inverted
+                                on='click'
+                                trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Signup'/>}
+                                flowing
+                                hoverable
+                            >
+                                <Segment inverted >
+                                    <Form 
+                                        inverted 
+                                        onSubmit={this.handleRegisterSubmit}
+                                    >
+                                        <Form.Input fluid type="text" name="firstName" label='First name' placeholder='First name' onChange={this.onChange}/>
+                                        <Form.Input fluid type="text" name="lastName" label='Last name' placeholder='Last name' onChange={this.onChange}/>
+                                        <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
+                                        <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
+                                        <Form.Checkbox label='I agree to the Terms and Conditions' />
+                                        <Button type='submit'>Submit</Button>
+                                    </Form>
+                                </Segment>
+                            </Popup>
+                        </Menu>
+
+                    }
                 </Grid.Column>
                 </Grid.Row>
             </Grid>
