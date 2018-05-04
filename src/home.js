@@ -94,13 +94,13 @@ const boxOfficeTable = (data) => {
             style={{padding:0,paddingTop:'.1em',paddingBottom:'.1em', borderLeft: '.3em solid rgba(2, 199, 255, 0.1)'}}
             >
                 <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
-                {item.rating}
+                {item.criticRating + '%'}
                 </Grid.Column>
                 <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}>
                 {item.title}
                 </Grid.Column>
                 <Grid.Column style={{padding:0, paddingRight:'.5em'}} >
-                {item.sales}
+                {item.boxOffice}
                 </Grid.Column>
             </Grid.Row>
         )
@@ -154,31 +154,39 @@ class Home extends Component {
         movieInfo: {},
         renderMoviesComingSoon: false,
         renderMoviesUpcoming: false,
+        renderTopBoxOffice: false,
     }
 
     componentDidMount(){
         axios.get(`http://localhost:8080/api/moviesopeningthisweek`)
-            .then(res => {
-                console.log('this week', res)
+        .then(res => {
+            if(res.data.length){
                 const moviesComingSoon = movieScroll(res.data);
                 this.setState({ moviesComingSoon, renderMoviesComingSoon: true });
-            })
+            }
+        })
         axios.get(`http://localhost:8080/api/comingsoontotheaters`)
             .then(res => {
-            console.log('coming to theaters', res)
-            const moviesUpcoming = movieScroll(res.data);
-            this.setState({ moviesUpcoming, renderMoviesUpcoming: true });
+            if(res.data.length){
+                const moviesUpcoming = movieScroll(res.data);
+                this.setState({ moviesUpcoming, renderMoviesUpcoming: true });
+            }
+            
         })
         axios.get(`http://localhost:8080/api/featuredmovie`)
             .then(res => {
             console.log('featured', res)
         })
+        axios.get(`http://localhost:8080/api/topboxoffice`)
+            .then(res => {
+                if(res.data.length){
+                    const topBoxOffice = boxOfficeTable(res.data);
+                    this.setState({topBoxOffice, renderTopBoxOffice: true})
+                }
+        })
     }
 
     render(){
-            if(!this.state.renderMoviesComingSoon || !this.state.renderMoviesUpcoming){ 
-                return(<div />)
-            }
             return(
             <div>
                 <Container  style={{backgroundColor:'black', color:'white', padding:'', marginTop:'-1em'}}>
@@ -203,7 +211,7 @@ class Home extends Component {
                             {(this.state.renderMoviesComingSoon)? <MediaList scroll nameHeader={<div>Upcoming<span style={{color:'white'}}>movies</span></div>} displayInfo={this.state.moviesComingSoon} numShow={5}/> : <div />}
                         </Grid.Column>
                         <Grid.Column width={6}>
-                            <MediaTable gridSize={12} displayInfo={boxOfficeTable(tableList)} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/>
+                            {(this.state.renderTopBoxOffice)? <MediaTable gridSize={12} displayInfo={this.state.topBoxOffice} numShow={6} nameHeader={<div>Top box<span style={{color:'white'}}>office</span></div>}/> : <div />}
                             <MediaTable gridSize={12} displayInfo={officeTable(tableList)} numShow={6} nameHeader={<div>New tv<span style={{color:'white'}}>tonight</span></div>}/>
                         </Grid.Column>
                     </Grid>

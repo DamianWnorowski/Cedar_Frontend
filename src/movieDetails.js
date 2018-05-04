@@ -21,6 +21,7 @@ import {
 const MOVIES = constants.MOVIES;
 const imgUrl = constants.IMGURL;
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
+const users2 = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'ell1iot4', 'helen3', 'chr1is', 'chri2stian', 'dani3l', 'elliot4', 'he5len', 'chri6stian2', 'dani7el3', 'e13liot4', 'he2len3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [
     ['Genre', 'genres'], 
@@ -43,6 +44,7 @@ const testMap = users.map(user =>
     </Grid.Column>
 );
 
+
 const actorMap = users.map(actor => 
     <Grid.Column  key={actor + "1"}>
         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
@@ -55,6 +57,27 @@ const actorMap = users.map(actor =>
         </Container>
     </Grid.Column>
 );
+
+const mediaReviews = (data) => {
+    const reviews = data.map(user => 
+        <Grid.Column  width={8}>
+            <Grid key={user + '1'} style={{backgroundColor: 'rgba(2, 199, 255, 0.1)',padding:'0',paddingBottom:'.5em', marginTop:'1.0em',marginRight:'.0em',marginLeft:'0em', borderRight: '.3em solid rgba(2, 199, 255, 0.5)', borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',borderLeft: '.3em solid rgba(2, 199, 255, 0.5)', borderTop: '.3em solid rgba(2, 199, 255, 0.5)'}}>
+                <Grid.Column width={4}>
+                    <Image 
+                        fluid
+                        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
+                    /> 
+                </Grid.Column>
+                <Grid.Column width={12}   >
+                <div style={{marginLeft:'-1.0em',padding:0, paddingBottom:'0.2em', fontSize:'1.2em'}}>Damian Wnorowski</div>
+                <div style={{marginLeft:'-1.5em', borderLeft: '.3em solid rgba(2, 199, 255, 0.2)',  borderTop: '.3em solid rgba(2, 199, 255, 0.2)'}}>
+                <p style={{paddingLeft:'0.5em'}}>This is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test review</p>
+                </div></Grid.Column>
+            </Grid>
+        </Grid.Column>
+    );
+    return reviews;
+}
 
 const movieStats = (movieInfo) =>  movieTest.map(text => 
     <Container key={text} style={{paddingTop:'.1em'}}>
@@ -110,6 +133,7 @@ class MovieDetails extends Component {
         axios.get(`http://localhost:8080/movie?id=` + params.movieId )
           .then(res => {
                 const movieInfo = res.data;
+                console.log('movie:', movieInfo)
                 movieInfo.written = movieInfo['writer'].name;
                 movieInfo.directed = movieInfo['director'].name;
                 this.setState({ movieInfo });
@@ -193,9 +217,12 @@ class MovieDetails extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
+
                     
                     <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/>
                     <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
+                    <MediaList nameHeader={'Reviews'} displayInfo={mediaReviews(users)} numShow={4}/>
+                    
                 </Container>
             </div>
         )
