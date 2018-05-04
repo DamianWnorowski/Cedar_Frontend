@@ -16,9 +16,9 @@ const triggerLogin = (username) => (
   )
 
 const options = [
-    { key: 'user', text: 'Account', value: 1},
-    { key: 'settings', text: 'Settings', value: 2},
-    { key: 'logout', text: 'Sign Out', value: 3},
+    { key: 'user', text: 'Account', value: 'user'},
+    { key: 'settings', text: 'Settings', value: 'settings'},
+    { key: 'logout', text: 'Sign Out', value: 'logout'},
 ]
 
 class Nav extends Component {
@@ -41,17 +41,22 @@ class Nav extends Component {
     }
 
     loginMenu = (e, data) => {
-        console.log(e.target, "--", data)
-        console.log(e.value)
-        if(e.target == 'logout') console.log('logut')
-
-        axios.get(`http://localhost:8080/logout`)
-                .then((result) => {
+        console.log(data.value)
+        if(data.value == 'logout'){
+            axios.get(`http://localhost:8080/logout`)
+                .then((err, result) => {
                     console.log(result);
-        })
-                .catch((error) => {
-                    console.log(error);
-        });    
+            })  
+        }
+        if(data.value == 'settings'){
+            this.setState({loginValue:'settings'});
+            
+        }
+        if(data.value == 'user'){
+            this.setState({loginValue:'user'});
+            
+        }
+          
     }
         
     
@@ -108,6 +113,9 @@ class Nav extends Component {
           .then(res => {
                 console.log('search results: ', res.data)
           })
+    }
+    componentDidMount(){
+        
     }
     
     render() {
