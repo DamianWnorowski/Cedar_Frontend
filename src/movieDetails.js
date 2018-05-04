@@ -134,8 +134,8 @@ class MovieDetails extends Component {
           .then(res => {
                 const movieInfo = res.data;
                 console.log('movie:', movieInfo)
-                movieInfo.written = movieInfo['writer'].name;
-                movieInfo.directed = movieInfo['director'].name;
+                if(movieInfo['writer']) movieInfo.written = movieInfo['writer'].name;
+                if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
                 this.setState({ movieInfo });
           })
       }

@@ -31,6 +31,7 @@ class App extends Component {
             <Route exact path="/profile" component={Profile}/>
             <Route exact path='/celebrity' component={CelebrityDetails} />
             <Route exact path='/search/:search' component={searchPage} />
+            {/* <Route exact path='/verified' component={} /> */}
           </Switch>
           <Footer />
         </div>

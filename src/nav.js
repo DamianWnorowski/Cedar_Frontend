@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import decode from 'jwt-decode';
+import AuthService from './auth.js'
 import { Link } from 'react-router-dom';
 
 import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
@@ -24,7 +26,7 @@ const options = [
 class Nav extends Component {
     constructor(props){
         super(props)
-
+        
         this.state = { 
             activeItem: 'home',
             id: '',
@@ -40,23 +42,12 @@ class Nav extends Component {
         this.setState({ activeItem: name })
     }
 
+
     loginMenu = (e, data) => {
-        console.log(data.value)
-        if(data.value == 'logout'){
-            axios.get(`http://localhost:8080/logout`)
-                .then((err, result) => {
-                    console.log(result);
-            })  
-        }
-        if(data.value == 'settings'){
-            this.setState({loginValue:'settings'});
-            
-        }
-        if(data.value == 'user'){
-            this.setState({loginValue:'user'});
-            
-        }
-          
+        console.log('remove token')
+        localStorage.removeItem('jwtToken');
+        this.setState({name:'',login:false,id: '', firstName: '',lastName: '',password: '', email: ''})
+        
     }
         
     
@@ -89,7 +80,8 @@ class Nav extends Component {
                 const token = result.data.userToken
                 const name = result.data.userName
                 const blacklist = result.data.userBlacklist
-                this.setState({login:true, name, blacklist})
+                const login = true
+                this.setState({login, name, blacklist})
                 localStorage.setItem('jwtToken', token)
                 setAuthToken(token)
                 console.log(result.data);
@@ -115,6 +107,17 @@ class Nav extends Component {
           })
     }
     componentDidMount(){
+        try{
+            const decoded = decode(localStorage.getItem('jwtToken'));
+            if (decoded.exp > Date.now() / 1000) { 
+                this.setState({login:true, name:decoded.sub})
+                console.log(decoded)
+            }
+            else
+                console.log('no token')
+        }catch(err) {
+            console.log('reading token error')
+        }
         
     }
     
@@ -143,9 +146,28 @@ class Nav extends Component {
                 <Grid.Column width={1} style={{paddingLeft:0,paddingTop:5, marginLeft:'-3.5em'}}>
                     <Link to={'/search/' + this.state.search}  ><Icon inverted name='search' color='blue' circular link onClick={this.onSearch}/></Link>
                 </Grid.Column>
-                <Grid.Column width={3}>
+                <Grid.Column width={2} style={{backgroundColor:'black'}}>
                     {(this.state.login)? 
-                        <Dropdown style={{paddingTop:'.5em'}} trigger={triggerLogin(this.state.name)} options={options} onChange={this.loginMenu} />
+                        // <Dropdown style={{paddingTop:'.5em', backgroundColor:'black'}} trigger={triggerLogin(this.state.name)} 
+                        // options={[
+                        //     { key: 'account', text: 'Account', value: 'account', content:<Link  to={'/profile/' + this.state.name}  >Account</Link>},
+                        //     { key: 'settings', text: 'Setting', value: 'settings', content:<Link  to={'/settings'}>Settings</Link>},
+                        //     { key: 'logout', text: 'Logout', value: 'logout', content:<Link to={'/logout'} >Logout</Link>}
+                        // ]}
+                        // onChange={this.loginMenu} />
+                        <Popup
+                            inverted
+                            on='click'
+                            trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name={this.state.name}/>}
+                            flowing
+                            hoverable
+                        >
+                            <Menu inverted compact  vertical style={{padding:0}}>
+                                <Menu.Item as={ Link } to={'/profile/' + this.state.name } name='Account'    />
+                                <Menu.Item as={ Link } to='/settings' name='Settings'   />
+                                <Menu.Item as={ Link } to='/' name='logout' onClick={this.loginMenu}/>
+                            </Menu>
+                        </Popup>
                     :
                         <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                             <Popup
