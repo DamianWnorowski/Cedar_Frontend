@@ -16,9 +16,9 @@ const triggerLogin = (username) => (
   )
 
 const options = [
-    { key: 'user', text: 'Account', icon: 'user' },
-    { key: 'settings', text: 'Settings', icon: 'settings' },
-    { key: 'sign-out', text: 'Sign Out', icon: 'sign out' },
+    { key: 'user', text: 'Account', value: 1},
+    { key: 'settings', text: 'Settings', value: 2},
+    { key: 'logout', text: 'Sign Out', value: 3},
 ]
 
 class Nav extends Component {
@@ -39,10 +39,24 @@ class Nav extends Component {
     handleItemClick = (e, { name }) => {
         this.setState({ activeItem: name })
     }
+
+    loginMenu = (e, data) => {
+        console.log(e.target, "--", data)
+        console.log(e.value)
+        if(e.target == 'logout') console.log('logut')
+
+        axios.get(`http://localhost:8080/logout`)
+                .then((result) => {
+                    console.log(result);
+        })
+                .catch((error) => {
+                    console.log(error);
+        });    
+    }
         
     
     // onChange will modify the state based on the name of the input
-    onChange = (e) => {
+    onChange = (e, dta) => {
         const state = this.state;
         state[e.target.name] = e.target.value;
         this.setState(state);
@@ -123,7 +137,7 @@ class Nav extends Component {
                 </Grid.Column>
                 <Grid.Column width={3}>
                     {(this.state.login)? 
-                        <Dropdown style={{paddingTop:'.5em'}} trigger={triggerLogin(this.state.name)} options={options} />
+                        <Dropdown style={{paddingTop:'.5em'}} trigger={triggerLogin(this.state.name)} options={options} onChange={this.loginMenu} />
                     :
                         <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                             <Popup
