@@ -68,9 +68,9 @@ class Nav extends Component {
         axios.post(`http://localhost:8080/login`, {email, password})
             .then((result) => {
                 const token = result.data.userToken
-                const email = result.data.userEmail
+                const name = result.data.userName
                 const blacklist = result.data.userBlacklist
-                this.setState({login:true, email, blacklist})
+                this.setState({login:true, name, blacklist})
                 localStorage.setItem('jwtToken', token)
                 setAuthToken(token)
                 console.log(result.data);
@@ -123,7 +123,7 @@ class Nav extends Component {
                 </Grid.Column>
                 <Grid.Column width={3}>
                     {(this.state.login)? 
-                        <Dropdown style={{paddingTop:'.5em'}} trigger={triggerLogin(this.state.email)} options={options} />
+                        <Dropdown style={{paddingTop:'.5em'}} trigger={triggerLogin(this.state.name)} options={options} />
                     :
                         <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                             <Popup
