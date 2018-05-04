@@ -9,18 +9,6 @@ import setAuthToken from './setAuthToken'
 const home = 'home';
 const browse = 'browse';
 
-//(function() {
-//     token = store.getState().session.token;
-//     if (token) {
-//         axios.defaults.headers.common['Authorization'] = token;
-//     } else {
-//         axios.defaults.headers.common['Authorization'] = null;
-//         /*if setting null does not remove `Authorization` header then try     
-//           delete axios.defaults.headers.common['Authorization'];
-//         */
-//     }
-//})();
-
 class Nav extends Component {
     constructor(props){
         super(props)
@@ -36,13 +24,6 @@ class Nav extends Component {
         }
     }
     
-    // isActive = (e) => {
-    //     console.log(e)
-    //     this.setState({
-            
-    //     })
-
-    // }
     handleItemClick = (e, { name }) => {
         this.setState({ activeItem: name })
     }
@@ -75,7 +56,9 @@ class Nav extends Component {
         axios.post(`http://localhost:8080/login`, {email, password})
                 .then((result) => {
                     this.setState({login:true})
-                    const token = result.data
+                    const token = result.data.userToken
+                    const email = result.data.userEmail
+                    const blacklist = result.data.userBlacklist
                     localStorage.setItem('jwtToken', token)
                     setAuthToken(token)
                     console.log(result.data);
