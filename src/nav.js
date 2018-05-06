@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
-import {  Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
+import {  Grid,  Input, Container, Menu, Header, Popup, Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
 import axios from 'axios';
 import setAuthToken from './setAuthToken'
 
@@ -45,7 +45,7 @@ class Nav extends Component {
         const email = this.state.email;
         this.setState({forgotPassword:false})
             console.log("forgotpassword: ", email)
-            axios.get('http://localhost:8080/forgot?email' +  email )
+            axios.get('http://localhost:8080/forgot?email=' +  email )
         .then((response) => {
             console.log('res',response)
         })
