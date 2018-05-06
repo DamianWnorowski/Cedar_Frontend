@@ -43,8 +43,9 @@ class Nav extends Component {
     }
     forgotPasswordSubmit = (e) => {
         const email = this.state.email;
+        this.setState({forgotPassword:false})
             console.log("forgotpassword: ", email)
-            axios.post('http://localhost:8080/forgot',  {email} )
+            axios.get('http://localhost:8080/forgot?email' +  email )
         .then((response) => {
             console.log('res',response)
         })

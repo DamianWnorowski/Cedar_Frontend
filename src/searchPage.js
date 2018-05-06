@@ -59,6 +59,7 @@ class SearchPage extends Component {
 
         this.state = {
             search: {},
+            movies: [],
         }
     }
 
@@ -68,7 +69,9 @@ class SearchPage extends Component {
         axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
                 console.log('search results: ', res.data)
-                this.state.results = movieMap(res.data.movies);
+                if(res.data.movies) this.setState({movies: movieMap(res.data.movies)});
+                // if(res.data.tvshows) this.state.tvshows = movieMap(res.data.tvshows);
+                // if(res.data.celebrities) this.state.celebrities = movieMap(res.data.celebrities);
         })
     }
    
@@ -100,7 +103,7 @@ class SearchPage extends Component {
                     </Grid.Column>
                     <Grid.Column width={13}>
                         <Grid>
-                            {this.state.results}
+                            {this.state.movies}
                         </Grid>
                     </Grid.Column>
                     
