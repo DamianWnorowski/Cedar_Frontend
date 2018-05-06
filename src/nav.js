@@ -22,6 +22,7 @@ class Nav extends Component {
             password: '',
             email: '',
             login: false,
+            forgotPassword: false,
         }
     }
     
@@ -37,8 +38,19 @@ class Nav extends Component {
         
     }
 
-    forgotPassword = (e,data) => {
-        console.log(data)
+    forgotPassword = (e) => {
+        this.setState({forgotPassword: true})
+    }
+    forgotPasswordSubmit = (e) => {
+        const email = this.state.email;
+            console.log("forgotpassword: ", email)
+            axios.post('http://localhost:8080/forgot',  {email} )
+        .then((response) => {
+            console.log('res',response)
+        })
+        .catch((error) => {
+            console.log('err', error.status)
+        });
     }
         
     
@@ -153,23 +165,24 @@ class Nav extends Component {
                             </Menu>
                         </Popup>
                     :
+                        
                         <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                             <Popup
                                 inverted
                                 on='click'
                                 trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Login'/>}
                                 flowing
-                                hoverable
                             >
+                                
                                 <Segment inverted style={{width:'200px'}}>
                                     <Form 
                                         inverted 
-                                        onSubmit={this.handleLoginSubmit}
+                                        onSubmit={(this.state.forgotPassword)? this.forgotPasswordSubmit : this.handleLoginSubmit}
                                     >
                                     <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
-                                    <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
-                                        <Button type='submit'>Login</Button>
-                                        <div style={{paddingTop:'.5em'}}><a style={{cursor:'pointer', }} onClick={this.forgotPassword}>Forgot Password</a></div>
+                                    {(this.state.forgotPassword)? null : <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>}
+                                        <Button type='submit'>{(this.state.forgotPassword)? 'Forgot Password' : 'Login'}</Button>
+                                        <div><a style={{cursor:'pointer' }} onClick={this.forgotPassword}>{(this.state.forgotPassword)? ' ' : 'Forgot Password' }</a></div>
                                     
                                     </Form>
                                 </Segment>
