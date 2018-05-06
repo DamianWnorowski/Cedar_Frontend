@@ -128,17 +128,17 @@ class MovieDetails extends Component {
         // })
     }
   
-      componentDidMount() {
+    componentDidMount() {
         const { match: { params } } = this.props;
         axios.get(`http://localhost:8080/movie?id=` + params.movieId )
-          .then(res => {
-                const movieInfo = res.data;
-                console.log('movie:', movieInfo)
-                if(movieInfo['writer']) movieInfo.written = movieInfo['writer'].name;
-                if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
-                this.setState({ movieInfo });
-          })
-      }
+        .then(res => {
+            const movieInfo = res.data;
+            console.log('movie:', movieInfo)
+            if(movieInfo['writer']) movieInfo.written = movieInfo['writer'].name;
+            if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
+            this.setState({ movieInfo });
+        })
+    }
 
     render() {
         const movieInfo = this.state.movieInfo   

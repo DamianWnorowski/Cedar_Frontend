@@ -68,7 +68,7 @@ class SearchPage extends Component {
         axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
                 console.log('search results: ', res.data)
-                this.state.results = movieMap(res.data);
+                this.state.results = movieMap(res.data.movies);
         })
     }
    
@@ -96,7 +96,6 @@ class SearchPage extends Component {
                             <List.Item >Horror</List.Item>
                         </List.Item>
                     </List>
-
                     
                     </Grid.Column>
                     <Grid.Column width={13}>

@@ -28,7 +28,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/movie/:movieId" component={MovieDetails} />
             <Route exact path="/browse" component={Browse} />
-            <Route exact path="/profile" component={Profile}/>
+            <Route exact path="/profile/:userId" component={Profile}/>
             <Route exact path='/celebrity' component={CelebrityDetails} />
             <Route exact path='/search/:search' component={searchPage} />
             {/* <Route exact path='/verified' component={} /> */}

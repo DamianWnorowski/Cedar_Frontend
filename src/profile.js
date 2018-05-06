@@ -4,6 +4,7 @@ import axios from 'axios'
 import TopBoxOffice from './topBoxOffice.js'
 import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
+import EmptyList from './emptyList.js'
 // import GradientSVG from './gradientSVG.js'
 import MediaTable from './mediaTable.js'
 // import CircularProgressbar from 'react-circular-progressbar'
@@ -20,33 +21,30 @@ import {
     Header,   
 } from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
-const user = [['Email','JennD@gmail.com'], 
-    ['Birthday', 'December 18, 1990'],
-    ['Phone', '(123) 456-7890'], 
-    ['Blocked Movies', 'Edit List'],
-    ['Password', 'Change Password'],
-    ['About', 'I love to watch movies']]
 
-const userInfo = user.map(item => 
-    <div>
-        <Breadcrumb>
-            <Breadcrumb.Section >
-                <p style={{color:'#02c7ff', marginLeft:'2em'}}>{item[0]}</p>
-            </Breadcrumb.Section>
-            <Breadcrumb.Divider 
-                icon={<Icon color='grey' name='right chevron' />} 
-            />
-            <Breadcrumb.Section  link>
-                <p style={{color:'white'}}>{item[1]}</p>
-            </Breadcrumb.Section>
-        </Breadcrumb>
-    </div>
-);
+const userInfoList = (userInfo) => {
+    const user = [
+    ['Profile Views', userInfo.profileViews]]
 
-
+    return user.map(item => 
+        <div>
+            <Breadcrumb>
+                <Breadcrumb.Section >
+                    <p style={{color:'#02c7ff', marginLeft:'2em'}}>{item[0]}</p>
+                </Breadcrumb.Section>
+                <Breadcrumb.Divider 
+                    icon={<Icon color='grey' name='right chevron' />} 
+                />
+                <Breadcrumb.Section >
+                    <p style={{color:'white'}}>{item[1]}</p>
+                </Breadcrumb.Section>
+            </Breadcrumb>
+        </div>
+    );
+}
 const movieInfo = constants.MOVIES;
 
-const movieTest = movieInfo.map(movies => 
+const moviesDisplay = (moviesInfo) => moviesInfo.map(movies => 
     <Grid.Column key={movies.title + "1"}>
         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
         <Image 
@@ -63,45 +61,62 @@ class Profile extends Component {
         super(props)
 
         this.state = {  
-            
+            userInfo: [],
+            isUser: false,
+
         }
     }
 
-    h
+
+
+    componentDidMount() {
+        const { match: { params } } = this.props;
+        axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
+        .then(res => {
+            const userInfo = res.data;
+            console.log('movie:', userInfo)
+            this.setState({ userInfo });
+        })
+    }
 
     render(){
+        const user = this.state.userInfo;
+        if(!user){
+            console.log('no user')
+            return <div/>
+        }
+        if(user.movieWatchlist) console.log('moviewatch')
         return (
             <div>
             <Container  style={{paddingBottom:'1em'}} >
             </Container>
             <Container style={{backgroundColor:'black', color:'white', paddingRight:'1em'}}>
             <Grid style={{paddingLeft:'1em'}}>
-                <Grid.Row>
-                <Grid.Column width={4}>
+                    <Grid.Column width={4}>
+                <Grid.Column width={16}>
                     <Image 
                         fluid
                         src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
                     />
                 </Grid.Column>
-                <Grid.Column width={12} style={{paddingTop:'2em', paddingBottom:'1em',}}>
+                <Grid.Column width={16} style={{paddingTop:'.5em', paddingBottom:'1em',}}>
                     <Breadcrumb>
-                        <Breadcrumb.Section style={{borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', marginLeft:'-2em'}}>
-                            <Header style={{color:'#02c7ff', marginLeft:'2em'}}>Jennifer Demox</Header>
+                        <Breadcrumb.Section style={{borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', marginLeft:'-1em'}}>
+                            <Header style={{color:'#02c7ff', marginLeft:'1em'}}>{user.name}</Header>
                         </Breadcrumb.Section>
                         <Breadcrumb.Divider 
                             icon={<Icon color='grey' name='right chevron' />} 
                         />
                         <Breadcrumb.Section  link>
-                            <p style={{}}>edit</p>
+                            <p style={{}}>Manage Account</p>
                         </Breadcrumb.Section>
                     </Breadcrumb>
-                    {userInfo}
+                    {userInfoList(user)}
                         
-                </Grid.Column>
-                </Grid.Row>
-                <Grid.Column width={14} style={{paddingLeft:'2em', paddingTop:'0'}}>
-                    <MediaList nameHeader={'Want to See Movies'} displayInfo={movieTest} numShow={6}/>
-                    <MediaList nameHeader={'Rated Movies'} displayInfo={movieTest} numShow={6}/>
+                </Grid.Column></Grid.Column>
+                <Grid.Column width={12} style={{paddingLeft:'2em', paddingTop:'0'}}>
+                    {(user.movieWatchlist)? <MediaList nameHeader={'Want to See Movies'} displayInfo={moviesDisplay(user.movieWatchlist)} numShow={6}/> : <EmptyList nameHeader={'Want to See Movies'} text={'Currently no wanted movies to see'} />}
+                    {(user.televisionWatchList)? <MediaList nameHeader={'Want to See TV Shows'} displayInfo={user.televisionWatchList} numShow={6}/> : <EmptyList nameHeader={'Want to See TV Shows'} text={'Currently no wanted tv shows to see'} />}
                 </Grid.Column>
             </Grid>
              

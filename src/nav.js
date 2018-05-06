@@ -2,25 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
-
-import { Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
+import {  Grid,  Input, Container, Menu, Header,Popup,  Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
 import axios from 'axios';
 import setAuthToken from './setAuthToken'
 
 const home = 'home';
 const browse = 'browse';
 
-const triggerLogin = (username) => (
-    <span style={{ fontSize:'1.3em'}}>
-     Hello , {username}
-    </span>
-  )
-
-const options = [
-    { key: 'user', text: 'Account', value: 'user'},
-    { key: 'settings', text: 'Settings', value: 'settings'},
-    { key: 'logout', text: 'Sign Out', value: 'logout'},
-]
 
 class Nav extends Component {
     constructor(props){
@@ -47,6 +35,10 @@ class Nav extends Component {
         localStorage.removeItem('jwtToken');
         this.setState({name:'',login:false,id: '', firstName: '',lastName: '',password: '', email: ''})
         
+    }
+
+    forgotPassword = (e,data) => {
+        console.log(data)
     }
         
     
@@ -147,13 +139,6 @@ class Nav extends Component {
                 </Grid.Column>
                 <Grid.Column width={2} style={{backgroundColor:'black'}}>
                     {(this.state.login)? 
-                        // <Dropdown style={{paddingTop:'.5em', backgroundColor:'black'}} trigger={triggerLogin(this.state.name)} 
-                        // options={[
-                        //     { key: 'account', text: 'Account', value: 'account', content:<Link  to={'/profile/' + this.state.name}  >Account</Link>},
-                        //     { key: 'settings', text: 'Setting', value: 'settings', content:<Link  to={'/settings'}>Settings</Link>},
-                        //     { key: 'logout', text: 'Logout', value: 'logout', content:<Link to={'/logout'} >Logout</Link>}
-                        // ]}
-                        // onChange={this.loginMenu} />
                         <Popup
                             inverted
                             on='click'
@@ -183,7 +168,9 @@ class Nav extends Component {
                                     >
                                     <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
                                     <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
-                                    <Button type='submit'>Login</Button>
+                                        <Button type='submit'>Login</Button>
+                                        <div style={{paddingTop:'.5em'}}><a style={{cursor:'pointer', }} onClick={this.forgotPassword}>Forgot Password</a></div>
+                                    
                                     </Form>
                                 </Segment>
                             </Popup>
@@ -209,7 +196,6 @@ class Nav extends Component {
                                 </Segment>
                             </Popup>
                         </Menu>
-
                     }
                 </Grid.Column>
                 </Grid.Row>

@@ -94,14 +94,10 @@ class MediaList extends Component{
                             <Breadcrumb.Section style={{borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', marginLeft:'-2em'}}>
                                 <Header style={{color:'#02c7ff', marginLeft:'2em'}}>{this.state.nameHeader}</Header>
                             </Breadcrumb.Section>
-                            
-                            
                         </Breadcrumb>
                     </Container>
                     <Grid doubling columns={this.state.numShow} style={{position: 'relative',borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
-                    
                     {this.state.items}
-                    
                     <div>
                     <div style={{left: '10px', position: 'absolute', top: '50%',transform: 'translate(-50%, -50%)'}}>
                     {(this.state.scrollStart === 0) ? null :
@@ -128,11 +124,7 @@ class MediaList extends Component{
                     }
                     </div>
                     </div>
-                    
                     </Grid>
-                    {/* <div style={{position: 'absolute', top:0, left:0}}>
-                    </div> */}
-                    
                     </div>
             )
         }else{
