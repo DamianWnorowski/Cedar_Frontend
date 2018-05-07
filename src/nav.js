@@ -201,7 +201,6 @@ class Nav extends Component {
                                 on='click'
                                 trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Signup'/>}
                                 flowing
-                                hoverable
                             >
                                 <Segment inverted >
                                     <Form 
