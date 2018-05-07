@@ -12,7 +12,9 @@ import MediaTable from './mediaTable.js'
 import { 
     Grid, 
     Image,  
-    Container,  
+    Container, 
+    Button, 
+    Modal,
     Header,   
 } from 'semantic-ui-react'
 const MOVIES = constants.MOVIES;
@@ -149,16 +151,24 @@ const movieScroll = (movieInfo) =>  {
 
 
 class Home extends Component {
-    
-    state = {
-        movieInfo: {},
-        renderMoviesComingSoon: false,
-        renderMoviesUpcoming: false,
-        renderTopBoxOffice: false,
+    constructor(props){
+        super(props);
+
+        this.state = {
+            movieInfo: {},
+            renderMoviesComingSoon: false,
+            renderMoviesUpcoming: false,
+            renderTopBoxOffice: false,
+            verified: false,
+        }
     }
+    
 
     componentDidMount(){
-        
+        console.log(this.props)
+        if(this.props.verified){
+            this.setState({verified: true})
+        }
         axios.get(`http://localhost:8080/api/moviesopeningthisweek`)
         .then(res => {
             if(res.data.length){
@@ -187,9 +197,21 @@ class Home extends Component {
         })
     }
 
+    handleVerified = (e) => {
+        this.setState({verified: false})
+    }
+
     render(){
             return(
             <div>
+                <Modal closeIcon size='small' open={this.state.verified} onClose={this.handleVerified} >
+                    <Modal.Header>Congratulations, Welcome to Cedar!</Modal.Header>
+                    <Modal.Content>
+                    <Modal.Description>
+                        <Header>Your account is now verified, please log in.</Header>
+                    </Modal.Description>
+                    </Modal.Content>
+                </Modal>
                 <Container  style={{backgroundColor:'black', color:'white', padding:'', marginTop:'-1em'}}>
                         <Image  fluid src={'https://wallpapersite.com/images/pages/pic_w/6573.jpg'} />
                     <Grid style={{}}>

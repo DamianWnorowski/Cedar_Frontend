@@ -4,6 +4,7 @@ import axios from 'axios'
 import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
 import GradientSVG from './gradientSVG.js'
+import EmptyList from './emptyList.js'
 import CircularProgressbar from 'react-circular-progressbar'
 import { 
     Grid, 
@@ -61,7 +62,7 @@ const actorMap = users.map(actor =>
 const mediaReviews = (data) => {
     const reviews = data.map(user => 
         <Grid.Column  width={8}>
-            <Grid key={user + '1'} style={{backgroundColor: 'rgba(2, 199, 255, 0.1)',padding:'0',paddingBottom:'.5em', marginTop:'1.0em',marginRight:'.0em',marginLeft:'0em', borderRight: '.3em solid rgba(2, 199, 255, 0.5)', borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',borderLeft: '.3em solid rgba(2, 199, 255, 0.5)', borderTop: '.3em solid rgba(2, 199, 255, 0.5)'}}>
+            <Grid key={user.review_id} style={{backgroundColor: 'rgba(2, 199, 255, 0.1)',padding:'0',paddingBottom:'.5em', marginTop:'1.0em',marginRight:'.0em',marginLeft:'0em', borderRight: '.3em solid rgba(2, 199, 255, 0.5)', borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',borderLeft: '.3em solid rgba(2, 199, 255, 0.5)', borderTop: '.3em solid rgba(2, 199, 255, 0.5)'}}>
                 <Grid.Column width={4}>
                     <Image 
                         fluid
@@ -69,9 +70,9 @@ const mediaReviews = (data) => {
                     /> 
                 </Grid.Column>
                 <Grid.Column width={12}   >
-                <div style={{marginLeft:'-1.0em',padding:0, paddingBottom:'0.2em', fontSize:'1.2em'}}>Damian Wnorowski</div>
+                <div style={{marginLeft:'-1.0em',padding:0, paddingBottom:'0.2em', fontSize:'1.2em'}}>{user.author.name}</div>
                 <div style={{marginLeft:'-1.5em', borderLeft: '.3em solid rgba(2, 199, 255, 0.2)',  borderTop: '.3em solid rgba(2, 199, 255, 0.2)'}}>
-                <p style={{paddingLeft:'0.5em'}}>This is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test reviewhis is a test review</p>
+                <p style={{paddingLeft:'0.5em'}}>{user.body}</p>
                 </div></Grid.Column>
             </Grid>
         </Grid.Column>
@@ -118,14 +119,6 @@ class MovieDetails extends Component {
         .catch((error) => {
             console.log('err', error.status)
         });
-        // axios.post(`http://localhost:8080/api/ratecontent`, reviewForm,
-        // { 
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     }
-        // }).then(res => {
-        //     console.log('ratecontent', res)
-        // })
     }
   
     componentDidMount() {
@@ -142,6 +135,9 @@ class MovieDetails extends Component {
 
     render() {
         const movieInfo = this.state.movieInfo   
+        if(movieInfo.userReview){
+            console.log('userreiview', movieInfo.userReview.length)
+        }
         return (
             <div>
                 <Container  style={{ marginTop: '6em'}}>
@@ -221,7 +217,8 @@ class MovieDetails extends Component {
                     
                     <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/>
                     <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
-                    <MediaList nameHeader={'Reviews'} displayInfo={mediaReviews(users)} numShow={4}/>
+                    {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
+                    {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}
                     
                 </Container>
             </div>

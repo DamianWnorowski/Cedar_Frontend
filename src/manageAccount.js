@@ -100,6 +100,14 @@ class ManageAccount extends Component {
                 })
             }
         }
+        else if(this.state.change == 'DELETE' && this.state.DELETE == 'DELETE'){
+            
+            axios.post('http://localhost:8080/api/deleteaccount?id=' + this.state.userInfo.id)
+            .then(res => {
+                const userInfo = res.data;
+                console.log('movie:', userInfo)
+            })
+        }
     }
 
 
@@ -154,7 +162,8 @@ class ManageAccount extends Component {
                                 <Form onSubmit={this.handleChange} style={{paddingLeft:'3em'}}> 
                                     <Form.Input name='newemail' placeholder='Email' onChange={this.onChange} />
                                     <Form.Input name='renewemail' placeholder='Re-enter Email' onChange={this.onChange} />
-                                    <Button color='blue' size='small' type='submit'>Submit</Button>
+                                    <Button disabled={(this.state.newemail && this.state.newemail == this.state.renewemail)? false : true} color='blue' size='small' type='submit'>Submit</Button>
+                                    <Button color='blue' name='cancel' size='small' onClick={this.editInfo}>Cancel</Button>
                                 </Form>
                             :
                             <Breadcrumb.Section link name='email' onClick={this.editInfo}>
@@ -173,10 +182,11 @@ class ManageAccount extends Component {
                             />
                             {(this.state.change == 'password')? 
                                 <Form onSubmit={this.handleChange} style={{paddingLeft:'3em'}}> 
-                                    <Form.Input name='oldpassword' placeholder='Old Password' onChange={this.onChange} />
-                                    <Form.Input name='newpassword' placeholder='New Password' onChange={this.onChange} />
-                                    <Form.Input name='renewpassword' placeholder='Re-enter New Password' onChange={this.onChange} />
-                                    <Button color='blue' size='small' type='submit'>Submit</Button>
+                                    <Form.Input type='password' name='oldpassword' placeholder='Old Password' onChange={this.onChange} />
+                                    <Form.Input type='password' name='newpassword' placeholder='New Password' onChange={this.onChange} />
+                                    <Form.Input type='password' name='renewpassword' placeholder='Re-enter New Password' onChange={this.onChange} />
+                                    <Button disabled={(this.state.oldpassword && this.state.newpassword && this.state.newpassword == this.state.renewpassword)? false : true} color='blue' size='small' type='submit'>Submit</Button>
+                                    <Button color='blue' name='cancel' size='small' onClick={this.editInfo}>Cancel</Button>
                                 </Form>
                             :
                             <Breadcrumb.Section link name='password' onClick={this.editInfo}>
@@ -202,6 +212,27 @@ class ManageAccount extends Component {
                             :
                             <Breadcrumb.Section link name='blacklist' onClick={this.editInfo}>
                                 <p style={{color:'white'}}>Edit Blacklist</p>
+                            </Breadcrumb.Section>
+                            }
+                        </Breadcrumb>
+                    </div>
+                    <div>
+                        <Breadcrumb>
+                            <Breadcrumb.Section >
+                                <p style={{color:'#02c7ff', marginLeft:'2em'}}>Account</p>
+                            </Breadcrumb.Section>
+                            <Breadcrumb.Divider 
+                                icon={<Icon color='grey' name='right chevron' />} 
+                            />
+                            {(this.state.change == 'deleteAccount')? 
+                               <Form inverted onSubmit={this.handleChange} style={{paddingLeft:'3em'}}> 
+                                    <Form.Input label='Please enter "DELETE" to confirm deletion' name='DELETE' placeholder='DELETE' onChange={this.onChange} />
+                                    <Button disabled={(this.state.DELETE == 'DELETE')? false : true} color='blue' size='small' type='submit'>Delete</Button>
+                                    <Button color='blue' name='cancel' size='small' onClick={this.editInfo}>Cancel</Button>
+                                </Form>
+                            :
+                            <Breadcrumb.Section link name='deleteAccount' onClick={this.editInfo}>
+                                <p style={{color:'white'}}>Permantly Delete Account</p>
                             </Breadcrumb.Section>
                             }
                         </Breadcrumb>
