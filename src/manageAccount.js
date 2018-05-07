@@ -113,12 +113,12 @@ class ManageAccount extends Component {
 
     componentDidMount() {
         const { match: { params } } = this.props;
-        // axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
-        // .then(res => {
-        //     const userInfo = res.data;
-        //     console.log('movie:', userInfo)
-        //     this.setState({ userInfo });
-        // })
+        axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
+        .then(res => {
+            const userInfo = res.data;
+            console.log('movie:', userInfo)
+            this.setState({ userInfo });
+        })
     }
 
     render(){

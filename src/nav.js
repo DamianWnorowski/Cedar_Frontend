@@ -170,7 +170,7 @@ class Nav extends Component {
                         >
                             <Menu inverted compact  vertical style={{padding:0}}>
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Account'    />
-                                <Menu.Item as={ Link } to={'/settings'} name='Settings'   />
+                                <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/settings'} name='Settings'   />
                                 <Menu.Item as={ Link } to='/' name='logout' onClick={this.loginMenu}/>
                             </Menu>
                         </Popup>
