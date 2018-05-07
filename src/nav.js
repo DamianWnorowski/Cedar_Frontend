@@ -168,7 +168,6 @@ class Nav extends Component {
                             on='click'
                             trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name={this.state.name}/>}
                             flowing
-                            hoverable
                         >
                             <Menu inverted compact  vertical style={{padding:0}}>
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Profile'    />
