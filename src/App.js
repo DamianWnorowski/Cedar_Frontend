@@ -39,7 +39,6 @@ class App extends Component {
             <Route exact path='/aboutus/' component={AboutUs} />
             <Route exact path='/contactus/' component={ContactUs} />
             <Route exact path='/termsAndConditions/' component={TermsAndConditions} />
-            {/* <Route exact path='/verified' component={} /> */}
             <Route exact path='/profile/:userId/settings' component={ManageAccount} />
             <Route exact path='/resetpassword/:id/:token' component={ResetPassword} />
             <Route exact path='/verified' render={(props) => (<Home verified='verified' {...props}/>)}  />
