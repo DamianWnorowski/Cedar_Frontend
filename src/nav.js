@@ -85,9 +85,10 @@ class Nav extends Component {
             .then((result) => {
                 const token = result.data.userToken
                 const name = result.data.userName
+                const userId = result.data.userId
                 const blacklist = result.data.userBlacklist
                 const login = true
-                this.setState({login, name, blacklist})
+                this.setState({login, name, blacklist, userId})
                 localStorage.setItem('jwtToken', token)
                 setAuthToken(token)
                 console.log(result.data);
@@ -168,8 +169,8 @@ class Nav extends Component {
                             hoverable
                         >
                             <Menu inverted compact  vertical style={{padding:0}}>
-                                <Menu.Item as={ Link } to={'/profile/' + this.state.name } name='Account'    />
-                                <Menu.Item as={ Link } to='/settings' name='Settings'   />
+                                <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Account'    />
+                                <Menu.Item as={ Link } to={'/settings'} name='Settings'   />
                                 <Menu.Item as={ Link } to='/' name='logout' onClick={this.loginMenu}/>
                             </Menu>
                         </Popup>
