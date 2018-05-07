@@ -158,6 +158,7 @@ class Home extends Component {
     }
 
     componentDidMount(){
+        
         axios.get(`http://localhost:8080/api/moviesopeningthisweek`)
         .then(res => {
             if(res.data.length){

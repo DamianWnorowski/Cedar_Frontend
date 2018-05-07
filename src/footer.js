@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
+import twitter from './twitter.png'
+import facebook from './facebook.png'
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
 
 
@@ -13,10 +15,14 @@ const Footer = () =>{
         >
             <Container textAlign='center'>
             <List horizontal inverted divided link>
-                <List.Item as='a' href='#'>Site Map</List.Item>
-                <List.Item as='a' href='#'>Contact Us</List.Item>
-                <List.Item as='a' href='#'>Terms and Conditions</List.Item>
-                <List.Item as='a' href='#'>Privacy Policy</List.Item>
+                <List.Item as='a' href='contactus'>Contact Us</List.Item>
+                <List.Item as='a' href='termsandconditions'>Terms and Conditions</List.Item>
+                <List.Item as='a' href='/aboutus'>About Us</List.Item>
+                <List.Item as='a' href='https://twitter.com/GloriousCedars'><Image src={twitter}/></List.Item>
+                <List.Item as='a' href='https://www.facebook.com/gloriousteamcedar/'><Image src={facebook}/></List.Item>
+
+
+
             </List>
             </Container>
         </Segment>

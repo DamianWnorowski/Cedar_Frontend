@@ -58,7 +58,7 @@ class Nav extends Component {
         
     
     // onChange will modify the state based on the name of the input
-    onChange = (e, dta) => {
+    onChange = (e) => {
         const state = this.state;
         state[e.target.name] = e.target.value;
         this.setState(state);
@@ -95,7 +95,6 @@ class Nav extends Component {
             .catch((error) => {
                 console.log('err',error)
         });
-                        
     }
     
     onSearchText = (e) => {
