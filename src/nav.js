@@ -26,6 +26,8 @@ class Nav extends Component {
             recaptchaResponse: '',
             captchaVerified: false,
             loginError: false,
+            allowed: true,
+            fresh: true,
         }
     }
     
@@ -118,15 +120,31 @@ class Nav extends Component {
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));
             if (decoded.exp > Date.now() / 1000) { 
-                this.setState({login:true, name:decoded.sub})
+                this.setState({login:true, name:decoded.sub, fresh:true})
                 console.log(decoded)
             }
             else
                 console.log('no token')
         }catch(err) {
             console.log('reading token error')
+        }  
+    }
+    componentDidUpdate(){
+        console.log("COMPONENT DID UPDATE!!!!!!!!!!!")
+        if(this.state.fresh || this.state.login){
+            try{
+                const decoded = decode(localStorage.getItem('jwtToken'));
+                if (decoded.exp > Date.now() / 1000) { 
+                    this.setState({login:true, name:decoded.sub})
+                    console.log("decoded info" + decoded);
+                }
+                else
+                    console.log('no token');
+                    this.setState({login:false, name:"", fresh:false});
+            }catch(err) {
+                console.log('reading token error')
+            }
         }
-        
     }
     
     captchaOnChange = function (response) {

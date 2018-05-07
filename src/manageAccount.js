@@ -81,7 +81,7 @@ class ManageAccount extends Component {
         state[e.target.name] = e.target.value;
         this.setState(state);
     }
-    handleChange = (e) => {
+    handleChange = (e) => {    
         console.log('change:', this.state.change)
         if(this.state.change == 'email'){
             if(this.state.newemail && this.state.newemail == this.state.renewemail){
@@ -108,9 +108,10 @@ class ManageAccount extends Component {
             .then(res => {
                 localStorage.removeItem('jwtToken');
                 const userInfo = res.data;
-                console.log('delete:', userInfo)
-                this.props.history.push('/')
-                
+                console.log('delete:', userInfo);
+                console.log('removing token')
+                localStorage.removeItem('jwtToken');
+                this.props.history.push('/');
             })
         }
     }
@@ -245,7 +246,7 @@ class ManageAccount extends Component {
                             />
                             {(this.state.change == 'deleteAccount')? 
                                <Form inverted onSubmit={this.handleChange} style={{paddingLeft:'3em'}}> 
-                                    <Form.Input type='password' label='Please enter your password to delete your account' name='DELETE' placeholder='DELETE' onChange={this.onChange} />
+                                    <Form.Input type='password' label='Please enter your password to delete your account' name='DELETE' placeholder='password' onChange={this.onChange} />
                                     <Button disabled={(this.state.DELETE)? false : true} color='blue' size='small' type='submit'>Delete</Button>
                                     <Button color='blue' name='cancel' size='small' onClick={this.editInfo}>Cancel</Button>
                                 </Form>
