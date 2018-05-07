@@ -6,7 +6,6 @@ import * as constants from  './constants.js';
 import Home from './home.js';
 import Nav from './nav.js';
 import Footer from './footer.js';
-import VerifiedPage from './verifiedPage.js'
 import MediaTable from './mediaTable.js';
 import MovieDetails from './movieDetails.js';
 import Browse from './browse.js';
@@ -37,7 +36,7 @@ class App extends Component {
             <Route exact path='/celebrity' component={CelebrityDetails} />
             <Route exact path='/search/:search' component={searchPage} />
             <Route exact path='/aboutus/' component={AboutUs} />
-            <Route exact path='/aboutus/' component={TermsAndConditions} />
+            <Route exact path='/termsAndConditions/' component={TermsAndConditions} />
             {/* <Route exact path='/verified' component={} /> */}
             <Route exact path='/profile/:userId/settings' component={ManageAccount} />
             <Route exact path='/resetpassword/:id/:token' component={ResetPassword} />
