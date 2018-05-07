@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
+import decode from 'jwt-decode';
 import TopBoxOffice from './topBoxOffice.js'
 import * as constants from  './constants.js'
 import MediaList from './mediaList.js'
@@ -65,7 +66,7 @@ class ManageAccount extends Component {
 
         this.state = {  
             userInfo: [],
-            isUser: false,
+            login: false,
 
         }
     }
@@ -112,13 +113,27 @@ class ManageAccount extends Component {
 
 
     componentDidMount() {
-        const { match: { params } } = this.props;
-        axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
-        .then(res => {
-            const userInfo = res.data;
-            console.log('movie:', userInfo)
-            this.setState({ userInfo });
-        })
+        try{
+            const decoded = decode(localStorage.getItem('jwtToken'));
+            if (decoded.exp > Date.now() / 1000) { 
+                this.setState({login:true, name:decoded.sub})
+                console.log(decoded)
+                const { match: { params } } = this.props;
+                axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
+                .then(res => {
+                    const userInfo = res.data;
+                    console.log('movie:', userInfo)
+                    this.setState({ userInfo });
+                })
+            }
+            else
+                console.log('no token')
+        }catch(err) {
+            console.log('reading token error')
+        }
+
+
+        
     }
 
     render(){

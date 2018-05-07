@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import './App.css'
 import axios from 'axios'
 import TopBoxOffice from './topBoxOffice.js'
@@ -199,6 +199,7 @@ class Home extends Component {
 
     handleVerified = (e) => {
         this.setState({verified: false})
+        this.props.history.push('/')
     }
 
     render(){
