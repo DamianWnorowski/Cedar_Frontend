@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import {  Grid,  Input, Container, Menu, Header, Popup, Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
 import axios from 'axios';
 import setAuthToken from './setAuthToken'
+import Recaptcha from 'react-google-recaptcha';
 
 const home = 'home';
 const browse = 'browse';
-
 
 class Nav extends Component {
     constructor(props){
@@ -23,6 +23,8 @@ class Nav extends Component {
             email: '',
             login: false,
             forgotPassword: false,
+            recaptchaResponse: '',
+            captchaVerified: false
         }
     }
     
@@ -64,10 +66,10 @@ class Nav extends Component {
     
     handleRegisterSubmit = (e) => {
         e.preventDefault();
-        const {firstName, lastName, password, email} = this.state;
+        const {firstName, lastName, password, email, recaptchaResponse} = this.state;
        
         // TODO: DATA VERIFICATION (maybe in the onchange?)
-        axios.post(`http://localhost:8080/register`, {firstName, lastName, password, email})
+        axios.post(`http://localhost:8080/register`, {firstName, lastName, password, email, recaptchaResponse})
                 .then((result) => {
                     console.log(result);
         })
@@ -124,6 +126,13 @@ class Nav extends Component {
         }
         
     }
+    
+    captchaOnChange = function (response) {
+        this.setState({
+            'recaptchaResponse': response
+        });    
+        console.log(response)
+    };
     
     render() {
         const { activeItem } = this.state
@@ -205,6 +214,12 @@ class Nav extends Component {
                                         <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
                                         <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>
                                         <Form.Checkbox label='I agree to the Terms and Conditions' />
+                                        <Recaptcha
+                                            ref="recaptcha"
+                                            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                            onChange={this.captchaOnChange.bind(this)}
+                                            theme="dark"
+                                          />
                                         <Button type='submit'>Submit</Button>
                                     </Form>
                                 </Segment>
