@@ -101,12 +101,15 @@ class ManageAccount extends Component {
                 })
             }
         }
-        else if(this.state.change == 'DELETE' && this.state.DELETE == 'DELETE'){
+        else if(this.state.change == 'DELETE'){
             
-            axios.post('http://localhost:8080/api/deleteaccount?id=' + this.state.userInfo.id)
+            axios.post('http://localhost:8080/api/deleteaccount', {id: this.state.userInfo.id, password: this.state.DELETE})
             .then(res => {
+                localStorage.removeItem('jwtToken');
                 const userInfo = res.data;
-                console.log('movie:', userInfo)
+                console.log('delete:', userInfo)
+                this.props.history.push('/')
+                
             })
         }
     }
@@ -241,8 +244,8 @@ class ManageAccount extends Component {
                             />
                             {(this.state.change == 'deleteAccount')? 
                                <Form inverted onSubmit={this.handleChange} style={{paddingLeft:'3em'}}> 
-                                    <Form.Input label='Please enter "DELETE" to confirm deletion' name='DELETE' placeholder='DELETE' onChange={this.onChange} />
-                                    <Button disabled={(this.state.DELETE == 'DELETE')? false : true} color='blue' size='small' type='submit'>Delete</Button>
+                                    <Form.Input label='Please enter your password to delete your account' name='DELETE' placeholder='DELETE' onChange={this.onChange} />
+                                    <Button disabled={(this.state.DELETE)? false : true} color='blue' size='small' type='submit'>Delete</Button>
                                     <Button color='blue' name='cancel' size='small' onClick={this.editInfo}>Cancel</Button>
                                 </Form>
                             :
