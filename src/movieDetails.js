@@ -131,6 +131,15 @@ class MovieDetails extends Component {
             if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
             this.setState({ movieInfo });
         })
+
+        axios.get(`http://localhost:8080/getmyreviewforcurrentcontent?id=` + params.movieId )
+        .then(res => {
+            const movieInfo = res.data;
+            console.log('userreview:', movieInfo)
+            // if(movieInfo['writer']) movieInfo.written = movieInfo['writer'].name;
+            // if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
+            // this.setState({ movieInfo });
+        })
     }
 
     render() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
-import {  Grid,  Input, Container, Menu, Header, Popup, Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
+import {  Grid,  Input, Container, Label,  Menu, Header, Popup, Button , Form, Segment, Icon, Dropdown} from 'semantic-ui-react';
 import axios from 'axios';
 import setAuthToken from './setAuthToken'
 import Recaptcha from 'react-google-recaptcha';
@@ -24,7 +24,8 @@ class Nav extends Component {
             login: false,
             forgotPassword: false,
             recaptchaResponse: '',
-            captchaVerified: false
+            captchaVerified: false,
+            loginError: false,
         }
     }
     
@@ -33,10 +34,10 @@ class Nav extends Component {
     }
 
 
-    loginMenu = (e, data) => {
+    handleLogout = (e, data) => {
         console.log('remove token')
         localStorage.removeItem('jwtToken');
-        this.setState({name:'',login:false,id: '', firstName: '',lastName: '',password: '', email: ''})
+        this.setState({name:'',login:false,id: '', firstName: '',lastName: '',password: '', email: '', loginError: false, forgotPassword:false, captchaVerified: false,})
         
     }
 
@@ -94,7 +95,8 @@ class Nav extends Component {
                 console.log(result.data);
         })
             .catch((error) => {
-                console.log('err',error)
+                // this.setState({})
+                this.setState({loginError:true})
         });
     }
     
@@ -169,9 +171,9 @@ class Nav extends Component {
                             hoverable
                         >
                             <Menu inverted compact  vertical style={{padding:0}}>
-                                <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Account'    />
+                                <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Profile'    />
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/settings'} name='Settings'   />
-                                <Menu.Item as={ Link } to='/' name='logout' onClick={this.loginMenu}/>
+                                <Menu.Item as={ Link } to='/' name='logout' onClick={this.handleLogout}/>
                             </Menu>
                         </Popup>
                     :
@@ -191,6 +193,7 @@ class Nav extends Component {
                                     >
                                     <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
                                     {(this.state.forgotPassword)? null : <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>}
+                                        {(this.state.loginError)? <Label basic color='red'>Invalid Email/Password</Label> : null}
                                         <Button type='submit'>{(this.state.forgotPassword)? 'Forgot Password' : 'Login'}</Button>
                                         <div><a style={{cursor:'pointer' }} onClick={this.forgotPassword}>{(this.state.forgotPassword)? ' ' : 'Forgot Password' }</a></div>
                                     
