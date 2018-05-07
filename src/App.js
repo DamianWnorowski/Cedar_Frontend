@@ -11,9 +11,11 @@ import MovieDetails from './movieDetails.js';
 import Browse from './browse.js';
 import Profile from './profile.js';
 import CelebrityDetails from './celebrityDetails.js'
+import ResetPassword from './resetPassword.js'
 import searchPage from './searchPage.js'
 import AboutUs from './aboutUs.js'
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
+import ManageAccount from './manageAccount';
 
 
 
@@ -34,6 +36,8 @@ class App extends Component {
             <Route exact path='/search/:search' component={searchPage} />
             <Route exact path='/aboutus/' component={AboutUs} />
             {/* <Route exact path='/verified' component={} /> */}
+            <Route exact path='/profile/:userId/settings' component={ManageAccount} />
+            <Route exact path='/resetpassword/:id/:token' component={ResetPassword} />
           </Switch>
           <Footer />
         </div>
