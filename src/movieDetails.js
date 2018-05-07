@@ -95,6 +95,8 @@ class MovieDetails extends Component {
     state = {
         movieInfo: {},
         rating: 0,
+        isReviewed: 1,
+        isReviewBody: false,
       }
 
     onChange = (e) => {
@@ -103,7 +105,21 @@ class MovieDetails extends Component {
     }
 
     onRate = (e, { rating, maxRating }) => {
-        this.setState({ rating })
+        this.setState({ rating, isReviewed: rating })
+    }
+    onEdit = (e) => {
+        const body = this.state.review;
+        const rating = this.state.rating;
+        const content_id = this.state.movieInfo.content_id;
+        console.log("rate content: ", {body, rating, content_id})
+        axios.post('http://localhost:8080/api/editreview?id=' + this.state.userReview.review_id,  {body, rating, content_id} )
+        .then((response) => {
+            console.log("Play response: ")
+            console.log('res',response)
+        })
+        .catch((error) => {
+            console.log('err', error.status)
+        });
     }
 
     onSubmit = (e) => {
@@ -120,6 +136,17 @@ class MovieDetails extends Component {
             console.log('err', error.status)
         });
     }
+    handleDeleteReview = (e) => {
+        axios.get('http://localhost:8080/api/deletereview?id=' + this.state.userReview.review_id)
+        .then((response) => {
+            console.log("Play response: ")
+            console.log('res',response)
+        })
+        .catch((error) => {
+            console.log('err', error.status)
+        });
+    
+    }
   
     componentDidMount() {
         const { match: { params } } = this.props;
@@ -132,13 +159,15 @@ class MovieDetails extends Component {
             this.setState({ movieInfo });
         })
 
-        axios.get(`http://localhost:8080/getmyreviewforcurrentcontent?id=` + params.movieId )
+        axios.get(`http://localhost:8080/api/getmyreviewforcurrentcontent?id=` + params.movieId )
         .then(res => {
-            const movieInfo = res.data;
-            console.log('userreview:', movieInfo)
-            // if(movieInfo['writer']) movieInfo.written = movieInfo['writer'].name;
-            // if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
-            // this.setState({ movieInfo });
+            const userReview = res.data;
+            const isReviewBody = true;
+            if(userReview){
+                this.setState({userReview, isReviewed:userReview.rating, isReviewBody, review: userReview.body})
+                console.log('userreview:1', userReview)
+                console.log('review',  this.state.userReview.body)
+            }
         })
     }
 
@@ -204,14 +233,16 @@ class MovieDetails extends Component {
                                                             icon={<Icon color='grey' name='right chevron' />} 
                                                         />
                                                         <Breadcrumb.Section  link>
-                                                            <Rating icon='star' defaultRating={1} maxRating={5} onRate={this.onRate} />
+                                                            <Rating icon='star' rating={this.state.isReviewed} maxRating={5} onRate={this.onRate} />
                                                         </Breadcrumb.Section>
                                                     </Breadcrumb>
                                                 </Container>
                                                 <Grid  style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.2)', borderBottom: '.3em  solid rgba(2, 199, 255, 0.2)'}}>
-                                                    <Form onSubmit={this.onSubmit} style={{margin:0, width:'100%', padding:'.3em'}}>
-                                                        <TextArea onChange={this.onChange} autoHeight name='review' placeholder='Tell us more' />
-                                                        <Button type="submit" color='blue' compact size='tiny' floated='right' >Post</Button>
+                                                    <Form onSubmit={(this.state.isReviewBody)? this.onEdit : this.onSubmit} style={{margin:0, width:'100%', padding:'.3em'}}>
+                                                        {(this.state.isReviewBody)?<TextArea onChange={this.onChange} autoHeight name='review'>{this.state.userReview.body}</TextArea> : null}
+                                                        {(this.state.isReviewBody)? null : <TextArea onChange={this.onChange}  autoHeight name='review' placeholder='Tell us more' ></TextArea>}
+                                                        <Button type="submit" color='blue' compact size='tiny' floated='right' >{(this.state.isReviewBody)? 'Edit' : 'Post'}</Button>
+                                                        {(this.state.isReviewBody)? <Button onClick={this.handleDeleteReview} color='blue' compact size='tiny' floated='right' >Delete</Button> : null}
                                                     </Form>
                                                 </Grid>
                                             </Grid.Column>
