@@ -194,6 +194,8 @@ class HomePage extends Component {
         })
     }
 
+   
+
     handleVerified = (e) => {
         this.setState({verified: false})
         this.props.history.push('/')

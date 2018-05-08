@@ -2,14 +2,18 @@ import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
 import * as constants from  './components/constants.js'
+import "../node_modules/video-react/dist/video-react.css"; 
 import MediaList from './components/mediaList.js'
+import { Player } from 'video-react';
 import EmptyList from './components/emptyList.js'
 import CircularProgressbar from 'react-circular-progressbar'
+import ReactPlayer from 'react-player'
 import { 
     Grid, 
     Image,  
     Container,  
     Header,   
+    Modal,
     Breadcrumb, 
     Icon,
     Form,
@@ -102,6 +106,13 @@ class MoviePage extends Component {
         const name = e.target.name;
         if(name == 'review') this.setState({review: e.target.value})
     }
+    handlePlay = (e) => {
+        axios.get(`http://localhost:8080/api/playtrailer?id=` + this.state.movieInfo.content_id)
+            .then(res => {
+                console.log(res.data)
+                // this.setState({trailer: res.})
+        })
+    }
 
     onRate = (e, { rating, maxRating }) => {
         this.setState({ rating, isReviewed: rating })
@@ -175,11 +186,22 @@ class MoviePage extends Component {
                     <Grid >
                         <Grid.Row>
                             <Grid.Column width={5}>
-                            <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-2em',marginRight:'2em', marginTop:'-4em'}}>
-                                <Image alt="example" 
-                                    src={imgUrl + movieInfo.poster_path} 
-                                    label={{ as: 'a', color: 'blue',size:'medium',  icon: 'play',content: 'Play Trailer', ribbon: true }}
-                                /></div>
+                                <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-2em',marginRight:'2em', marginTop:'-4em'}}>
+                                    <Image alt="example" 
+                                        src={imgUrl + movieInfo.poster_path} 
+                                        label={{ as: 'a', color: 'blue',size:'medium',  icon: 'play',content: 'Play Trailer', ribbon: true }}
+                                    /> 
+                                </div>
+                                <Modal 
+                                    trigger={<Button color='blue' size='small' >Play Trailer</Button>} 
+                                    basic 
+                                    size='small'>
+                                    {(movieInfo)? 
+                                        <Player
+                                            autoPlay
+                                            src={"http://localhost:8080/api/playtrailer?id=" + movieInfo.content_id}
+                                        /> : null}
+                                </Modal>
                             </Grid.Column>
                             <Grid.Column width={11} style={{marginLeft:'-2em'}}>
                                 <Grid >
@@ -243,7 +265,6 @@ class MoviePage extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    
                     <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/>
                     <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}

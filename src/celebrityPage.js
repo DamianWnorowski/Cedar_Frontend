@@ -4,18 +4,7 @@ import axios from 'axios'
 import * as constants from  './components/constants.js'
 import MediaList from './components/mediaList.js'
 import CircularProgressbar from 'react-circular-progressbar'
-import { 
-    Grid, 
-    Image,  
-    Container,  
-    Header,   
-    Breadcrumb, 
-    Icon,
-    Form,
-    TextArea,
-    Button,
-    Rating,
-} from 'semantic-ui-react'
+import {  Grid, Image, Container,   Header,   Breadcrumb,  Icon, Form,TextArea, Button,Rating,} from 'semantic-ui-react'
 
 const MOVIES = constants.MOVIES;
 // const imgUrl = "https://image.tmdb.org/t/p/";
@@ -23,10 +12,11 @@ const imgUrl = "https://image.tmdb.org/t/p/w500/";
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [
+    ['Birthday', 'birthday'],
+    ['Birthplace','birthplace'],
     ['Highest Rated', 'highrate'], 
     ['Lowest Rated', 'lowrate'], 
-    ['Birthday', 'birthday'],
-    ['Birthplace','birthplace']];
+    ];
 
 const movieMap = MOVIES.map(movies => 
     <Grid.Column  key={movies.title + "1"}>
@@ -77,23 +67,31 @@ const movieStats = (movieInfo) =>  movieTest.map(text =>
 );
 
 class CelebrityPage extends Component {
-
     state = {
-        movieInfo: {},
+        celebLoaded: false,
       }
+
+    
   
       componentDidMount() {
         const { match: { params } } = this.props;
-            console.log("Mounted", params.movieId)
+        axios.get('http://localhost:8080/celebrity?id=' + params.celebId )
+        .then((res) => {
+            const celeb = res.data
+            console.log('celeb:', celeb)
+            this.setState({celeb})
+        })
         
       }
 
     render() {
-        const movieInfo = this.state.movieInfo   
+        const {celeb} = this.state
+        if(!celeb){
+            return null;
+        }
         return (
             <div>
-                <Container  style={{ marginTop: '6em'}}>
-                </Container>
+                <Container  style={{ marginTop: '6em'}} />
                 <Container  style={{backgroundColor:'black', color:'white', padding:'2em'}}>
                     <Grid >
                         <Grid.Row>
@@ -108,13 +106,11 @@ class CelebrityPage extends Component {
                                 <Grid >
                                     <Grid.Column width={14} >
                                         <div style={{marginLeft:'-2em',marginTop:'-3em'}}>
-                                            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '4em', color:'Black'}}>Olivia Cooke</Header>
+                                            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '4em', color:'Black'}}>{celeb.name}</Header>
                                         </div>
                                     </Grid.Column>
                                     <Grid.Column width={12} style={{ marginTop:'-1em',marginLeft:'0em',padding:0,paddingBottom:'2em'}}>
-                                    <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>
-                                    Began acting with the Oldham Theatre Workshopat age10. Starred in a school production of West Side Story. Left school before completing her A-levels to play Meg Demoys in the BBC mini-series Blackout. Was offered an audition for The Secret of Crickley Hallby director Joe Ahearne on the recommendation of his friend Bill Gallagher, who directed her in her TV debut, Blackout.
-                                    </p>
+                                    <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>{celeb.description}</p>
                                     </Grid.Column>
                                     
                                 </Grid>
