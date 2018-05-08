@@ -29,6 +29,7 @@ class Nav extends Component {
             fresh: true,
             name: '',
             mounted: false,
+            verified: true,
         }
     }
     
@@ -96,10 +97,16 @@ class Nav extends Component {
                 localStorage.setItem('jwtToken', token)
                 setAuthToken(token)
                 console.log(result.data);
-        })
-            .catch((error) => {
-                this.setState({loginError:true})
-        });
+            })
+            .catch(err => {
+                const errMsg = err.response.data.message;
+                if(errMsg.includes("unverified")){
+                    this.setState({verified: false});
+                    const failedId = errMsg.replace("unverified", "");
+                    this.setState({id: failedId});
+                    console.log("Unverified user with id: " + this.state.id);
+                }
+            });
     }
     
     onSearchText = (e) => {
@@ -155,6 +162,16 @@ class Nav extends Component {
         console.log(response)
     };
     
+    resendVerification = (e) => {
+        const userId = this.state.id;
+        this.setState({login:false, verified:true})
+        console.log('users id is: ', userId);
+        axios.get(`http://localhost:8080/resendemail?id=` + userId)
+          .then(res => {
+                console.log('result: ', res.data)
+          })
+    }
+    
     render() {
         const { activeItem } = this.state
         return (
@@ -205,17 +222,21 @@ class Nav extends Component {
                             >
                                 
                                 <Segment inverted style={{width:'200px'}}>
-                                    <Form 
-                                        inverted 
-                                        onSubmit={(this.state.forgotPassword)? this.forgotPasswordSubmit : this.handleLoginSubmit}
-                                    >
-                                    <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
-                                    {(this.state.forgotPassword)? null : <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>}
-                                        {(this.state.loginError)? <Label basic color='red'>Invalid Email/Password</Label> : null}
-                                        <Button type='submit'>{(this.state.forgotPassword)? 'Forgot Password' : 'Login'}</Button>
-                                        <div><a style={{cursor:'pointer' }} onClick={this.forgotPassword}>{(this.state.forgotPassword)? ' ' : 'Forgot Password' }</a></div>
-                                    
-                                    </Form>
+                                    {(this.state.verified)? 
+                                        <Form 
+                                            inverted 
+                                            onSubmit={(this.state.forgotPassword)? this.forgotPasswordSubmit : this.handleLoginSubmit}
+                                        >
+                                        <Form.Input fluid type="text" name="email" label='Email' placeholder='Email' onChange={this.onChange}/>
+                                        {(this.state.forgotPassword)? null : <Form.Input fluid type="password" name="password" label='Password' placeholder='Password' onChange={this.onChange}/>}
+                                            {(this.state.loginError)? <Label basic color='red'>Invalid Email/Password</Label> : null}
+                                            <Button type='submit'>{(this.state.forgotPassword)? 'Forgot Password' : 'Login'}</Button>
+                                            <div><a style={{cursor:'pointer' }} onClick={this.forgotPassword}>{(this.state.forgotPassword)? ' ' : 'Forgot Password' }</a></div>
+
+                                        </Form>
+                                    :
+                                        <Button onClick={this.resendVerification}>Resend Verification Email</Button>
+                                    }
                                 </Segment>
                             </Popup>
                             <Popup

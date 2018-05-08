@@ -7,7 +7,6 @@ import MediaList from './components/mediaList.js'
 import { Player } from 'video-react';
 import EmptyList from './components/emptyList.js'
 import CircularProgressbar from 'react-circular-progressbar'
-import ReactPlayer from 'react-player'
 import { 
     Grid, 
     Image,  
