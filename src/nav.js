@@ -97,7 +97,6 @@ class Nav extends Component {
                 console.log(result.data);
         })
             .catch((error) => {
-                // this.setState({})
                 this.setState({loginError:true})
         });
     }

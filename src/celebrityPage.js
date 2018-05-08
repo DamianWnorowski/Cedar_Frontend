@@ -122,9 +122,7 @@ class CelebrityPage extends Component {
                                     <Grid.Column style={{paddingTop:0, paddingBottom:0}} width={8}>
                                         {movieStats(celebInfo)}
                                     </Grid.Column>
-                                
                                 </Grid>
-                                
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

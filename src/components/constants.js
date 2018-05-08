@@ -17,6 +17,37 @@ export const ACTORSNUM = 6;
 //   </Grid.Column>
 // );
 
+const userInfoList = (userInfo, editInfo, change) => {
+  const user = [
+  ['Name', 'Edit Name'],
+  ['Email', 'Change Email'],
+  ['Password', 'Change Password']]
+
+  return user.map(item => 
+      <div>
+          <Breadcrumb>
+              <Breadcrumb.Section >
+                  <p style={{color:'#02c7ff', marginLeft:'2em'}}>{item[0]}</p>
+              </Breadcrumb.Section>
+              <Breadcrumb.Divider 
+                  icon={<Icon color='grey' name='right chevron' />} 
+              />
+              {(change == item[0])? 
+                  <div>
+                      <Input placeholder='Search...' />
+                      <Input placeholder='Search...' />
+                      <Input placeholder='Search...' />
+                  </div>
+              :
+              <Breadcrumb.Section link name={item[0]} onClick={editInfo}>
+                  <p style={{color:'white'}}>{item[1]}</p>
+              </Breadcrumb.Section>
+              }
+          </Breadcrumb>
+      </div>
+  );
+}
+
 export const MOVIES = [
     {"vote_count": 1, 
       "id": 705, 
