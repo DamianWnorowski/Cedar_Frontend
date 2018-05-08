@@ -15,7 +15,10 @@ import {
     Image,  
     Tab,
     Container,  
-    Header,   
+    Header, 
+    Modal,
+    Button,
+    Form
 } from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
@@ -61,19 +64,30 @@ class ProfilePage extends Component {
             userInfo: [],
             isUser: false,
             isAdmin: false,
-
+            reportModalOpen: false,
+            description: "",
         }
+        
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+    
+    openModal(){
+        this.setState({reportModalOpen: true});
+    }
+    
+    closeModal(){
+        this.setState({reportModalOpen: false});
     }
 
-
-
-    componentDidMount() {
+    componentDidMount() {    
         this.state.isAdmin = false;
         const { match: { params } } = this.props;
         axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
         .then(res => {
             const userInfo = res.data;
             console.log('movie:', userInfo)
+            this.setState({userId:userInfo.id})
             this.setState({ userInfo });
         })
         axios.get(`http://localhost:8080/secure/verifyadmin`)
@@ -82,6 +96,27 @@ class ProfilePage extends Component {
             console.log("is admin?: " + verifiedadmin)
             this.state.isAdmin = true;
         })
+    }
+    
+    handleReportUser = (e) => {
+        this.setState({reportModalOpen: false})
+        const {userId, description} = this.state;
+        console.log("Reporting user with id: " + userId)
+        console.log("For reason: " + description)
+        axios.post(`http://localhost:8080/secure/reportuser`, {userId, description})
+        .then(res => {
+            const ans = res.data;
+            console.log("reported: " + ans)
+        })
+    }
+    handleDeleteUser(){
+        
+    }
+
+    onChange = (e) => {
+        const state = this.state;
+        state[e.target.name] = e.target.value;
+        this.setState(state);
     }
 
     render(){
@@ -117,19 +152,28 @@ class ProfilePage extends Component {
                         </Breadcrumb.Section>
                     </Breadcrumb>
                     {userInfoList(user)}
-                    <button class="mini ui button"
-                            margin-left="10">
-                        Report User
-                    </button>                   
+                    <button onClick={this.openModal} className="mini ui button" margin-left="10">Report User </button>
+                    <Modal
+                        open={this.state.reportModalOpen}
+                    >
+                        <Header icon='flag' content='Report User' />
+                        <Modal.Content>
+                          <Form
+                            onSubmit={this.handleReportUser}>
+                                <Form.Input fluid type="text" name="description" label='Please let us know why you are reporting this user.' onChange={this.onChange}/>
+                                    <Button type ='submit' color='red' inverted>
+                                        <Icon name='send' /> Submit Report
+                                    </Button>
+                                </Form>
+                        </Modal.Content>
+                      </Modal>
                     {(this.state.isAdmin)? 
-                        <button class="mini ui button"
-                                margin-left="10"
-                        >
+                        <button 
+                            className="mini ui button" 
+                            margin-left="10">
                             Delete User
                         </button>
-                    :
-                            <div></div>
-                    }
+                    : null }
                     
                 </Grid.Column></Grid.Column>
                 <Grid.Column width={12} style={{paddingLeft:'2em', paddingTop:'0'}}>
