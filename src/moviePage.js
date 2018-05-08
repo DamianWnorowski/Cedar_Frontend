@@ -113,8 +113,7 @@ class MoviePage extends Component {
         console.log("rate content: ", {body, rating, content_id})
         axios.post('http://localhost:8080/api/editreview?id=' + this.state.userReview.review_id,  {body, rating, content_id} )
         .then((response) => {
-            console.log("Play response: ")
-            console.log('res',response)
+            console.log('review edited',response)
         })
         .catch((error) => {
             console.log('err', error.status)
@@ -128,8 +127,7 @@ class MoviePage extends Component {
         console.log("rate content: ", {body, rating, content_id})
         axios.post('http://localhost:8080/api/ratecontent',  {body, rating, content_id} )
         .then((response) => {
-            console.log("Play response: ")
-            console.log('res',response)
+            console.log('content rated',response)
         })
         .catch((error) => {
             console.log('err', error.status)
@@ -138,8 +136,7 @@ class MoviePage extends Component {
     handleDeleteReview = (e) => {
         axios.get('http://localhost:8080/api/deletereview?id=' + this.state.userReview.review_id)
         .then((response) => {
-            console.log("Play response: ")
-            console.log('res',response)
+            console.log('review deleted',response)
         })
         .catch((error) => {
             console.log('err', error.status)
@@ -165,20 +162,15 @@ class MoviePage extends Component {
             if(userReview){
                 this.setState({userReview, isReviewed:userReview.rating, isReviewBody, review: userReview.body})
                 console.log('userreview:1', userReview)
-                console.log('review',  this.state.userReview.body)
             }
         })
     }
 
     render() {
         const movieInfo = this.state.movieInfo   
-        if(movieInfo.userReview){
-            console.log('userreiview', movieInfo.userReview.length)
-        }
         return (
             <div>
-                <Container  style={{ marginTop: '6em'}}>
-                </Container>
+                <Container  style={{ marginTop: '6em'}} />
                 <Container  style={{backgroundColor:'black', color:'white', padding:'2em'}}>
                     <Grid >
                         <Grid.Row>
@@ -248,11 +240,9 @@ class MoviePage extends Component {
                                         </Grid>
                                    </Grid.Column>
                                 </Grid>
-                                
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-
                     
                     <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/>
                     <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
