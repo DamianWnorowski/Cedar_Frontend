@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
-import { 
-    Grid, 
-    List,
-    Breadcrumb,
-    Icon,
-    Image,  
+import {  
     Container,  
     Header,   
 } from 'semantic-ui-react';

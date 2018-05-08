@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import twitter from './twitter.png'
-import facebook from './facebook.png'
+import twitter from './images/twitter.png'
+import facebook from './images/facebook.png'
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
 
 

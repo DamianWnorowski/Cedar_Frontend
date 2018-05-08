@@ -3,17 +3,8 @@ import './App.css'
 import axios from 'axios'
 import * as constants from  './constants.js'
 import { 
-    Grid, 
-    Menu,
-    TextArea,
-    List,
-    Breadcrumb,
     Button,
-    Icon,
-    Image,  
-    Tab,
     Form,
-    Input,
     Container,  
     Header,   
 } from 'semantic-ui-react';
@@ -36,27 +27,20 @@ class ResetPassword extends Component {
         .catch((error) => {
             console.log('err', error.status)
         });
-
     }
 
     render(){
-
         return (
             <div>
-                {/* <Container  style={{paddingBottom:'1em'}} >
-            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '3em', color:'Black'}}>Reset Password</Header>
-            </Container> */}
-            <Container textAlign='center' style={{backgroundColor:'black', color:'white', padding:'2em'}}>
-            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '3em', color:'Black'}}>Reset Password</Header>
-            <Breadcrumb>
+                <Container textAlign='center' style={{backgroundColor:'black', color:'white', padding:'2em'}}>
+                    <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '3em', color:'Black'}}>Reset Password</Header>
                     <Form onSubmit={this.handleChange} style={{paddingLeft:'3em'}}> 
                         <Form.Input name='oldpassword' placeholder='Old Password' onChange={this.onChange} />
                         <Form.Input name='newpassword' placeholder='New Password' onChange={this.onChange} />
                         <Form.Input name='renewpassword' placeholder='Re-enter New Password' onChange={this.onChange} />
                         <Button color='blue' size='small' type='submit'>Submit</Button>
                     </Form>
-            </Breadcrumb>
-            </Container>
+                </Container>
             </div>
         )
     }
