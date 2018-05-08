@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import './App.css'
 import axios from 'axios'
 import * as constants from  './components/constants.js'
@@ -10,6 +11,7 @@ import {
     Grid, 
     Menu,
     List,
+
     Breadcrumb,
     Icon,
     Image,  
@@ -23,8 +25,12 @@ import {
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
 const userInfoList = (userInfo) => {
+    let followingCount = 0;
+    if(userInfo.following) followingCount = userInfo.following.length;
     const user = [
-    ['Profile Views', userInfo.profileViews]]
+    ['Followers', 'need to get followers'],
+    ['Following', followingCount],
+    ['Profile Views', userInfo.profileViews],]
 
     return user.map(item => 
         <div>
@@ -62,6 +68,7 @@ class ProfilePage extends Component {
 
         this.state = {  
             userInfo: [],
+            isFollowing: false,
             isUser: false,
             isAdmin: false,
             reportModalOpen: false,
@@ -96,6 +103,22 @@ class ProfilePage extends Component {
             console.log("is admin?: " + verifiedadmin)
             this.state.isAdmin = true;
         })
+        axios.get(`http://localhost:8080/secure/getuser`)
+        .then(res => {
+            const currentUser = res.data;
+            this.setState({currentUser})
+            if(currentUser.following)
+            currentUser.following.map(userFollowed => {
+                console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
+                if(this.state.userId == userFollowed.id) {
+                    console.log('i am following this user')
+                    this.setState({isFollowing:true})
+                }
+            })
+            console.log("loggedin user?:true",currentUser.name)
+            console.log("loggedin user?:true",currentUser.following)
+            
+        })
     }
     
     handleReportUser = (e) => {
@@ -111,6 +134,14 @@ class ProfilePage extends Component {
     }
     handleDeleteUser(){
         
+    }
+    handleFollow = (e) => {
+        this.setState({isFollowing: !this.state.isFollowing})
+        if(this.state.isFollowing){
+            console.log('unfollow the user')
+        }else{
+            console.log('follow the user')
+        }
     }
 
     onChange = (e) => {
@@ -132,7 +163,7 @@ class ProfilePage extends Component {
             </Container>
             <Container style={{backgroundColor:'black', color:'white', paddingRight:'1em'}}>
             <Grid style={{paddingLeft:'1em'}}>
-                    <Grid.Column width={4}>
+            <Grid.Column width={5}>
                 <Grid.Column width={16}>
                     <Image 
                         fluid
@@ -147,8 +178,9 @@ class ProfilePage extends Component {
                         <Breadcrumb.Divider 
                             icon={<Icon color='grey' name='right chevron' />} 
                         />
+                        
                         <Breadcrumb.Section  link>
-                            <p style={{}}>Manage Account</p>
+                        {(this.state.isFollowing)?<Button color='blue' size='mini' onClick={this.handleFollow} >Unfollow</Button> : <Button onClick={this.handleFollow} size='mini'>Follow</Button>}
                         </Breadcrumb.Section>
                     </Breadcrumb>
                     {userInfoList(user)}
@@ -176,7 +208,7 @@ class ProfilePage extends Component {
                     : null }
                     
                 </Grid.Column></Grid.Column>
-                <Grid.Column width={12} style={{paddingLeft:'2em', paddingTop:'0'}}>
+                <Grid.Column width={11} style={{paddingLeft:'2em', paddingTop:'0'}}>
                     {(user.movieWatchlist)? <MediaList nameHeader={'Want to See Movies'} displayInfo={moviesDisplay(user.movieWatchlist)} numShow={6}/> : <EmptyList nameHeader={'Want to See Movies'} text={'Currently no wanted movies to see'} />}
                     {(user.televisionWatchList)? <MediaList nameHeader={'Want to See TV Shows'} displayInfo={user.televisionWatchList} numShow={6}/> : <EmptyList nameHeader={'Want to See TV Shows'} text={'Currently no wanted tv shows to see'} />}
                 </Grid.Column>
