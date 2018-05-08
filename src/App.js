@@ -2,23 +2,23 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import {createBrowserHistory, createHashHistory, createMemoryHistory} from 'history'
 import './App.css';
-import * as constants from  './constants.js';
-import Home from './home.js';
+import * as constants from  './components/constants.js';
+import HomePage from './homePage.js';
 import Nav from './nav.js';
 import Footer from './footer.js';
-import MediaTable from './mediaTable.js';
-import MovieDetails from './movieDetails.js';
+import MediaTable from './components/mediaTable.js';
+import MoviePage from './moviePage.js';
 import Browse from './browse.js';
-import Profile from './profile.js';
-import CelebrityDetails from './celebrityDetails.js'
-import ResetPassword from './resetPassword.js'
+import ProfilePage from './profilePage.js';
+import CelebrityPage from './celebrityPage.js'
+import ResetPasswordPage from './resetPasswordPage.js'
 import searchPage from './searchPage.js'
-import AboutUs from './aboutUs.js'
-import TermsAndConditions from './termsAndConditions.js'
+import AboutUs from './footer_pages/aboutUs.js'
+import TermsAndConditions from './footer_pages/termsAndConditions.js'
 import AdminPage from './adminPage.js'
-import ContactUs from './contactUs.js'
+import ContactUs from './footer_pages/contactUs.js'
+import SettingsPage from './settingsPage.js';
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
-import ManageAccount from './manageAccount';
 
 
 
@@ -31,18 +31,18 @@ class App extends Component {
         <div style={{}}>
           <Nav />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/movie/:movieId" component={MovieDetails} />
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/movie/:movieId" component={MoviePage} />
             <Route exact path="/browse" component={Browse} />
-            <Route exact path="/profile/:userId" component={Profile}/>
-            <Route exact path='/celebrity' component={CelebrityDetails} />
+            <Route exact path="/profile/:userId" component={ProfilePage}/>
+            <Route exact path='/celebrity' component={CelebrityPage} />
             <Route exact path='/search/:search' component={searchPage} />
             <Route exact path='/aboutus/' component={AboutUs} />
             <Route exact path='/contactus/' component={ContactUs} />
             <Route exact path='/termsAndConditions/' component={TermsAndConditions} />
-            <Route exact path='/profile/:userId/settings' component={ManageAccount} />
-            <Route exact path='/resetpassword/:id/:token' component={ResetPassword} />
-            <Route exact path='/verified' render={(props) => (<Home verified='verified' {...props}/>)}  />
+            <Route exact path='/profile/:userId/settings' component={SettingsPage} />
+            <Route exact path='/resetpassword/:id/:token' component={ResetPasswordPage} />
+            <Route exact path='/verified' render={(props) => (<HomePage verified='verified' {...props}/>)}  />
             <Route exact path='/profile/:userId/admin' component={AdminPage} />
           </Switch>
           <Footer />

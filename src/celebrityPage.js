@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
-import * as constants from  './constants.js'
-import MediaList from './mediaList.js'
-import GradientSVG from './gradientSVG.js'
+import * as constants from  './components/constants.js'
+import MediaList from './components/mediaList.js'
 import CircularProgressbar from 'react-circular-progressbar'
 import { 
     Grid, 
@@ -77,7 +76,7 @@ const movieStats = (movieInfo) =>  movieTest.map(text =>
     </Container>
 );
 
-class CelebrityDetails extends Component {
+class CelebrityPage extends Component {
 
     state = {
         movieInfo: {},
@@ -85,16 +84,8 @@ class CelebrityDetails extends Component {
   
       componentDidMount() {
         const { match: { params } } = this.props;
-          console.log("Mounted", params.movieId)
-        axios.get(`http://localhost:8080/movie?id=` + 2 )
-          .then(res => {
-              
-            const movieInfo = res.data;
-            movieInfo.written = movieInfo['writer'].name;
-            movieInfo.directed = movieInfo['director'].name;
-            console.log( movieInfo.userRating );
-            this.setState({ movieInfo });
-          })
+            console.log("Mounted", params.movieId)
+        
       }
 
     render() {
@@ -146,4 +137,4 @@ class CelebrityDetails extends Component {
     }
 }
 
-export default CelebrityDetails;
+export default CelebrityPage;

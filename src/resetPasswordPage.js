@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
-import * as constants from  './constants.js'
 import { 
     Button,
     Form,
@@ -10,7 +9,7 @@ import {
 } from 'semantic-ui-react';
 
 
-class ResetPassword extends Component {
+class ResetPasswordPage extends Component {
 
     constructor(props){
         super(props);
@@ -46,4 +45,4 @@ class ResetPassword extends Component {
     }
 }
 
-export default ResetPassword;
+export default ResetPasswordPage;

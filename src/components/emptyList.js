@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
+import '../App.css';
 
 import { Grid,  Container,   Header,  Icon, Breadcrumb, Button, Transition, List} from 'semantic-ui-react'
 

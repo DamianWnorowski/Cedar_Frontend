@@ -3,12 +3,9 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom';
 import './App.css'
 import axios from 'axios'
-import TopBoxOffice from './topBoxOffice.js'
-import * as constants from  './constants.js'
-import MediaList from './mediaList.js'
-// import GradientSVG from './gradientSVG.js'
-import MediaTable from './mediaTable.js'
-// import CircularProgressbar from 'react-circular-progressbar'
+import * as constants from  './components/constants.js'
+import MediaList from './components/mediaList.js'
+import MediaTable from './components/mediaTable.js'
 import { 
     Grid, 
     Image,  
@@ -150,7 +147,7 @@ const movieScroll = (movieInfo) =>  {
 };
 
 
-class Home extends Component {
+class HomePage extends Component {
     constructor(props){
         super(props);
 
@@ -246,4 +243,4 @@ class Home extends Component {
 
 }
 
-export default Home
+export default HomePage;

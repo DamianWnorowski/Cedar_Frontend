@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
-import TopBoxOffice from './topBoxOffice.js'
-import * as constants from  './constants.js'
-import MediaList from './mediaList.js'
-import EmptyList from './emptyList.js'
-// import GradientSVG from './gradientSVG.js'
-import MediaTable from './mediaTable.js'
-// import CircularProgressbar from 'react-circular-progressbar'
+import * as constants from  './components/constants.js'
+import MediaList from './components/mediaList.js'
+import EmptyList from './components/emptyList.js'
+import MediaTable from './components/mediaTable.js'
+
 import { 
     Grid, 
     Menu,
-
     List,
     Breadcrumb,
     Icon,
@@ -55,7 +52,7 @@ const moviesDisplay = (moviesInfo) => moviesInfo.map(movies =>
 );
 
 
-class Profile extends Component {
+class ProfilePage extends Component {
     
     constructor(props){
         super(props)
@@ -134,4 +131,4 @@ class Profile extends Component {
 
 }
 
-export default Profile;
+export default ProfilePage;

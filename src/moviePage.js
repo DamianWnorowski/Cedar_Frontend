@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
-import * as constants from  './constants.js'
-import MediaList from './mediaList.js'
-import GradientSVG from './gradientSVG.js'
-import EmptyList from './emptyList.js'
+import * as constants from  './components/constants.js'
+import MediaList from './components/mediaList.js'
+import EmptyList from './components/emptyList.js'
 import CircularProgressbar from 'react-circular-progressbar'
 import { 
     Grid, 
@@ -90,7 +89,7 @@ const movieStats = (movieInfo) =>  movieTest.map(text =>
     </Container>
 );
 
-class MovieDetails extends Component {
+class MoviePage extends Component {
 
     state = {
         movieInfo: {},
@@ -266,4 +265,4 @@ class MovieDetails extends Component {
     }
 }
 
-export default MovieDetails;
+export default MoviePage;
