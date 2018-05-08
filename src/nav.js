@@ -26,8 +26,9 @@ class Nav extends Component {
             recaptchaResponse: '',
             captchaVerified: false,
             loginError: false,
-            allowed: true,
             fresh: true,
+            name: '',
+            mounted: false,
         }
     }
     
@@ -116,10 +117,11 @@ class Nav extends Component {
           })
     }
     componentDidMount(){
+        console.log("component mount");
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));
             if (decoded.exp > Date.now() / 1000) { 
-                this.setState({login:true, name:decoded.sub, fresh:true})
+                this.setState({login:true, name:decoded.sub, mounted:true})
                 console.log(decoded)
             }
             else
@@ -129,17 +131,17 @@ class Nav extends Component {
         }  
     }
     componentDidUpdate(){
-        console.log("COMPONENT DID UPDATE!!!!!!!!!!!")
-        if(this.state.fresh || this.state.login){
+        if(this.state.fresh && !this.state.mounted){
+            console.log("COMPONENT DID UPDATE!!!!!!!!!!!")
             try{
                 const decoded = decode(localStorage.getItem('jwtToken'));
                 if (decoded.exp > Date.now() / 1000) { 
-                    this.setState({login:true, name:decoded.sub})
-                    console.log("decoded info" + decoded);
+                    this.setState({login:true, name:decoded.sub, fresh:true})
+                    console.log("decoded info: " + decoded.sub);
                 }
                 else
                     console.log('no token');
-                    this.setState({login:false, name:"", fresh:false});
+                    this.setState({login:false, name:"", fresh:false, mounted:false});
             }catch(err) {
                 console.log('reading token error')
             }

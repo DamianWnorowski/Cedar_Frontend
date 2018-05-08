@@ -60,6 +60,7 @@ class ProfilePage extends Component {
         this.state = {  
             userInfo: [],
             isUser: false,
+            isAdmin: false,
 
         }
     }
@@ -67,6 +68,7 @@ class ProfilePage extends Component {
 
 
     componentDidMount() {
+        this.state.isAdmin = false;
         const { match: { params } } = this.props;
         axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
         .then(res => {
@@ -74,12 +76,11 @@ class ProfilePage extends Component {
             console.log('movie:', userInfo)
             this.setState({ userInfo });
         })
-
-        axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
+        axios.get(`http://localhost:8080/secure/verifyadmin`)
         .then(res => {
-            const userInfo = res.data;
-            console.log('movie:', userInfo)
-            this.setState({ userInfo });
+            const verifiedadmin = res.data;
+            console.log("is admin?: " + verifiedadmin)
+            this.state.isAdmin = true;
         })
     }
 
@@ -116,7 +117,20 @@ class ProfilePage extends Component {
                         </Breadcrumb.Section>
                     </Breadcrumb>
                     {userInfoList(user)}
-                        
+                    <button class="mini ui button"
+                            margin-left="10">
+                        Report User
+                    </button>                   
+                    {(this.state.isAdmin)? 
+                        <button class="mini ui button"
+                                margin-left="10"
+                        >
+                            Delete User
+                        </button>
+                    :
+                            <div></div>
+                    }
+                    
                 </Grid.Column></Grid.Column>
                 <Grid.Column width={12} style={{paddingLeft:'2em', paddingTop:'0'}}>
                     {(user.movieWatchlist)? <MediaList nameHeader={'Want to See Movies'} displayInfo={moviesDisplay(user.movieWatchlist)} numShow={6}/> : <EmptyList nameHeader={'Want to See Movies'} text={'Currently no wanted movies to see'} />}
