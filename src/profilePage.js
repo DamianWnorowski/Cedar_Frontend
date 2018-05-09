@@ -10,7 +10,7 @@ import MediaTable from './components/mediaTable.js'
 import { Grid,  Menu,List,Breadcrumb,Icon,Image,  Tab,Container,  Header, Modal,Button,Form} from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
-const userInfoList = (userInfo, openModal) => {
+const userInfoList = (userInfo, openModal, handleModal) => {
     const user = [
     ['Followers', userInfo.followerCount],
     ['Following', userInfo.followingCount],
@@ -220,7 +220,7 @@ class ProfilePage extends Component {
                         {(this.state.isFollowing)?<Button color='blue' size='mini' onClick={this.handleFollow} >Unfollow</Button> : <Button onClick={this.handleFollow} size='mini'>Follow</Button>}
                         </Breadcrumb.Section>
                     </Breadcrumb>
-                    {userInfoList(user, this.openModal, this.openDeleteModal, this.handleModal)}
+                    {userInfoList(user, this.openModal, this.handleModal)}
                     {/* <button onClick={this.openModal} className="mini ui button" margin-left="10">Report User </button> */}
                     <Modal
                         open={(this.state.isOpen == 'report')? true : false}
