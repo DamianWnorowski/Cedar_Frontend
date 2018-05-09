@@ -89,6 +89,7 @@ class MoviePage extends Component {
         isReviewed: 1,
         isReviewBody: false,
         submitted: false,
+        deleted: false,
         failed: false
       }
 
@@ -114,6 +115,8 @@ class MoviePage extends Component {
         console.log("rate content: ", {body, rating, content_id})
         axios.post('http://localhost:8080/api/editreview?id=' + this.state.userReview.review_id,  {body, rating, content_id} )
         .then((response) => {
+            this.setState({deleted: false})
+            this.setState({submitted: true})
             console.log('review edited',response)
         })
         .catch((error) => {
@@ -135,6 +138,7 @@ class MoviePage extends Component {
         axios.post('http://localhost:8080/api/ratecontent',  {body, rating, content_id} )
         .then((response) => {
             console.log('content rated',response)
+            this.setState({deleted: false})
             this.setState({submitted: true})
         })
         .catch((error) => {
@@ -152,6 +156,8 @@ class MoviePage extends Component {
     handleDeleteReview = (e) => {
         axios.get('http://localhost:8080/api/deletereview?id=' + this.state.userReview.review_id)
         .then((response) => {
+            this.setState({submitted: false})
+            this.setState({deleted: true})
             console.log('review deleted',response)
         })
         .catch((error) => {
@@ -275,6 +281,7 @@ class MoviePage extends Component {
                                                         {(this.state.isReviewBody)? null : <TextArea onChange={this.onChange}  autoHeight name='review' placeholder='Tell us more' ></TextArea>}
                                                         <Button type="submit" color='blue' compact size='tiny' floated='right' >{(this.state.isReviewBody)? 'Edit' : 'Post'}</Button>
                                                         {(this.state.submitted)? <Label basic color='green'>Submitted</Label> : null}
+                                                        {(this.state.deleted)? <Label basic color='red'>Deleted</Label> : null}
                                                         {(this.state.failed)? <Label basic color='red'>Failed</Label> : null}
                                                         {(this.state.isReviewBody)? <Button onClick={this.handleDeleteReview} color='blue' compact size='tiny' floated='right' >Delete</Button> : null}
                                                     </Form>
