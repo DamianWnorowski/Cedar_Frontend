@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 import './App.css'
 import axios from 'axios'
 import * as constants from  './components/constants.js'
@@ -8,6 +9,7 @@ import {  Grid, Image, Container,   Header,   Breadcrumb,  Icon, Form,TextArea, 
 
 const MOVIES = constants.MOVIES;
 // const imgUrl = "https://image.tmdb.org/t/p/";
+const picUrl = 'https://image.tmdb.org/t/p/w440_and_h660_bestv2'
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
@@ -22,6 +24,7 @@ const movieMap = MOVIES.map(movies =>
     <Grid.Column  key={movies.title + "1"}>
         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
         <Image 
+        as={Link} to={'/movie/' + movies.id}
         fluid
         src={imgUrl + movies.poster_path}
         /> 
@@ -29,7 +32,7 @@ const movieMap = MOVIES.map(movies =>
     </Grid.Column>
 );
 
-const celebInfo = {highrate:'87% Thoroughbreds (2018)', lowrate:'6% Ouija (2014)', birthday:'January 23, 1988', birthplace:'New York'}
+const celebInfo = {highrate:'87% Ironman (2008)', lowrate:'6% Gothika (2003)', birthday:'January 23, 1988', birthplace:'New York'}
 // const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
 
 const testMap = users.map(user => 
@@ -99,7 +102,7 @@ class CelebrityPage extends Component {
                             <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-2em',marginRight:'2em', marginTop:'-4em'}}>
                             <Image 
                                 fluid
-                                src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
+                                src={picUrl + celeb.picture}
                             /></div>
                             </Grid.Column>
                             <Grid.Column width={11} style={{marginLeft:'-2em'}}>
@@ -116,14 +119,41 @@ class CelebrityPage extends Component {
                                 </Grid>
                                 <Grid stackable >
                                     <Grid.Column style={{paddingTop:0, paddingBottom:0}} width={8}>
-                                        {movieStats(celebInfo)}
+                                        {/* {movieStats(celebInfo)} */}
+                                        <Container style={{paddingTop:'.1em'}}>
+                                            <Breadcrumb>
+                                                <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>Birthday</p></Breadcrumb.Section>
+                                                <Breadcrumb.Divider icon={<Icon color='grey' name='right chevron' />} />
+                                                <Breadcrumb.Section >{celeb.birthday}</Breadcrumb.Section>
+                                            </Breadcrumb>
+                                        </Container>
+                                        <Container style={{paddingTop:'.1em'}}>
+                                            <Breadcrumb>
+                                                <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>Birthplace</p></Breadcrumb.Section>
+                                                <Breadcrumb.Divider icon={<Icon color='grey' name='right chevron' />} />
+                                                <Breadcrumb.Section >{celeb.birthplace}</Breadcrumb.Section>
+                                            </Breadcrumb>
+                                        </Container>
+                                        <Container style={{paddingTop:'.1em'}}>
+                                            <Breadcrumb>
+                                                <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>Highest Rated</p></Breadcrumb.Section>
+                                                <Breadcrumb.Divider icon={<Icon color='grey' name='right chevron' />} />
+                                                <Breadcrumb.Section >87% Ironman (2008)</Breadcrumb.Section>
+                                            </Breadcrumb>
+                                        </Container>
+                                        <Container style={{paddingTop:'.1em'}}>
+                                            <Breadcrumb>
+                                                <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>Lowest Rated</p></Breadcrumb.Section>
+                                                <Breadcrumb.Divider icon={<Icon color='grey' name='right chevron' />} />
+                                                <Breadcrumb.Section >6% Gothika (2003)</Breadcrumb.Section>
+                                            </Breadcrumb>
+                                        </Container>
                                     </Grid.Column>
                                 </Grid>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                     
-                    <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
                     <MediaList nameHeader={'Highest Rated Movies'} displayInfo={movieMap} numShow={6}/>
                 </Container>
             </div>
