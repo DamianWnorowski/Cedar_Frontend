@@ -35,7 +35,7 @@ const userInfoList = (userInfo, openModal, handleModal) => {
                     </Breadcrumb>
                 :
                 <Breadcrumb>
-                    <Breadcrumb.Section >
+                    <Breadcrumb.Section name={item[0]} onClick={handleModal}>
                         <p style={{color:'#02c7ff', marginLeft:'2em'}}>{item[0]}</p>
                     </Breadcrumb.Section>
                     <Breadcrumb.Divider 
@@ -64,6 +64,7 @@ const moviesDisplay = (moviesInfo) => moviesInfo.map(movies =>
 );
 
 
+
 class ProfilePage extends Component {
     
     constructor(props){
@@ -85,12 +86,53 @@ class ProfilePage extends Component {
 
     handleModal = (e,data) => {
         this.setState({isOpen: data.name});
+        console.log('close')
     }
     
     handleModalClose= () => {
         this.setState({isOpen: ''});
     }
-    
+    componentDidUpdate() {
+        const { match: { params } } = this.props;
+        console.log('UPDATED!!!!!!', params.userId, this.state.userInfo.id)
+        if(params.userId != this.state.userInfo.id){
+            axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
+            .then(res => {
+                const userInfo = res.data;
+                userInfo.followingCount = 0;
+                userInfo.followerCount = 0;
+                if(userInfo.following) userInfo.followingCount = userInfo.following.length;
+                if(userInfo.followers) userInfo.followerCount = userInfo.followers.length;
+                console.log('user info:', userInfo)
+                this.setState({userId:userInfo.id})
+                this.setState({ userInfo });
+            })
+            .catch(err => {
+                const errMsg = err.response.data.message;
+                if(errMsg.includes("404")){
+                    console.log("That user does not exist");
+                    this.props.history.push('/404');
+                }
+            });
+            axios.get(`http://localhost:8080/secure/getuser`)
+        .then(res => {
+            const name = res.data.name
+            if(name){
+                const currentUser = res.data;
+                this.setState({currentUser})
+                if(currentUser.following)
+                currentUser.following.map(userFollowed => {
+                    console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
+                    if(this.state.userId === userFollowed.id) {
+                        console.log('i am following this user')
+                        this.setState({isFollowing:true})
+                    }
+                })
+            }
+        })
+        }
+
+    }
     componentDidMount() {    
         this.state.isAdmin = false;
         const { match: { params } } = this.props;
@@ -120,20 +162,30 @@ class ProfilePage extends Component {
         })
         axios.get(`http://localhost:8080/secure/getuser`)
         .then(res => {
-            const currentUser = res.data;
-            this.setState({currentUser})
-            if(currentUser.following)
-            currentUser.following.map(userFollowed => {
-                console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
-                if(this.state.userId === userFollowed.id) {
-                    console.log('i am following this user')
-                    this.setState({isFollowing:true})
-                }
-            })
-            console.log("loggedin user?:true",currentUser.name)
-            console.log("loggedin user?:true",currentUser.following)
+            const name = res.data.name
+            if(name){
+                const currentUser = res.data;
+                this.setState({currentUser})
+                if(currentUser.following)
+                currentUser.following.map(userFollowed => {
+                    console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
+                    if(this.state.userId === userFollowed.id) {
+                        console.log('i am following this user')
+                        this.setState({isFollowing:true})
+                    }
+                })
+                console.log("loggedin user?:true",currentUser.name)
+                console.log("loggedin user?:true",currentUser.following)
+            }
             
         })
+    }
+
+    followPress = (e,d) => {
+        console.log('e',e.target)
+        console.log('e',e.target.value)
+        console.log('e',d)
+        console.log('e',e)
     }
     
     handleReportUser = (e) => {
@@ -274,6 +326,43 @@ class ProfilePage extends Component {
                     {(user.televisionWatchList)? <MediaList nameHeader={'Want to See TV Shows'} displayInfo={user.televisionWatchList} numShow={6}/> : <EmptyList nameHeader={'Want to See TV Shows'} text={'Currently no wanted tv shows to see'} />}
                 </Grid.Column>
             </Grid>
+            <Modal
+                size='tiny'
+                onClose={this.handleModal}
+                open={(this.state.isOpen == 'Followers')? true : false}
+            >
+                <Header icon='flag' content='Follower List' />
+                <Modal.Content scrolling >
+                <List selection verticalAlign='middle' >
+                    {(this.state.userInfo.followerCount)? 
+                        this.state.userInfo.followers.map(user => 
+                        <List.Item name='item' >
+                            <List.Header as={ Link } to={'/profile/' + user.id} onClick={this.handleModalClose} >{user.name}</List.Header>
+                        </List.Item>
+                    ) : null}
+                </List>
+                
+                </Modal.Content>
+            </Modal>
+
+            <Modal
+                size='tiny'
+                onClose={this.handleModal}
+                open={(this.state.isOpen == 'Following')? true : false}
+            >
+                <Header icon='flag' content='Follower List' />
+                <Modal.Content scrolling >
+                <List selection verticalAlign='middle' >
+                    {(this.state.userInfo.followingCount)? 
+                        this.state.userInfo.following.map(user => 
+                        <List.Item name='item' >
+                            <List.Header as={ Link } to={'/profile/' + user.id} onClick={this.handleModalClose} >{user.name}</List.Header>
+                        </List.Item>
+                    ) : null}
+                </List>
+                
+                </Modal.Content>
+            </Modal>
              
             </Container>
             </div>

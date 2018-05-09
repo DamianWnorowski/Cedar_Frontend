@@ -89,6 +89,7 @@ class Nav extends Component {
         axios.post(`http://localhost:8080/login`, {email, password})
             .then((result) => {
                 const token = result.data.userToken
+                console.log('token', token)
                 const name = result.data.userName
                 console.log("user email: " + name)
                 const userId = result.data.userId
@@ -130,11 +131,13 @@ class Nav extends Component {
         .then(result => {
             const name = result.data.email
             console.log("user email: " + name)
-            const userId = result.data.id
-            const blacklist = result.data.blacklist
-            const login = true
-            this.setState({login, name, blacklist, userId})
-            console.log("refreshed state from backend for" + name)  
+            if(name){
+                const userId = result.data.id
+                const blacklist = result.data.blacklist
+                const login = true
+                this.setState({login, name, blacklist, userId})
+                console.log("refreshed state from backend for" + name)  
+            }
         })
    
         try{
