@@ -55,7 +55,7 @@ const mediaReviews = (data) => {
                 <Grid.Column width={4}>
                     <Image 
                         fluid
-                        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
+                        src={"http://localhost:8080/api/getPhoto?id=" + user.author.id} 
                     /> 
                 </Grid.Column>
                 <Grid.Column width={12}   >
