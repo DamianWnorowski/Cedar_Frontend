@@ -156,6 +156,7 @@ class HomePage extends Component {
             renderMoviesComingSoon: false,
             renderMoviesUpcoming: false,
             renderTopBoxOffice: false,
+            renderFeatured: false,
             verified: false,
         }
     }
@@ -181,9 +182,12 @@ class HomePage extends Component {
             }
             
         })
-        axios.get(`http://localhost:8080/api/featuredmovie`)
+        axios.get(`http://localhost:8080/api/featuredMovie`)
             .then(res => {
-            console.log('featured', res)
+            console.log('featured', res.data)
+            if(res.data){
+                this.setState({featured: res.data, renderFeatured: true})
+            }
         })
         axios.get(`http://localhost:8080/api/topboxoffice`)
             .then(res => {
@@ -213,16 +217,16 @@ class HomePage extends Component {
                     </Modal.Content>
                 </Modal>
                 <Container  style={{backgroundColor:'black', color:'white', padding:'', marginTop:'-1em'}}>
-                        <Image  fluid src={'https://wallpapersite.com/images/pages/pic_w/6573.jpg'} />
+                    {(this.state.renderFeatured)?<Image  fluid src={'http://localhost:8080/api/getBackdrop?id='+this.state.featured.id} /> : null}
                     <Grid style={{}}>
                     <Grid.Row style={{}} >
                         <Grid.Column width={5}>
                             <div style={{left: '20%', position: 'absolute',transform: 'translate(-0%, -95%)',backgroundColor:'#02c7ff', paddingBottom:'.1em', paddingRight:'.1em'}}>
-                                <Image  src={imgUrl + movieInfo.poster_path} />
+                                {(this.state.renderFeatured)? <Image  src={imgUrl + this.state.featured.poster_path} as={Link} to={'/movie/'+this.state.featured.id} /> : null}
                             </div>
                         </Grid.Column>
                         <Grid.Column width={5} style={{marginLeft:'-1em', marginTop:'-4em'}}>
-                                <Header as='h1' style={{backgroundColor:'#02c7ff', color:'Black'}}>{movieInfo.title}</Header>
+                                <Header as='h1' style={{backgroundColor:'#02c7ff', color:'Black'}}> {(this.state.renderFeatured)? this.state.featured.title : null}</Header>
                         </Grid.Column>
                     </Grid.Row>
                     </Grid>
