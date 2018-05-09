@@ -95,7 +95,7 @@ const boxOfficeTable = (data) => {
                 <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
                 {item.criticRating + '%'}
                 </Grid.Column>
-                <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}>
+                <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}  as={ Link } to={"/movie/" + item.id}>
                 {item.title}
                 </Grid.Column>
                 <Grid.Column style={{padding:0, paddingRight:'.5em'}} >
@@ -121,7 +121,7 @@ const tvTable = (data) => {
                 <Grid.Column style={{padding:0, paddingLeft:'.5em'}} textAlign='left'>
                 {item.criticRating + '%'}
                 </Grid.Column>
-                <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}>
+                <Grid.Column width={10} style={{padding: 0,color:'#02c7ff'}}  as={ Link } to={"/tv/" + item.id}>
                 {item.title}
                 </Grid.Column>
             </Grid.Row>
