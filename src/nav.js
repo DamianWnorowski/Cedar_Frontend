@@ -133,8 +133,6 @@ class Nav extends Component {
     }
     componentDidMount(){
         console.log("component mount");
-       
-   
         try{
             if(localStorage.getItem('jwtToken')){
                 console.log(localStorage.getItem('jwtToken'))
@@ -168,6 +166,7 @@ class Nav extends Component {
             console.log('reading token error nav',err)
         }  
     }
+    
     componentDidUpdate(){
         if(this.state.fresh && !this.state.mounted){
             console.log("COMPONENT DID UPDATE!!!!!!!!!!!")
