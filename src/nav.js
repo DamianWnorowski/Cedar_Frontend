@@ -88,6 +88,11 @@ class Nav extends Component {
         const {email, password} = this.state;
         axios.post(`http://localhost:8080/login`, {email, password})
             .then((result) => {
+                // resetting
+                localStorage.removeItem('jwtToken');
+                this.setState({name:'',login:false,id: '', firstName: '',lastName: '',password: '', email: '', loginError: false, forgotPassword:false, captchaVerified: false,})
+                
+                // logging in
                 const token = result.data.userToken
                 console.log('token', token)
                 const name = result.data.userName
@@ -127,6 +132,17 @@ class Nav extends Component {
     }
     componentDidMount(){
         console.log("component mount");
+        try{
+            const decoded = decode(localStorage.getItem('jwtToken'));
+            if (decoded.exp > Date.now() / 1000) { 
+                this.setState({login:true, name:decoded.sub, mounted:true})
+                console.log(decoded)
+            }
+            else
+                console.log('no token')
+        }catch(err) {
+            console.log('reading token error in componentDidMount')
+        }  
         axios.get(`http://localhost:8080/secure/getuser`)
         .then(result => {
             const name = result.data.email
@@ -139,18 +155,6 @@ class Nav extends Component {
                 console.log("refreshed state from backend for" + name)  
             }
         })
-   
-        try{
-            const decoded = decode(localStorage.getItem('jwtToken'));
-            if (decoded.exp > Date.now() / 1000) { 
-                this.setState({login:true, name:decoded.sub, mounted:true})
-                console.log(decoded)
-            }
-            else
-                console.log('no token')
-        }catch(err) {
-            console.log('reading token error')
-        }  
     }
     componentDidUpdate(){
         if(this.state.fresh && !this.state.mounted){
@@ -165,7 +169,7 @@ class Nav extends Component {
                     console.log('no token');
                     this.setState({login:false, name:"", fresh:false, mounted:false});
             }catch(err) {
-                console.log('reading token error')
+                console.log('reading token error in componentDidUpdate')
             }
         }
     }
