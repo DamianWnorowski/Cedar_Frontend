@@ -19,6 +19,7 @@ import {
     TextArea,
     Button,
     Rating,
+    Label
 } from 'semantic-ui-react'
 
 const MOVIES = constants.MOVIES;
@@ -101,6 +102,7 @@ class MoviePage extends Component {
         isOpen: '',
         isReviewed: 1,
         isReviewBody: false,
+        submitted: false
       }
 
     onChange = (e) => {
@@ -133,13 +135,6 @@ class MoviePage extends Component {
     }
     handleDeleteContent = (e) => {
         this.setState({isOpen: ''})
-        console.log('trying to delete: ' + this.state.movieInfo.content_id)
-        axios.get(`http://localhost:8080/admin/deletecontent?id=` + this.state.movieInfo.content_id)
-        .then(res => {
-            const ans = res.data;
-            console.log("deleted content: ", res.data)
-            this.props.history.push('/404');
-        })
     }
     handleEditContent = (e) => {
         this.setState({isOpen: ''})
@@ -153,6 +148,7 @@ class MoviePage extends Component {
         axios.post('http://localhost:8080/api/ratecontent',  {body, rating, content_id} )
         .then((response) => {
             console.log('content rated',response)
+            this.setState({submitted: true})
         })
         .catch((error) => {
             console.log('err', error.status)
@@ -290,6 +286,7 @@ class MoviePage extends Component {
                                                         {(this.state.isReviewBody)?<TextArea onChange={this.onChange} autoHeight name='review'>{this.state.userReview.body}</TextArea> : null}
                                                         {(this.state.isReviewBody)? null : <TextArea onChange={this.onChange}  autoHeight name='review' placeholder='Tell us more' ></TextArea>}
                                                         <Button type="submit" color='blue' compact size='tiny' floated='right' >{(this.state.isReviewBody)? 'Edit' : 'Post'}</Button>
+                                                        {(this.state.submitted)? <Label basic color='green'>Submitted</Label> : null}
                                                         {(this.state.isReviewBody)? <Button onClick={this.handleDeleteReview} color='blue' compact size='tiny' floated='right' >Delete</Button> : null}
                                                     </Form>
                                                 </Grid>
@@ -305,10 +302,30 @@ class MoviePage extends Component {
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
                     {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}
                     
-                    <Modal open={(this.state.isOpen === 'edit')? true : false} >
-                        <Header icon='edit' color='green' content={this.state.movieInfo.title} />
+                    <Modal open={(this.state.isOpen == 'delete')? true : false} >
+                        <Header icon='warning' color='red' content='ATTENTION' />
                         <Modal.Content>
-                          <p>Edit form:</p>
+                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                          <Button 
+                            color='red'
+                            onClick={this.handleModalClose}
+                          >
+                            <Icon name='remove'/> Yes
+                          </Button>
+                          <Button 
+                            color='green'
+                            onClick={this.handleDeleteContent}
+                          >
+                            No
+                          </Button>
+                        </Modal.Actions>
+                    </Modal>
+                    <Modal open={(this.state.isOpen == 'edit')? true : false} >
+                        <Header icon='warning' color='red' content='ATTENTION' />
+                        <Modal.Content>
+                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
                         </Modal.Content>
                         <Modal.Actions>
                           <Button 
@@ -321,27 +338,6 @@ class MoviePage extends Component {
                             color='green'
                             onClick={this.handleEditContent}
                           >
-                            No
-                          </Button>
-                        </Modal.Actions>
-                    </Modal>
-                    <Modal size='tiny' open={(this.state.isOpen === 'delete')? true : false} >
-                        <Header icon='warning' color='red' acontent='ATTENTION' />
-                        <Modal.Content>
-                          <p>You are about to delete a content page. This action is non-reversible. Are you sure you want to proceed?</p>
-                        </Modal.Content>
-                        <Modal.Actions>
-                          <Button 
-                            color='green'
-                            onClick={this.handleDeleteContent}
-                          >
-                            <Icon name='check'/> Yes
-                          </Button>
-                          <Button 
-                            color='red'
-                            onClick={this.handleModalClose}
-                          >
-                          <Icon name='remove'/>
                             No
                           </Button>
                         </Modal.Actions>

@@ -19,6 +19,7 @@ import {
     TextArea,
     Button,
     Rating,
+    Label
 } from 'semantic-ui-react'
 
 const imgUrl = constants.IMGURL;
@@ -98,6 +99,7 @@ class TvPage extends Component {
         isOpen: '',
         isReviewed: 1,
         isReviewBody: false,
+        submitted: false
       }
 
     onChange = (e) => {
@@ -136,6 +138,7 @@ class TvPage extends Component {
         axios.post('http://localhost:8080/api/ratecontent',  {body, rating, content_id} )
         .then((response) => {
             console.log('content rated',response)
+            this.setState({submitted: true})
         })
         .catch((error) => {
             console.log('err', error.status)
@@ -265,6 +268,7 @@ class TvPage extends Component {
                                                         {(this.state.isReviewBody)?<TextArea onChange={this.onChange} autoHeight name='review'>{this.state.userReview.body}</TextArea> : null}
                                                         {(this.state.isReviewBody)? null : <TextArea onChange={this.onChange}  autoHeight name='review' placeholder='Tell us more' ></TextArea>}
                                                         <Button type="submit" color='blue' compact size='tiny' floated='right' >{(this.state.isReviewBody)? 'Edit' : 'Post'}</Button>
+                                                        {(this.state.submitted)? <Label basic color='green'>Submitted</Label> : null}
                                                         {(this.state.isReviewBody)? <Button onClick={this.handleDeleteReview} color='blue' compact size='tiny' floated='right' >Delete</Button> : null}
                                                     </Form>
                                                 </Grid>
