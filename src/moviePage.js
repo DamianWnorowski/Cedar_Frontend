@@ -7,6 +7,7 @@ import MediaList from './components/mediaList.js'
 import { Player } from 'video-react';
 import EmptyList from './components/emptyList.js'
 import CircularProgressbar from 'react-circular-progressbar'
+import { Link } from 'react-router-dom';
 import { 
     Grid, 
     Image,  
@@ -42,7 +43,8 @@ const actorMap = (actors) => actors.map(actor =>
         <Image 
         fluid
         src={(actor.picture)? picUrl + actor.picture : imgNf}
-        /> 
+        // url = http://localhost:8080/
+        as={Link} to={'/celebrity/' + actor.celeb_id}/> 
         <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor.name}</Header>
         </Container>
     </Grid.Column>
