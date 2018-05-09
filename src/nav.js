@@ -89,6 +89,11 @@ class Nav extends Component {
         const {email, password} = this.state;
         axios.post(`http://localhost:8080/login`, {email, password})
             .then((result) => {
+                // resetting
+                localStorage.removeItem('jwtToken');
+                this.setState({name:'',login:false,id: '', firstName: '',lastName: '',password: '', email: '', loginError: false, forgotPassword:false, captchaVerified: false,})
+                
+                // logging in
                 const token = result.data.userToken
                 console.log('token', token)
                 const name = result.data.userName
@@ -143,7 +148,7 @@ class Nav extends Component {
                 .then(res => {
                     const verifiedadmin = res.data;
                     console.log("is admin?: " + verifiedadmin)
-                    this.state.isAdmin = true;
+                    this.setState({isAdmin: true})
                 })
                 axios.get(`http://localhost:8080/secure/getuser`)
                 .then(result => {
@@ -164,7 +169,6 @@ class Nav extends Component {
         }catch(err) {
             console.log('reading token error nav',err)
         }  
-       
     }
     componentDidUpdate(){
         if(this.state.fresh && !this.state.mounted){
@@ -179,7 +183,7 @@ class Nav extends Component {
                     console.log('no token');
                     this.setState({login:false, name:"", fresh:false, mounted:false});
             }catch(err) {
-                console.log('reading token error')
+                console.log('reading token error in componentDidUpdate')
             }
         }
     }
@@ -238,7 +242,7 @@ class Nav extends Component {
                             <Menu inverted compact  vertical style={{padding:0}}>
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Profile'    />
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/settings'} name='Settings'   />
-                                {(this.state.isAdmin)? <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/settings'} name='Settings'   /> : null }
+                                {(this.state.isAdmin)? <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/admin'} name='Admin'   /> : null }
                                 <Menu.Item as={ Link } to='/' name='logout' onClick={this.handleLogout}/>
                             </Menu>
                         </Popup>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
 import AdminDisplayContent from './adminDisplayContent.js'
+import AdminEditContent from './adminEditContent.js'
 import {Container,Header, Menu, Grid} from 'semantic-ui-react';
 
 class AdminPage extends Component {
@@ -36,7 +37,7 @@ class AdminPage extends Component {
                         <Grid.Column stretched width={12} style={{backgroundColor:'rgba(2, 199, 255, 0.2)'}}>
                             <Container >
                                 {(activeItem == 'content')? 
-                                <AdminDisplayContent />
+                                <AdminEditContent />
                                 
                                 : null }
                                 {(activeItem == 'reports')? 

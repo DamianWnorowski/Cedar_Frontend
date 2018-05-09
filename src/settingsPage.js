@@ -18,6 +18,8 @@ class SettingsPage extends Component {
             userInfo: [],
             login: false,
             file: null,
+            fileUploaded: false,
+            newFile:null,
         }
     }
 
@@ -41,6 +43,8 @@ class SettingsPage extends Component {
                 .then(res => {
                     const userInfo = res.data;
                     console.log('movie:', userInfo)
+                    localStorage.removeItem('jwtToken');
+                    this.props.history.push('/');
                 })
             }
             
@@ -51,6 +55,8 @@ class SettingsPage extends Component {
                 .then(res => {
                     const userInfo = res.data;
                     console.log('movie:', userInfo)
+                    localStorage.removeItem('jwtToken');
+                    this.props.history.push('/');
                 })
             }
         }
@@ -79,11 +85,27 @@ class SettingsPage extends Component {
         axios.post(`http://localhost:8080/uploadFile`, data, config)
         .then((result) => {
             console.log("upload success with result: " + result);
+//            this.props.history.push('/profile/'+this.state.userInfo.id+'/settings');
+            this.setState({fileUploaded: true, newFile: <Image src={"http://localhost:8080/api/getPhoto?id=" + this.state.userInfo.id} />});
+            this.setState({change:''});
         });
     }
     onFileSelect = (e) => {
         this.setState({file:e.target.files[0]})
     }
+    componentDidUpdate() {
+        if(this.state.fileUploaded){
+            const { match: { params } } = this.props;
+            axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
+                .then(res => {
+                    const userInfo = res.data;
+                    console.log('user:', userInfo)
+                    this.setState({ userInfo });
+                })
+                this.setState({fileUploaded: false})
+        }
+    }
+    
     componentDidMount() {
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));
@@ -94,7 +116,7 @@ class SettingsPage extends Component {
                 axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
                 .then(res => {
                     const userInfo = res.data;
-                    console.log('movie:', userInfo)
+                    console.log('user:', userInfo)
                     this.setState({ userInfo });
                 })
             }
@@ -119,10 +141,21 @@ class SettingsPage extends Component {
                 <Container style={{backgroundColor:'black', color:'white', paddingRight:'1em'}}>
                     <Grid style={{paddingLeft:'1em'}}>
                         <Grid.Column width={4}>
+                            {(this.state.userInfo.photo === null)?
                             <Image 
                                 fluid
-                                src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
+                                src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'  
+                                
                             />
+                            :
+                                    <div>
+                            {(this.state.fileUploaded)?
+                                <div>{this.state.newFile}</div>
+                            : <Image 
+                                fluid
+                                src={"http://localhost:8080/api/getPhoto?id=" + this.state.userInfo.id}
+                                />    } </div>                                  
+                            }
                         </Grid.Column>
                         <Grid.Column width={12} style={{paddingTop:'.5em', paddingBottom:'1em',}}>
                             <Breadcrumb>
@@ -142,7 +175,7 @@ class SettingsPage extends Component {
                                         icon={<Icon color='grey' name='right chevron' />} 
                                     />
                                     {(this.state.change == 'fileupload')?
-                                    <Form onSubmit={this.handleUpload} enctype="multipart/form-data">
+                                    <Form onSubmit={this.handleUpload}>
                                         <Input type="file" onChange={this.onFileSelect} />
                                         <Button color='blue'  size='small' type="submit">Upload</Button>
                                       </Form>
