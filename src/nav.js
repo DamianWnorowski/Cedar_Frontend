@@ -113,8 +113,6 @@ class Nav extends Component {
                     const failedId = errMsg.replace("unverified", "");
                     this.setState({id: failedId});
                     console.log("Unverified user with id: " + this.state.id);
-                }else{
-                    this.setState({loginError:true})
                 }
             });
     }
