@@ -19,6 +19,7 @@ import TermsAndConditions from './footer_pages/termsAndConditions.js'
 import AdminPage from './adminPage.js'
 import ContactUs from './footer_pages/contactUs.js'
 import SettingsPage from './settingsPage.js';
+import Page404 from './404.js'
 import { Grid, Image, Container,  List, Header,Divider,  Segment} from 'semantic-ui-react'
 
 
@@ -46,6 +47,7 @@ class App extends Component {
             <Route exact path='/resetpassword/:id/:token' component={ResetPasswordPage} />
             <Route exact path='/verified' render={(props) => (<HomePage verified='verified' {...props}/>)}  />
             <Route exact path='/profile/:userId/admin' component={AdminPage} />
+            <Route exact path='/404/' component={Page404} />
           </Switch>
           <Footer />
         </div>
