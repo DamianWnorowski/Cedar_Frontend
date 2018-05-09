@@ -90,6 +90,7 @@ class Nav extends Component {
             .then((result) => {
                 const token = result.data.userToken
                 const name = result.data.userName
+                console.log("user email: " + name)
                 const userId = result.data.userId
                 const blacklist = result.data.userBlacklist
                 const login = true
@@ -125,6 +126,29 @@ class Nav extends Component {
     }
     componentDidMount(){
         console.log("component mount");
+        axios.get(`http://localhost:8080/secure/getuser`)
+        .then(res => {
+            const token = result.data.userToken
+            const name = result.data.userName
+            console.log("user email: " + name)
+            const userId = result.data.userId
+            const blacklist = result.data.userBlacklist
+            const login = true
+            this.setState({login, name, blacklist, userId})
+            
+            if(currentUser.following)
+            currentUser.following.map(userFollowed => {
+                console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
+                if(this.state.userId == userFollowed.id) {
+                    console.log('i am following this user')
+                    this.setState({isFollowing:true})
+                }
+            })
+            console.log("loggedin user?:true",currentUser.name)
+            console.log("loggedin user?:true",currentUser.following)
+            
+        })
+        
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));
             if (decoded.exp > Date.now() / 1000) { 
@@ -168,7 +192,7 @@ class Nav extends Component {
         console.log('users id is: ', userId);
         axios.get(`http://localhost:8080/resendemail?id=` + userId)
           .then(res => {
-                console.log('result: ', res.data)
+                console.log('Verification resent')
           })
     }
     
@@ -204,6 +228,7 @@ class Nav extends Component {
                             on='click'
                             trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name={this.state.name}/>}
                             flowing
+                            hoverable
                         >
                             <Menu inverted compact  vertical style={{padding:0}}>
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Profile'    />
@@ -212,7 +237,6 @@ class Nav extends Component {
                             </Menu>
                         </Popup>
                     :
-                        
                         <Menu inverted stackable style={{backgroundColor:'black', margin:0}}>
                             <Popup
                                 inverted
@@ -220,7 +244,6 @@ class Nav extends Component {
                                 trigger={<Menu.Item  color={'blue'} style={{color:'white'}} name='Login'/>}
                                 flowing
                             >
-                                
                                 <Segment inverted style={{width:'200px'}}>
                                     {(this.state.verified)? 
                                         <Form 
@@ -235,7 +258,7 @@ class Nav extends Component {
 
                                         </Form>
                                     :
-                                        <Button onClick={this.resendVerification}>Resend Verification Email</Button>
+                                        <Button content='Resend Verification' icon='send' labelPosition='right' onClick={this.resendVerification} />
                                     }
                                 </Segment>
                             </Popup>

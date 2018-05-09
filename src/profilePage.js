@@ -77,6 +77,8 @@ class ProfilePage extends Component {
         
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openDeleteModal = this.openDeleteModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
     }
     
     openModal(){
@@ -86,7 +88,16 @@ class ProfilePage extends Component {
     closeModal(){
         this.setState({reportModalOpen: false});
     }
-
+    
+    openDeleteModal(){
+        this.setState({deleteModalOpen: true});
+    }
+    
+    closeDeleteModal(){
+        this.setState({deleteModalOpen: false});
+    }
+    
+    
     componentDidMount() {    
         this.state.isAdmin = false;
         const { match: { params } } = this.props;
@@ -132,9 +143,19 @@ class ProfilePage extends Component {
             console.log("reported: " + ans)
         })
     }
-    handleDeleteUser(){
-        
+    
+    handleDeleteUser = (e) => {
+        this.setState({deleteModalOpen: false})
+        const {userId} = this.state;
+        console.log("Deleting user with id: " + userId)
+        axios.get(`http://localhost:8080/admin/deleteuser?id=` + userId)
+        .then(res => {
+            const ans = res.data;
+            console.log("deleted account: ", res.data)
+            this.props.history.push('/404');
+        })
     }
+    
     handleFollow = (e) => {
         this.setState({isFollowing: !this.state.isFollowing})
         if(this.state.isFollowing){
@@ -194,17 +215,42 @@ class ProfilePage extends Component {
                             onSubmit={this.handleReportUser}>
                                 <Form.Input fluid type="text" name="description" label='Please let us know why you are reporting this user.' onChange={this.onChange}/>
                                     <Button type ='submit' color='red' inverted>
-                                        <Icon name='send' /> Submit Report
+                                        <Icon name='send'/> Submit Report
+                                    </Button>
+                                    <Button 
+                                        color='green'
+                                        onClick={this.closeDeleteModal}
+                                    >
+                                        <Icon name='backward'/>
+                                        Back
                                     </Button>
                                 </Form>
                         </Modal.Content>
                       </Modal>
                     {(this.state.isAdmin)? 
-                        <button 
-                            className="mini ui button" 
-                            margin-left="10">
-                            Delete User
-                        </button>
+                    <span>
+                        <button onClick={this.openDeleteModal} className="mini ui button" margin-left="10">Delete</button>
+                        <Modal open={this.state.deleteModalOpen}>
+                        <Header icon='warning' color='red' content='ATTENTION' />
+                        <Modal.Content>
+                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                          <Button 
+                            color='red'
+                            onClick={this.handleDeleteUser}
+                          >
+                            <Icon name='remove'/> Yes
+                          </Button>
+                          <Button 
+                            color='green'
+                            onClick={this.closeDeleteModal}
+                          >
+                            No
+                          </Button>
+                        </Modal.Actions>
+                      </Modal>
+                    </span>
                     : null }
                     
                 </Grid.Column></Grid.Column>
