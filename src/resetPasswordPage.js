@@ -40,13 +40,14 @@ class ResetPasswordPage extends Component {
     }
     
     handleChangePassword(){
-        const pw = 'CHANGE THIS TO THE PW FROM FORM';
+        const pw = this.state.newpassword;
         axios.get(`http://localhost:8080/secure/resetpassword?p=`+ pw)
         .then(res => {
             const ans = res.data;
             console.log("reported: " + ans)
             localStorage.removeItem('jwtToken');
             setAuthToken(null);
+            this.props.history.push('/');
         })
     }
     
@@ -55,7 +56,7 @@ class ResetPasswordPage extends Component {
             <div>
                 <Container textAlign='center' style={{backgroundColor:'black', color:'white', padding:'2em'}}>
                     <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '3em', color:'Black'}}>Reset Password</Header>
-                    <Form onSubmit={this.handleChangePassword} style={{paddingLeft:'3em'}}> 
+                    <Form onSubmit={this.handleChangePassword.bind(this)} style={{paddingLeft:'3em'}}> 
                         <Form.Input name='newpassword' type='password' placeholder='New Password' onChange={this.onChange} />
                         <Form.Input name='renewpassword' type='password' placeholder='Re-enter New Password' onChange={this.onChange} />
                         <Button color='blue' size='small' type='submit'>Submit</Button>
