@@ -24,27 +24,40 @@ import {
 } from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
-const userInfoList = (userInfo) => {
+const userInfoList = (userInfo, openModal) => {
     let followingCount = 0;
     if(userInfo.following) followingCount = userInfo.following.length;
     const user = [
     ['Followers', 'need to get followers'],
     ['Following', followingCount],
-    ['Profile Views', userInfo.profileViews],]
+    ['Profile Views', userInfo.profileViews],
+    ['Report User','']]
 
     return user.map(item => 
         <div>
-            <Breadcrumb>
-                <Breadcrumb.Section >
-                    <p style={{color:'#02c7ff', marginLeft:'2em'}}>{item[0]}</p>
-                </Breadcrumb.Section>
-                <Breadcrumb.Divider 
-                    icon={<Icon color='grey' name='right chevron' />} 
-                />
-                <Breadcrumb.Section >
-                    <p style={{color:'white'}}>{item[1]}</p>
-                </Breadcrumb.Section>
-            </Breadcrumb>
+            
+                {(item[0] == 'Report User')? 
+                <Breadcrumb>
+                    
+                    <Breadcrumb.Section onClick={openModal}>
+                        <p style={{color:'red', marginLeft:'2em'}} >{item[0]}</p>
+                    </Breadcrumb.Section>
+                </Breadcrumb>
+                :
+                <Breadcrumb>
+                    <Breadcrumb.Section >
+                        <p style={{color:'#02c7ff', marginLeft:'2em'}}>{item[0]}</p>
+                    </Breadcrumb.Section>
+                    <Breadcrumb.Divider 
+                        icon={<Icon color='grey' name='right chevron' />} 
+                    />
+                    <Breadcrumb.Section >
+                        <p style={{color:'white'}}>{item[1]}</p>
+                    </Breadcrumb.Section>
+                </Breadcrumb>
+                
+                }
+                
         </div>
     );
 }
@@ -204,8 +217,8 @@ class ProfilePage extends Component {
                         {(this.state.isFollowing)?<Button color='blue' size='mini' onClick={this.handleFollow} >Unfollow</Button> : <Button onClick={this.handleFollow} size='mini'>Follow</Button>}
                         </Breadcrumb.Section>
                     </Breadcrumb>
-                    {userInfoList(user)}
-                    <button onClick={this.openModal} className="mini ui button" margin-left="10">Report User </button>
+                    {userInfoList(user, this.openModal)}
+                    {/* <button onClick={this.openModal} className="mini ui button" margin-left="10">Report User </button> */}
                     <Modal
                         open={this.state.reportModalOpen}
                     >
