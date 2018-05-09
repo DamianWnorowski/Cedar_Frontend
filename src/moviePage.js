@@ -7,6 +7,7 @@ import MediaList from './components/mediaList.js'
 import { Player } from 'video-react';
 import EmptyList from './components/emptyList.js'
 import CircularProgressbar from 'react-circular-progressbar'
+import { Link } from 'react-router-dom';
 import { 
     Grid, 
     Image,  
@@ -42,7 +43,8 @@ const actorMap = (actors) => actors.map(actor =>
         <Image 
         fluid
         src={(actor.picture)? picUrl + actor.picture : imgNf}
-        /> 
+        // url = http://localhost:8080/
+        as={Link} to={'/celebrity/' + actor.celeb_id}/> 
         <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor.name}</Header>
         </Container>
     </Grid.Column>
@@ -89,6 +91,7 @@ class MoviePage extends Component {
         isReviewed: 1,
         isReviewBody: false,
         submitted: false,
+        deleted: false,
         failed: false
       }
 
@@ -117,6 +120,8 @@ class MoviePage extends Component {
         console.log("rate content: ", {body, rating, content_id})
         axios.post('http://localhost:8080/api/editreview?id=' + this.state.userReview.review_id,  {body, rating, content_id} )
         .then((response) => {
+            this.setState({deleted: false})
+            this.setState({submitted: true})
             console.log('review edited',response)
         })
         .catch((error) => {
@@ -138,6 +143,7 @@ class MoviePage extends Component {
         axios.post('http://localhost:8080/api/ratecontent',  {body, rating, content_id} )
         .then((response) => {
             console.log('content rated',response)
+            this.setState({deleted: false})
             this.setState({submitted: true})
         })
         .catch((error) => {
@@ -155,6 +161,8 @@ class MoviePage extends Component {
     handleDeleteReview = (e) => {
         axios.get('http://localhost:8080/api/deletereview?id=' + this.state.userReview.review_id)
         .then((response) => {
+            this.setState({submitted: false})
+            this.setState({deleted: true})
             console.log('review deleted',response)
         })
         .catch((error) => {
@@ -277,6 +285,7 @@ class MoviePage extends Component {
                                                         {(this.state.isReviewBody)? null : <TextArea onChange={this.onChange}  autoHeight name='review' placeholder='Tell us more' ></TextArea>}
                                                         <Button type="submit" color='blue' compact size='tiny' floated='right' >{(this.state.isReviewBody)? 'Edit' : 'Post'}</Button>
                                                         {(this.state.submitted)? <Label basic color='green'>Submitted</Label> : null}
+                                                        {(this.state.deleted)? <Label basic color='red'>Deleted</Label> : null}
                                                         {(this.state.failed)? <Label basic color='red'>Failed</Label> : null}
                                                         {(this.state.isReviewBody)? <Button onClick={this.handleDeleteReview} color='blue' compact size='tiny' floated='right' >Delete</Button> : null}
                                                     </Form>
