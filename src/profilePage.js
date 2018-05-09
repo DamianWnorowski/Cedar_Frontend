@@ -24,25 +24,31 @@ import {
 } from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
-const userInfoList = (userInfo, openModal) => {
+const userInfoList = (userInfo, openModal, openDeleteModal) => {
     let followingCount = 0;
     if(userInfo.following) followingCount = userInfo.following.length;
     const user = [
     ['Followers', 'need to get followers'],
     ['Following', followingCount],
     ['Profile Views', userInfo.profileViews],
-    ['Report User','']]
+    ['Report User',''],
+    ['Delete', '']]
 
     return user.map(item => 
         <div>
             
-                {(item[0] == 'Report User')? 
-                <Breadcrumb>
-                    
-                    <Breadcrumb.Section onClick={openModal}>
-                        <p style={{color:'red', marginLeft:'2em'}} >{item[0]}</p>
-                    </Breadcrumb.Section>
-                </Breadcrumb>
+                {(item[0] == 'Report User' || item[0] == 'Delete')? 
+                    <Breadcrumb>
+                        {(item[0] == 'Report User')? 
+                            <Breadcrumb.Section onClick={openModal}>
+                                <p style={{color:'red', marginLeft:'2em'}} >{item[0]}</p>
+                            </Breadcrumb.Section>
+                        :
+                            <Breadcrumb.Section onClick={openDeleteModal}>
+                                <p style={{color:'red', marginLeft:'2em'}} >{item[0]}</p>
+                            </Breadcrumb.Section>
+                        }
+                    </Breadcrumb>
                 :
                 <Breadcrumb>
                     <Breadcrumb.Section >
@@ -217,7 +223,7 @@ class ProfilePage extends Component {
                         {(this.state.isFollowing)?<Button color='blue' size='mini' onClick={this.handleFollow} >Unfollow</Button> : <Button onClick={this.handleFollow} size='mini'>Follow</Button>}
                         </Breadcrumb.Section>
                     </Breadcrumb>
-                    {userInfoList(user, this.openModal)}
+                    {userInfoList(user, this.openModal, this.openDeleteModal)}
                     {/* <button onClick={this.openModal} className="mini ui button" margin-left="10">Report User </button> */}
                     <Modal
                         open={this.state.reportModalOpen}
@@ -242,7 +248,6 @@ class ProfilePage extends Component {
                       </Modal>
                     {(this.state.isAdmin)? 
                     <span>
-                        <button onClick={this.openDeleteModal} className="mini ui button" margin-left="10">Delete</button>
                         <Modal open={this.state.deleteModalOpen}>
                         <Header icon='warning' color='red' content='ATTENTION' />
                         <Modal.Content>

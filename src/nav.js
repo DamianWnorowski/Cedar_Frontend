@@ -126,28 +126,7 @@ class Nav extends Component {
     }
     componentDidMount(){
         console.log("component mount");
-        axios.get(`http://localhost:8080/secure/getuser`)
-        .then(res => {
-            const token = result.data.userToken
-            const name = result.data.userName
-            console.log("user email: " + name)
-            const userId = result.data.userId
-            const blacklist = result.data.userBlacklist
-            const login = true
-            this.setState({login, name, blacklist, userId})
-            
-            if(currentUser.following)
-            currentUser.following.map(userFollowed => {
-                console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
-                if(this.state.userId == userFollowed.id) {
-                    console.log('i am following this user')
-                    this.setState({isFollowing:true})
-                }
-            })
-            console.log("loggedin user?:true",currentUser.name)
-            console.log("loggedin user?:true",currentUser.following)
-            
-        })
+        
         
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));

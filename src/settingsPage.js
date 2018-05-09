@@ -119,6 +119,20 @@ class SettingsPage extends Component {
                             <div>
                                 <Breadcrumb>
                                     <Breadcrumb.Section >
+                                        <p style={{color:'#02c7ff', marginLeft:'2em'}}>Profile Picture</p>
+                                    </Breadcrumb.Section>
+                                    <Breadcrumb.Divider 
+                                        icon={<Icon color='grey' name='right chevron' />} 
+                                    />
+                                    <Breadcrumb.Section link name='deleteAccount' >
+                                        <p style={{color:'white'}}>Upload Picture</p>
+                                    </Breadcrumb.Section>
+                                    
+                                </Breadcrumb>
+                            </div>
+                            <div>
+                                <Breadcrumb>
+                                    <Breadcrumb.Section >
                                         <p style={{color:'#02c7ff', marginLeft:'2em'}}>Email</p>
                                     </Breadcrumb.Section>
                                     <Breadcrumb.Divider 
