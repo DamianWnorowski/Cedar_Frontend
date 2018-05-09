@@ -24,6 +24,7 @@ import {
 
 const MOVIES = constants.MOVIES;
 const imgUrl = constants.IMGURL;
+const picUrl = 'https://image.tmdb.org/t/p/w440_and_h660_bestv2'
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 const users2 = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'ell1iot4', 'helen3', 'chr1is', 'chri2stian', 'dani3l', 'elliot4', 'he5len', 'chri6stian2', 'dani7el3', 'e13liot4', 'he2len3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
@@ -49,15 +50,14 @@ const testMap = users.map(user =>
 );
 
 
-const actorMap = users.map(actor => 
+const actorMap = (actors) => actors.map(actor => 
     <Grid.Column  key={actor + "1"}>
         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
         <Image 
         fluid
-        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
+        src={picUrl + actor.picture}
         /> 
-        <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor}</Header>
-        <div style={{color:'white', paddingLeft:'.3em'}}>{actor} Played</div>
+        <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor.name}</Header>
         </Container>
     </Grid.Column>
 );
@@ -300,7 +300,7 @@ class MoviePage extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/>
+                    {(movieInfo.celebrities && movieInfo.celebrities.length)? <MediaList nameHeader={'Actors'} displayInfo={actorMap(movieInfo.celebrities)} numShow={6}/> : null}
                     <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
                     {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}

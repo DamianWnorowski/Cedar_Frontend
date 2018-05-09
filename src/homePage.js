@@ -207,7 +207,7 @@ class HomePage extends Component {
             }
             
         })
-        axios.get(`http://localhost:8080/api/featuredMovie`)
+        axios.get(`http://localhost:8080/api/featuredmovie`)
             .then(res => {
             console.log('featured', res.data)
             if(res.data){
