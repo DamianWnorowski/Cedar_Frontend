@@ -129,6 +129,19 @@ class Nav extends Component {
     }
     componentDidMount(){
         console.log("component mount");
+       
+   
+        try{
+            const decoded = decode(localStorage.getItem('jwtToken'));
+            if (decoded.exp > Date.now() / 1000) { 
+                this.setState({login:true, name:decoded.sub, mounted:true})
+                console.log(decoded)
+            }
+            else
+                console.log('no token')
+        }catch(err) {
+            console.log('reading token error',err)
+        }  
         axios.get(`http://localhost:8080/secure/getuser`)
         .then(result => {
             const name = result.data.email
@@ -141,18 +154,6 @@ class Nav extends Component {
                 console.log("refreshed state from backend for" + name)  
             }
         })
-   
-        try{
-            const decoded = decode(localStorage.getItem('jwtToken'));
-            if (decoded.exp > Date.now() / 1000) { 
-                this.setState({login:true, name:decoded.sub, mounted:true})
-                console.log(decoded)
-            }
-            else
-                console.log('no token')
-        }catch(err) {
-            console.log('reading token error')
-        }  
     }
     componentDidUpdate(){
         if(this.state.fresh && !this.state.mounted){
