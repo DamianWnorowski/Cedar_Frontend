@@ -7,24 +7,10 @@ import MediaList from './components/mediaList.js'
 import EmptyList from './components/emptyList.js'
 import MediaTable from './components/mediaTable.js'
 
-import { 
-    Grid, 
-    Menu,
-    List,
-
-    Breadcrumb,
-    Icon,
-    Image,  
-    Tab,
-    Container,  
-    Header, 
-    Modal,
-    Button,
-    Form
-} from 'semantic-ui-react';
+import { Grid,  Menu,List,Breadcrumb,Icon,Image,  Tab,Container,  Header, Modal,Button,Form} from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
-const userInfoList = (userInfo, openModal, openDeleteModal) => {
+const userInfoList = (userInfo, openModal, openDeleteModal, handleModal) => {
     let followingCount = 0;
     if(userInfo.following) followingCount = userInfo.following.length;
     const user = [
@@ -40,11 +26,11 @@ const userInfoList = (userInfo, openModal, openDeleteModal) => {
                 {(item[0] == 'Report User' || item[0] == 'Delete')? 
                     <Breadcrumb>
                         {(item[0] == 'Report User')? 
-                            <Breadcrumb.Section onClick={openModal}>
+                            <Breadcrumb.Section name='report' onClick={handleModal}>
                                 <p style={{color:'red', marginLeft:'2em'}} >{item[0]}</p>
                             </Breadcrumb.Section>
                         :
-                            <Breadcrumb.Section onClick={openDeleteModal}>
+                            <Breadcrumb.Section name='delete' onClick={handleModal}>
                                 <p style={{color:'red', marginLeft:'2em'}} >{item[0]}</p>
                             </Breadcrumb.Section>
                         }
@@ -90,32 +76,20 @@ class ProfilePage extends Component {
             isFollowing: false,
             isUser: false,
             isAdmin: false,
+            isOpen: '',
             reportModalOpen: false,
             description: "",
         }
-        
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.openDeleteModal = this.openDeleteModal.bind(this);
-        this.closeDeleteModal = this.closeDeleteModal.bind(this);
+       
+    }
+
+    handleModal = (e,data) => {
+        this.setState({isOpen: data.name});
     }
     
-    openModal(){
-        this.setState({reportModalOpen: true});
+    handleModalClose= () => {
+        this.setState({isOpen: ''});
     }
-    
-    closeModal(){
-        this.setState({reportModalOpen: false});
-    }
-    
-    openDeleteModal(){
-        this.setState({deleteModalOpen: true});
-    }
-    
-    closeDeleteModal(){
-        this.setState({deleteModalOpen: false});
-    }
-    
     
     componentDidMount() {    
         this.state.isAdmin = false;
@@ -152,7 +126,7 @@ class ProfilePage extends Component {
     }
     
     handleReportUser = (e) => {
-        this.setState({reportModalOpen: false})
+        this.setState({isOpen: ''})
         const {userId, description} = this.state;
         console.log("Reporting user with id: " + userId)
         console.log("For reason: " + description)
@@ -164,7 +138,7 @@ class ProfilePage extends Component {
     }
     
     handleDeleteUser = (e) => {
-        this.setState({deleteModalOpen: false})
+        this.setState({isOpen: ''})
         const {userId} = this.state;
         console.log("Deleting user with id: " + userId)
         axios.get(`http://localhost:8080/admin/deleteuser?id=` + userId)
@@ -223,10 +197,10 @@ class ProfilePage extends Component {
                         {(this.state.isFollowing)?<Button color='blue' size='mini' onClick={this.handleFollow} >Unfollow</Button> : <Button onClick={this.handleFollow} size='mini'>Follow</Button>}
                         </Breadcrumb.Section>
                     </Breadcrumb>
-                    {userInfoList(user, this.openModal, this.openDeleteModal)}
+                    {userInfoList(user, this.openModal, this.openDeleteModal, this.handleModal)}
                     {/* <button onClick={this.openModal} className="mini ui button" margin-left="10">Report User </button> */}
                     <Modal
-                        open={this.state.reportModalOpen}
+                        open={(this.state.isOpen == 'report')? true : false}
                     >
                         <Header icon='flag' content='Report User' />
                         <Modal.Content>
@@ -238,7 +212,7 @@ class ProfilePage extends Component {
                                     </Button>
                                     <Button 
                                         color='green'
-                                        onClick={this.closeDeleteModal}
+                                        onClick={this.handleModalClose}
                                     >
                                         <Icon name='backward'/>
                                         Back
@@ -248,7 +222,7 @@ class ProfilePage extends Component {
                       </Modal>
                     {(this.state.isAdmin)? 
                     <span>
-                        <Modal open={this.state.deleteModalOpen}>
+                        <Modal open={(this.state.isOpen == 'delete')? true : false} >
                         <Header icon='warning' color='red' content='ATTENTION' />
                         <Modal.Content>
                           <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
@@ -256,13 +230,13 @@ class ProfilePage extends Component {
                         <Modal.Actions>
                           <Button 
                             color='red'
-                            onClick={this.handleDeleteUser}
+                            onClick={this.handleModalClose}
                           >
                             <Icon name='remove'/> Yes
                           </Button>
                           <Button 
                             color='green'
-                            onClick={this.closeDeleteModal}
+                            onClick={this.handleDeleteUser}
                           >
                             No
                           </Button>

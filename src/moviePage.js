@@ -98,6 +98,7 @@ class MoviePage extends Component {
         isAdmin: false,
         movieInfo: {},
         rating: 0,
+        isOpen: '',
         isReviewed: 1,
         isReviewBody: false,
       }
@@ -130,6 +131,12 @@ class MoviePage extends Component {
             console.log('err', error.status)
         });
     }
+    handleDeleteContent = (e) => {
+        this.setState({isOpen: ''})
+    }
+    handleEditContent = (e) => {
+        this.setState({isOpen: ''})
+    }
 
     onSubmit = (e) => {
         const body = this.state.review;
@@ -143,6 +150,13 @@ class MoviePage extends Component {
         .catch((error) => {
             console.log('err', error.status)
         });
+    }
+    handleModal = (e,data) => {
+        this.setState({isOpen: data.name});
+    }
+    
+    handleModalClose= () => {
+        this.setState({isOpen: ''});
     }
     handleDeleteReview = (e) => {
         axios.get('http://localhost:8080/api/deletereview?id=' + this.state.userReview.review_id)
@@ -192,8 +206,8 @@ class MoviePage extends Component {
                 <Container  style={{backgroundColor:'black', color:'white', padding:'2em'}}>
                 {(this.state.isAdmin)? 
                     <Button.Group vertical floated='right'>
-                        <Button color='green' size='small' floated='right'>Edit Content</Button>
-                        <Button color='red' size='small' floated='right'>Delete Content</Button>
+                        <Button name='edit' color='green' size='small' floated='right' onClick={this.isOpen} >Edit Content</Button>
+                        <Button name='delete' color='red' size='small' floated='right' onClick={this.isOpen} >Delete Content</Button>
                     </Button.Group> 
                 : null}
                     
@@ -284,6 +298,26 @@ class MoviePage extends Component {
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
                     {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}
                     
+                    <Modal open={(this.state.isOpen == 'delete')? true : false} >
+                        <Header icon='warning' color='red' content='ATTENTION' />
+                        <Modal.Content>
+                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                          <Button 
+                            color='red'
+                            onClick={this.handleModalClose}
+                          >
+                            <Icon name='remove'/> Yes
+                          </Button>
+                          <Button 
+                            color='green'
+                            onClick={this.handleDeleteContent}
+                          >
+                            No
+                          </Button>
+                        </Modal.Actions>
+                      </Modal>
                 </Container>
             </div>
         )
