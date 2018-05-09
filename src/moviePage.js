@@ -206,8 +206,8 @@ class MoviePage extends Component {
                 <Container  style={{backgroundColor:'black', color:'white', padding:'2em'}}>
                 {(this.state.isAdmin)? 
                     <Button.Group vertical floated='right'>
-                        <Button name='edit' color='green' size='small' floated='right' onClick={this.isOpen} >Edit Content</Button>
-                        <Button name='delete' color='red' size='small' floated='right' onClick={this.isOpen} >Delete Content</Button>
+                        <Button name='edit' color='green' size='small' floated='right' onClick={this.handleModal} >Edit Content</Button>
+                        <Button name='delete' color='red' size='small' floated='right' onClick={this.handleModal} >Delete Content</Button>
                     </Button.Group> 
                 : null}
                     
@@ -317,7 +317,27 @@ class MoviePage extends Component {
                             No
                           </Button>
                         </Modal.Actions>
-                      </Modal>
+                    </Modal>
+                    <Modal open={(this.state.isOpen == 'edit')? true : false} >
+                        <Header icon='warning' color='red' content='ATTENTION' />
+                        <Modal.Content>
+                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                          <Button 
+                            color='red'
+                            onClick={this.handleModalClose}
+                          >
+                            <Icon name='remove'/> Yes
+                          </Button>
+                          <Button 
+                            color='green'
+                            onClick={this.handleEditContent}
+                          >
+                            No
+                          </Button>
+                        </Modal.Actions>
+                    </Modal>
                 </Container>
             </div>
         )
