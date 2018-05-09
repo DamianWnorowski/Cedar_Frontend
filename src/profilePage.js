@@ -305,13 +305,13 @@ class ProfilePage extends Component {
                         <Modal.Actions>
                           <Button 
                             color='red'
-                            onClick={this.handleModalClose}
+                            onClick={this.handleDeleteUser}
                           >
                             <Icon name='remove'/> Yes
                           </Button>
                           <Button 
                             color='green'
-                            onClick={this.handleDeleteUser}
+                            onClick={this.handleModalClose}
                           >
                             No
                           </Button>

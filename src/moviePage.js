@@ -24,10 +24,8 @@ import {
 
 const MOVIES = constants.MOVIES;
 const imgUrl = constants.IMGURL;
+const imgNf = 'http://www.sydneymusiccircle.org/images/artists/artist-65353-2000px-No_image_available.svg.png'
 const picUrl = 'https://image.tmdb.org/t/p/w440_and_h660_bestv2'
-const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
-const users2 = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'ell1iot4', 'helen3', 'chr1is', 'chri2stian', 'dani3l', 'elliot4', 'he5len', 'chri6stian2', 'dani7el3', 'e13liot4', 'he2len3']
-// const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [
     ['Genre', 'genres'], 
     ['Release Date', 'date'], 
@@ -36,26 +34,14 @@ const movieTest = [
     ['Box Office', 'boxOffice'],
     ['Run Time','runtime'],
     ['Studio', 'studio']];
-// const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
-
-const testMap = users.map(user => 
-    <Grid.Column  key={user}>
-        <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
-        <Image 
-        fluid
-        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
-        /> 
-        </Container>
-    </Grid.Column>
-);
 
 
 const actorMap = (actors) => actors.map(actor => 
-    <Grid.Column  key={actor + "1"}>
+    <Grid.Column  key={actor.celeb_id }>
         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
         <Image 
         fluid
-        src={picUrl + actor.picture}
+        src={(actor.picture)? picUrl + actor.picture : imgNf}
         /> 
         <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor.name}</Header>
         </Container>
@@ -64,8 +50,8 @@ const actorMap = (actors) => actors.map(actor =>
 
 const mediaReviews = (data) => {
     const reviews = data.map(user => 
-        <Grid.Column  width={8}>
-            <Grid key={user.review_id} style={{backgroundColor: 'rgba(2, 199, 255, 0.1)',padding:'0',paddingBottom:'.5em', marginTop:'1.0em',marginRight:'.0em',marginLeft:'0em', borderRight: '.3em solid rgba(2, 199, 255, 0.5)', borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',borderLeft: '.3em solid rgba(2, 199, 255, 0.5)', borderTop: '.3em solid rgba(2, 199, 255, 0.5)'}}>
+        <Grid.Column key={user.review_id} width={8}>
+            <Grid  style={{backgroundColor: 'rgba(2, 199, 255, 0.1)',padding:'0',paddingBottom:'.5em', marginTop:'1.0em',marginRight:'.0em',marginLeft:'0em', borderRight: '.3em solid rgba(2, 199, 255, 0.5)', borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',borderLeft: '.3em solid rgba(2, 199, 255, 0.5)', borderTop: '.3em solid rgba(2, 199, 255, 0.5)'}}>
                 <Grid.Column width={4}>
                     <Image 
                         fluid
@@ -84,7 +70,7 @@ const mediaReviews = (data) => {
 }
 
 const movieStats = (movieInfo) =>  movieTest.map(text => 
-    <Container key={text} style={{paddingTop:'.1em'}}>
+    <Container key={text[0]} style={{paddingTop:'.1em'}}>
         <Breadcrumb>
             <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>{text[0]}</p></Breadcrumb.Section>
             <Breadcrumb.Divider icon={<Icon color='grey' name='right chevron' />} />
@@ -301,7 +287,6 @@ class MoviePage extends Component {
                         </Grid.Row>
                     </Grid>
                     {(movieInfo.celebrities && movieInfo.celebrities.length)? <MediaList nameHeader={'Actors'} displayInfo={actorMap(movieInfo.celebrities)} numShow={6}/> : null}
-                    <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
                     {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}
                     

@@ -21,6 +21,7 @@ class Nav extends Component {
             lastName: '',
             password: '',
             email: '',
+            isAdmin: false,
             login: false,
             forgotPassword: false,
             recaptchaResponse: '',
@@ -138,6 +139,12 @@ class Nav extends Component {
             if (decoded.exp > Date.now() / 1000) { 
                 this.setState({login:true, name:decoded.sub, mounted:true})
                 console.log(decoded)
+                axios.get(`http://localhost:8080/secure/verifyadmin`)
+                .then(res => {
+                    const verifiedadmin = res.data;
+                    console.log("is admin?: " + verifiedadmin)
+                    this.state.isAdmin = true;
+                })
                 axios.get(`http://localhost:8080/secure/getuser`)
                 .then(result => {
                     const name = result.data.email
@@ -231,6 +238,7 @@ class Nav extends Component {
                             <Menu inverted compact  vertical style={{padding:0}}>
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId } name='Profile'    />
                                 <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/settings'} name='Settings'   />
+                                {(this.state.isAdmin)? <Menu.Item as={ Link } to={'/profile/' + this.state.userId + '/settings'} name='Settings'   /> : null }
                                 <Menu.Item as={ Link } to='/' name='logout' onClick={this.handleLogout}/>
                             </Menu>
                         </Popup>
