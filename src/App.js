@@ -8,6 +8,7 @@ import Nav from './nav.js';
 import Footer from './footer.js';
 import MediaTable from './components/mediaTable.js';
 import MoviePage from './moviePage.js';
+import TvPage from './tvPage.js';
 import Browse from './browse.js';
 import ProfilePage from './profilePage.js';
 import CelebrityPage from './celebrityPage.js'
@@ -34,6 +35,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/movie/:movieId" component={MoviePage} />
+            <Route exact path="/tv/:tvId" component={TvPage} />
             <Route exact path="/browse" component={Browse} />
             <Route exact path="/profile/:userId" component={ProfilePage}/>
             <Route exact path='/celebrity/:celebId' component={CelebrityPage} />

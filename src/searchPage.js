@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 import * as constants from  './components/constants.js'
 import MediaList from './components/mediaList.js'
@@ -17,7 +18,9 @@ import {
 
 let altColor = false
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
-const movieMap = (movies) => movies.map(movieInfo => {
+const picUrl = 'https://image.tmdb.org/t/p/w440_and_h660_bestv2'
+const imgNf = 'http://www.sydneymusiccircle.org/images/artists/artist-65353-2000px-No_image_available.svg.png'
+const movieMap = (movies, url) => movies.map(movieInfo => {
     if(altColor){
         altColor = false
     }else{
@@ -27,7 +30,7 @@ const movieMap = (movies) => movies.map(movieInfo => {
         <Grid.Row key={movieInfo.title} style={{paddingTop: '4em', paddingBottom: '.5em'}} className={(altColor) ? 'style2' : 'style1'}>
             <Grid.Column width={4}>
                 <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-1em',marginRight:'2em', marginTop:'-4em'}}>
-                    <Image alt="example" 
+                    <Image alt="example" as={Link} to={'/' + url + '/' + movieInfo.id}
                         src={imgUrl + movieInfo.poster_path} 
                     />
                 </div>
@@ -41,6 +44,36 @@ const movieMap = (movies) => movies.map(movieInfo => {
                     </Grid.Column>
                     <Grid.Column width={15} style={{ marginTop:'-1.5em',marginLeft:'0em',padding:0,paddingBottom:'2em'}}>
                     <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>{movieInfo.description}</p>
+                    </Grid.Column>
+                </Grid>
+            </Grid.Column>
+        </Grid.Row>
+    )
+});
+const celebMap = (movies, url) => movies.map(celeb => {
+    if(altColor){
+        altColor = false
+    }else{
+        altColor = true
+    }
+    return(
+        <Grid.Row key={celeb.name} style={{paddingTop: '4em', paddingBottom: '.5em'}} className={(altColor) ? 'style2' : 'style1'}>
+            <Grid.Column width={4}>
+                <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-1em',marginRight:'2em', marginTop:'-4em'}}>
+                    <Image alt="example" as={Link} to={'/' + url + '/' + celeb.celeb_id}
+                        src={(celeb.picture)? picUrl + celeb.picture : imgNf} 
+                    />
+                </div>
+            </Grid.Column>
+            <Grid.Column width={12} style={{marginLeft:'-2em'}}>
+                <Grid >
+                    <Grid.Column width={16} >
+                        <div style={{marginLeft:'-2em',marginTop:'-3em'}}>
+                            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '2em', color:'Black'}}>{celeb.name}</Header>
+                        </div>
+                    </Grid.Column>
+                    <Grid.Column width={15} style={{ marginTop:'-1.5em',marginLeft:'0em',padding:0,paddingBottom:'2em'}}>
+                    <p style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)',padding:'.5em',paddingBottom:'.2em',paddingRight:'.2em', fontSize:'1.2em'}}>{celeb.description}</p>
                     </Grid.Column>
                 </Grid>
             </Grid.Column>
@@ -66,9 +99,9 @@ class SearchPage extends Component {
         axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
                 console.log('search results: ', res.data)
-                if(res.data.movies) this.setState({movies: movieMap(res.data.movies)});
-                // if(res.data.tvshows) this.state.tvshows = movieMap(res.data.tvshows);
-                // if(res.data.celebrities) this.state.celebrities = movieMap(res.data.celebrities);
+                if(res.data.movies) this.setState({movies: movieMap(res.data.movies, 'movie')});
+                if(res.data.tvshows) this.setState({tv: movieMap(res.data.tvshows, 'tv')});
+                if(res.data.celebrities) this.setState({celeb: celebMap(res.data.celebrities, 'celebrity')})
         })
     }
    
@@ -76,7 +109,7 @@ class SearchPage extends Component {
     render(){
         return (
             <div>
-            <Container  style={{paddingBottom:'1em'}} >
+            <Container  style={{paddingBottom:'1em'}} textAlign='center' >
             <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '3em', color:'Black'}}>Search Results</Header>
             </Container>
             <Container style={{backgroundColor:'black', color:'white'}}>
@@ -99,10 +132,20 @@ class SearchPage extends Component {
                     
                     </Grid.Column>
                     <Grid.Column width={13}>
-                        <Grid>
+                        <Grid style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', paddingLeft:'1.5em', paddingBottom: '1.5em', paddingRight:'1em', marginRight:'0em', backgroundColor:'rgba(2, 199, 255, 0.1)'}}>
+                            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '2em', color:'Black' ,marginTop:'1em', marginLeft:'-.9em'}}>Movies</Header>
                             {this.state.movies}
                         </Grid>
+                        <Grid style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', paddingLeft:'1.5em', paddingBottom: '1.5em', paddingRight:'1em', marginRight:'0em', backgroundColor:'rgba(2, 199, 255, 0.1)'}}>
+                            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '2em', color:'Black' ,marginTop:'1em', marginLeft:'-.9em'}}>TV Shows</Header>
+                            {this.state.tv}
+                        </Grid>
+                        <Grid style={{borderLeft: '.3em solid rgba(2, 199, 255, 0.5)',borderBottom: '.3em solid rgba(2, 199, 255, 0.5)', paddingLeft:'1.5em', paddingBottom: '1.5em', paddingRight:'1em', marginRight:'0em', backgroundColor:'rgba(2, 199, 255, 0.1)'}}>
+                            <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '2em', color:'Black' ,marginTop:'1em', marginLeft:'-.9em'}}>Celebrities</Header>
+                            {this.state.celeb}
+                        </Grid>
                     </Grid.Column>
+                    
                     
                 </Grid>
             </Container>

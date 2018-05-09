@@ -22,18 +22,14 @@ import {
     Label
 } from 'semantic-ui-react'
 
-const MOVIES = constants.MOVIES;
 const imgUrl = constants.IMGURL;
-const picUrl = 'https://image.tmdb.org/t/p/w440_and_h660_bestv2'
 const users = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'elliot4', 'helen3']
 const users2 = ['ade', 'chris', 'christian', 'daniel', 'elliot', 'helen', 'christian2', 'daniel3', 'ell1iot4', 'helen3', 'chr1is', 'chri2stian', 'dani3l', 'elliot4', 'he5len', 'chri6stian2', 'dani7el3', 'e13liot4', 'he2len3']
 // const movieText = ['Gerne', 'Release Date', 'Directed By', 'Overview']
 const movieTest = [
-    ['Genre', 'genres'], 
     ['Release Date', 'date'], 
     ['Directed By', 'directed'],
     ['Written By','written'],
-    ['Box Office', 'boxOffice'],
     ['Run Time','runtime'],
     ['Studio', 'studio']];
 // const movieInfo = {written:'Frankie Fry', runtime:'120min', boxoffice:'$207 million', studio:'Disney', title: MOVIES[6].title, poster_path: MOVIES[6].poster_path, genre: 'Animated', released: MOVIES[6].release_date, directed: 'John Smith', overview: MOVIES[6].overview }
@@ -50,14 +46,15 @@ const testMap = users.map(user =>
 );
 
 
-const actorMap = (actors) => actors.map(actor => 
+const actorMap = users.map(actor => 
     <Grid.Column  key={actor + "1"}>
         <Container style={{opacity: 1, backgroundColor:'', color:'black'}}>
         <Image 
         fluid
-        src={picUrl + actor.picture}
+        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
         /> 
-        <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor.name}</Header>
+        <Header style={{color:'#02c7ff', margin:0, paddingLeft:'.3em'}}>{actor}</Header>
+        <div style={{color:'white', paddingLeft:'.3em'}}>{actor} Played</div>
         </Container>
     </Grid.Column>
 );
@@ -93,7 +90,7 @@ const movieStats = (movieInfo) =>  movieTest.map(text =>
     </Container>
 );
 
-class MoviePage extends Component {
+class TvPage extends Component {
 
     state = {
         isAdmin: false,
@@ -109,13 +106,6 @@ class MoviePage extends Component {
     onChange = (e) => {
         const name = e.target.name;
         if(name == 'review') this.setState({review: e.target.value})
-    }
-    handlePlay = (e) => {
-        axios.get(`http://localhost:8080/api/playtrailer?id=` + this.state.movieInfo.content_id)
-            .then(res => {
-                console.log(res.data)
-                // this.setState({trailer: res.})
-        })
     }
 
     onRate = (e, { rating, maxRating }) => {
@@ -177,7 +167,8 @@ class MoviePage extends Component {
     componentDidMount() {
         this.state.isAdmin = false;
         const { match: { params } } = this.props;
-        axios.get(`http://localhost:8080/movie?id=` + params.movieId )
+        console.log('id',params.tvId)
+        axios.get(`http://localhost:8080/show?id=` + params.tvId )
         .then(res => {
             const movieInfo = res.data;
             console.log('movie:', movieInfo)
@@ -192,7 +183,7 @@ class MoviePage extends Component {
             this.state.isAdmin = true;
         })
 
-        axios.get(`http://localhost:8080/api/getmyreviewforcurrentcontent?id=` + params.movieId )
+        axios.get(`http://localhost:8080/api/getmyreviewforcurrentcontent?id=` + params.tvId )
         .then(res => {
             const userReview = res.data;
             const isReviewBody = true;
@@ -204,7 +195,7 @@ class MoviePage extends Component {
     }
 
     render() {
-        const movieInfo = this.state.movieInfo   
+        const {movieInfo} = this.state
         return (
             <div>
                 <Container  style={{ marginTop: '6em'}} ></Container>
@@ -224,16 +215,7 @@ class MoviePage extends Component {
                                         src={imgUrl + movieInfo.poster_path} 
                                     /> 
                                 </div>
-                                <Modal 
-                                    trigger={<Button color='blue' size='small' >Play Trailer</Button>} 
-                                    basic 
-                                    size='small'>
-                                    {(movieInfo)? 
-                                        <Player
-                                            autoPlay
-                                            src={"http://localhost:8080/api/playtrailer?id=" + movieInfo.content_id}
-                                        /> : null}
-                                </Modal>
+                                
                             </Grid.Column>
                             <Grid.Column width={11} style={{marginLeft:'-2em'}}>
                                 <Grid >
@@ -300,8 +282,8 @@ class MoviePage extends Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                    {(movieInfo.celebrities && movieInfo.celebrities.length)? <MediaList nameHeader={'Actors'} displayInfo={actorMap(movieInfo.celebrities)} numShow={6}/> : null}
-                    <MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/>
+                    {(movieInfo.celebrities && movieInfo.celebrities.length)? <MediaList nameHeader={'Actors'} displayInfo={actorMap} numShow={6}/> : null}
+                    {(movieInfo.photos && movieInfo.photos.length)?<MediaList nameHeader={'Photos'} displayInfo={testMap} numShow={5}/> : null}
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
                     {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}
                     
@@ -351,4 +333,4 @@ class MoviePage extends Component {
     }
 }
 
-export default MoviePage;
+export default TvPage;

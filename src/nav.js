@@ -112,6 +112,8 @@ class Nav extends Component {
                     const failedId = errMsg.replace("unverified", "");
                     this.setState({id: failedId});
                     console.log("Unverified user with id: " + this.state.id);
+                }else{
+                    this.setState({loginError:true})
                 }
             });
     }
@@ -132,11 +134,20 @@ class Nav extends Component {
     }
     componentDidMount(){
         console.log("component mount");
+<<<<<<< HEAD
         try{
+=======
+       
+   
+        try{
+            if(localStorage.getItem('jwtToken')){
+                console.log(localStorage.getItem('jwtToken'))
+>>>>>>> aafe6f958903f5e58c304c8c54966cbd5d3e7e4d
             const decoded = decode(localStorage.getItem('jwtToken'));
             if (decoded.exp > Date.now() / 1000) { 
                 this.setState({login:true, name:decoded.sub, mounted:true})
                 console.log(decoded)
+<<<<<<< HEAD
             }
             else
                 console.log('no token')
@@ -155,6 +166,28 @@ class Nav extends Component {
                 console.log("refreshed state from backend for" + name)  
             }
         })
+=======
+                axios.get(`http://localhost:8080/secure/getuser`)
+                .then(result => {
+                    const name = result.data.email
+                    console.log("user email: " + name)
+                    if(name){
+                        const userId = result.data.id
+                        const blacklist = result.data.blacklist
+                        const login = true
+                        this.setState({login, name, blacklist, userId})
+                        console.log("refreshed state from backend for" + name)  
+                    }
+                })
+            }
+            else
+                console.log('no token')
+        }
+        }catch(err) {
+            console.log('reading token error nav',err)
+        }  
+       
+>>>>>>> aafe6f958903f5e58c304c8c54966cbd5d3e7e4d
     }
     componentDidUpdate(){
         if(this.state.fresh && !this.state.mounted){
