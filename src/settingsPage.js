@@ -8,7 +8,7 @@ import EmptyList from './components/emptyList.js'
 import MediaTable from './components/mediaTable.js'
 import { Grid, Menu,TextArea, List,Breadcrumb,Button,Icon,Image,  Tab,Form,Input,Container,  Header, } from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
-
+const imgNf = 'http://www.sydneymusiccircle.org/images/artists/artist-65353-2000px-No_image_available.svg.png'
 
 
 class SettingsPage extends Component {
@@ -116,6 +116,7 @@ class SettingsPage extends Component {
                 axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
                 .then(res => {
                     const userInfo = res.data;
+                    
                     console.log('user:', userInfo)
                     this.setState({ userInfo });
                 })
@@ -144,8 +145,7 @@ class SettingsPage extends Component {
                             {(this.state.userInfo.photo === null)?
                             <Image 
                                 fluid
-                                src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'  
-                                
+                                src={imgNf}
                             />
                             :
                                     <div>

@@ -93,15 +93,29 @@ class SearchPage extends Component {
         }
     }
 
+    componentDidUpdate() {
+        const {search} = this.props.match.params
+        if(this.state.search != search){
+            axios.get(`http://localhost:8080/api/search?search=` + search)
+            .then(res => {
+                    console.log('search results: ', res.data)
+                    if(res.data.movies) this.setState({movies: movieMap(res.data.movies, 'movie'), search});
+                    if(res.data.tvshows) this.setState({tv: movieMap(res.data.tvshows, 'tv'),search});
+                    if(res.data.celebrities) this.setState({celeb: celebMap(res.data.celebrities, 'celebrity'),search})
+            })
+        }
+    }
+
     componentDidMount(){
         const {search} = this.props.match.params
+        this.setState({search})
         console.log('searching: ', search);
         axios.get(`http://localhost:8080/api/search?search=` + search)
           .then(res => {
                 console.log('search results: ', res.data)
-                if(res.data.movies) this.setState({movies: movieMap(res.data.movies, 'movie')});
-                if(res.data.tvshows) this.setState({tv: movieMap(res.data.tvshows, 'tv')});
-                if(res.data.celebrities) this.setState({celeb: celebMap(res.data.celebrities, 'celebrity')})
+                if(res.data.movies) this.setState({movies: movieMap(res.data.movies, 'movie'), search});
+                if(res.data.tvshows) this.setState({tv: movieMap(res.data.tvshows, 'tv'),search});
+                if(res.data.celebrities) this.setState({celeb: celebMap(res.data.celebrities, 'celebrity'),search})
         })
     }
    

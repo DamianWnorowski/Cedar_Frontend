@@ -74,7 +74,7 @@ const movieStats = (movieInfo) =>  movieTest.map(text =>
         <Breadcrumb>
             <Breadcrumb.Section ><p style={{color:'#02c7ff'}}>{text[0]}</p></Breadcrumb.Section>
             <Breadcrumb.Divider icon={<Icon color='grey' name='right chevron' />} />
-            <Breadcrumb.Section >{movieInfo[text[1]]}</Breadcrumb.Section>
+            <Breadcrumb.Section >{(text[0] == 'Genre' && movieInfo[text[1]])? movieInfo[text[1]].slice(0, -1).join(', ') : movieInfo[text[1]]}</Breadcrumb.Section>
         </Breadcrumb>
     </Container>
 );
@@ -100,8 +100,11 @@ class MoviePage extends Component {
     handlePlay = (e) => {
         axios.get(`http://localhost:8080/api/playtrailer?id=` + this.state.movieInfo.content_id)
             .then(res => {
-                console.log(res.data)
+                console.log('ree',res.data)
                 // this.setState({trailer: res.})
+        })
+        .catch((err) => {
+            console.log('err')
         })
     }
 
@@ -220,11 +223,10 @@ class MoviePage extends Component {
                                     trigger={<Button color='blue' size='small' >Play Trailer</Button>} 
                                     basic 
                                     size='small'>
-                                    {(movieInfo)? 
                                         <Player
                                             autoPlay
                                             src={"http://localhost:8080/api/playtrailer?id=" + movieInfo.content_id}
-                                        /> : null}
+                                        />
                                 </Modal>
                             </Grid.Column>
                             <Grid.Column width={11} style={{marginLeft:'-2em'}}>

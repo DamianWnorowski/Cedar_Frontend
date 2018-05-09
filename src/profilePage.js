@@ -9,6 +9,7 @@ import MediaTable from './components/mediaTable.js'
 
 import { Grid,  Menu,List,Breadcrumb,Icon,Image,  Tab,Container,  Header, Modal,Button,Form} from 'semantic-ui-react';
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
+const imgNf = 'http://www.sydneymusiccircle.org/images/artists/artist-65353-2000px-No_image_available.svg.png'
 
 const userInfoList = (userInfo, openModal, handleModal) => {
     const user = [
@@ -254,10 +255,7 @@ class ProfilePage extends Component {
             <Grid style={{paddingLeft:'1em'}}>
             <Grid.Column width={5}>
                 <Grid.Column width={16}>
-                    <Image 
-                        fluid
-                        src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' 
-                    />
+                    <Image fluid src={"http://localhost:8080/api/getPhoto?id=" + this.state.userInfo.id} />
                 </Grid.Column>
                 <Grid.Column width={16} style={{paddingTop:'.5em', paddingBottom:'1em',}}>
                     <Breadcrumb>
