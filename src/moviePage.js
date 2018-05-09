@@ -95,6 +95,7 @@ const movieStats = (movieInfo) =>  movieTest.map(text =>
 class MoviePage extends Component {
 
     state = {
+        isAdmin: false,
         movieInfo: {},
         rating: 0,
         isReviewed: 1,
@@ -155,6 +156,7 @@ class MoviePage extends Component {
     }
   
     componentDidMount() {
+        this.state.isAdmin = false;
         const { match: { params } } = this.props;
         axios.get(`http://localhost:8080/movie?id=` + params.movieId )
         .then(res => {
@@ -163,6 +165,12 @@ class MoviePage extends Component {
             if(movieInfo['writer']) movieInfo.written = movieInfo['writer'].name;
             if(movieInfo['director']) movieInfo.directed = movieInfo['director'].name;
             this.setState({ movieInfo });
+        })
+        axios.get(`http://localhost:8080/secure/verifyadmin`)
+        .then(res => {
+            const verifiedadmin = res.data;
+            console.log("is admin?: " + verifiedadmin)
+            this.state.isAdmin = true;
         })
 
         axios.get(`http://localhost:8080/api/getmyreviewforcurrentcontent?id=` + params.movieId )
@@ -180,15 +188,21 @@ class MoviePage extends Component {
         const movieInfo = this.state.movieInfo   
         return (
             <div>
-                <Container  style={{ marginTop: '6em'}} />
+                <Container  style={{ marginTop: '6em'}} ></Container>
                 <Container  style={{backgroundColor:'black', color:'white', padding:'2em'}}>
+                {(this.state.isAdmin)? 
+                    <Button.Group vertical floated='right'>
+                        <Button color='green' size='small' floated='right'>Edit Content</Button>
+                        <Button color='red' size='small' floated='right'>Delete Content</Button>
+                    </Button.Group> 
+                : null}
+                    
                     <Grid >
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <div style={{ backgroundColor:'#02c7ff',paddingBottom:'.5em',paddingRight:'.5em',marginLeft:'-2em',marginRight:'2em', marginTop:'-4em'}}>
                                     <Image alt="example" 
                                         src={imgUrl + movieInfo.poster_path} 
-                                        label={{ as: 'a', color: 'blue',size:'medium',  icon: 'play',content: 'Play Trailer', ribbon: true }}
                                     /> 
                                 </div>
                                 <Modal 
@@ -207,6 +221,7 @@ class MoviePage extends Component {
                                     <Grid.Column width={14} >
                                         <div style={{marginLeft:'-2em',marginTop:'-3em'}}>
                                             <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '4em', color:'Black'}}>{movieInfo.title}</Header>
+                                            
                                         </div>
                                     </Grid.Column>
                                     <Grid.Column width={12} style={{ marginTop:'-1em',marginLeft:'0em',padding:0,paddingBottom:'2em'}}>

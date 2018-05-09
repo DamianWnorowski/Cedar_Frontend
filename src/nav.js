@@ -136,7 +136,7 @@ class Nav extends Component {
             this.setState({login, name, blacklist, userId})
             console.log("refreshed state from backend for" + name)  
         })
-        
+   
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));
             if (decoded.exp > Date.now() / 1000) { 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
+import AdminDisplayContent from './adminDisplayContent.js'
 import {Container,Header, Menu, Grid} from 'semantic-ui-react';
 
 class AdminPage extends Component {
@@ -24,7 +25,7 @@ class AdminPage extends Component {
             <div>
                 <Container textAlign='center' style={{backgroundColor:'black', padding:'2em'}}>
                     <Header as='h1' style={{backgroundColor:'#02c7ff', fontSize: '3em', color:'Black'}}>Admin Page</Header>
-                    <Grid>
+                    <Grid style={{marginRight:'0em'}}>
                         <Grid.Column width={4}>
                             <Menu inverted style={{backgroundColor:'rgba(2, 199, 255, 0.5)'}} color='blue' pointing secondary vertical>
                                 <Menu.Item name='content' active={activeItem === 'content'} onClick={this.handleItemClick} />
@@ -32,10 +33,10 @@ class AdminPage extends Component {
                                 <Menu.Item name='users' active={activeItem === 'users'} onClick={this.handleItemClick} />
                             </Menu>        
                         </Grid.Column>
-                        <Grid.Column stretched width={12} >
-                            <Container style={{backgroundColor:'rgba(2, 199, 255, 0.2)'}}>
+                        <Grid.Column stretched width={12} style={{backgroundColor:'rgba(2, 199, 255, 0.2)'}}>
+                            <Container >
                                 {(activeItem == 'content')? 
-                                <div>do content stuff here</div>
+                                <AdminDisplayContent />
                                 
                                 : null }
                                 {(activeItem == 'reports')? 
