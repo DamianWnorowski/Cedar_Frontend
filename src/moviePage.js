@@ -102,7 +102,8 @@ class MoviePage extends Component {
         isOpen: '',
         isReviewed: 1,
         isReviewBody: false,
-        submitted: false
+        submitted: false,
+        failed: false
       }
 
     onChange = (e) => {
@@ -152,6 +153,7 @@ class MoviePage extends Component {
         })
         .catch((error) => {
             console.log('err', error.status)
+            this.setState({failed: true})
         });
     }
     handleModal = (e,data) => {
@@ -287,6 +289,7 @@ class MoviePage extends Component {
                                                         {(this.state.isReviewBody)? null : <TextArea onChange={this.onChange}  autoHeight name='review' placeholder='Tell us more' ></TextArea>}
                                                         <Button type="submit" color='blue' compact size='tiny' floated='right' >{(this.state.isReviewBody)? 'Edit' : 'Post'}</Button>
                                                         {(this.state.submitted)? <Label basic color='green'>Submitted</Label> : null}
+                                                        {(this.state.failed)? <Label basic color='red'>Failed</Label> : null}
                                                         {(this.state.isReviewBody)? <Button onClick={this.handleDeleteReview} color='blue' compact size='tiny' floated='right' >Delete</Button> : null}
                                                     </Form>
                                                 </Grid>
