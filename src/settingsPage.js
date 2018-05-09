@@ -17,6 +17,7 @@ class SettingsPage extends Component {
         this.state = {  
             userInfo: [],
             login: false,
+            file: null,
         }
     }
 
@@ -66,7 +67,23 @@ class SettingsPage extends Component {
             })
         }
     }
-
+    handleUpload = (e) => {
+        const {file} = this.state;
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        const data = new FormData();
+        data.append("file", file);
+        axios.post(`http://localhost:8080/uploadFile`, data, config)
+        .then((result) => {
+            console.log("upload success with result: " + result);
+        });
+    }
+    onFileSelect = (e) => {
+        this.setState({file:e.target.files[0]})
+    }
     componentDidMount() {
         try{
             const decoded = decode(localStorage.getItem('jwtToken'));
@@ -124,9 +141,15 @@ class SettingsPage extends Component {
                                     <Breadcrumb.Divider 
                                         icon={<Icon color='grey' name='right chevron' />} 
                                     />
-                                    <Breadcrumb.Section link name='deleteAccount' >
+                                    {(this.state.change == 'fileupload')?
+                                    <Form onSubmit={this.handleUpload} enctype="multipart/form-data">
+                                        <Input type="file" onChange={this.onFileSelect} />
+                                        <Button color='blue'  size='small' type="submit">Upload</Button>
+                                      </Form>
+                                      :
+                                    <Breadcrumb.Section link name='fileupload' onClick={this.editInfo}>
                                         <p style={{color:'white'}}>Upload Picture</p>
-                                    </Breadcrumb.Section>
+                                    </Breadcrumb.Section>}
                                     
                                 </Breadcrumb>
                             </div>

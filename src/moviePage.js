@@ -133,6 +133,13 @@ class MoviePage extends Component {
     }
     handleDeleteContent = (e) => {
         this.setState({isOpen: ''})
+        console.log('trying to delete: ' + this.state.movieInfo.content_id)
+        axios.get(`http://localhost:8080/admin/deletecontent?id=` + this.state.movieInfo.content_id)
+        .then(res => {
+            const ans = res.data;
+            console.log("deleted content: ", res.data)
+            this.props.history.push('/404');
+        })
     }
     handleEditContent = (e) => {
         this.setState({isOpen: ''})
@@ -298,30 +305,10 @@ class MoviePage extends Component {
                     {(movieInfo.userReview && movieInfo.userReview.length)? <MediaList scroll nameHeader={'User Reviews'} displayInfo={mediaReviews(movieInfo.userReview)} numShow={4}/> : <EmptyList nameHeader={'User Reviews'} text={'Currently no user reviews'} />}
                     {(movieInfo.criticReview && movieInfo.criticReview.length)? <MediaList scroll nameHeader={'Critic Reviews'} displayInfo={mediaReviews(movieInfo.criticReview)} numShow={4}/> : <EmptyList nameHeader={'Critic Reviews'} text={'Currently no critic reviews'} />}
                     
-                    <Modal open={(this.state.isOpen == 'delete')? true : false} >
-                        <Header icon='warning' color='red' content='ATTENTION' />
+                    <Modal open={(this.state.isOpen === 'edit')? true : false} >
+                        <Header icon='edit' color='green' content={this.state.movieInfo.title} />
                         <Modal.Content>
-                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
-                        </Modal.Content>
-                        <Modal.Actions>
-                          <Button 
-                            color='red'
-                            onClick={this.handleModalClose}
-                          >
-                            <Icon name='remove'/> Yes
-                          </Button>
-                          <Button 
-                            color='green'
-                            onClick={this.handleDeleteContent}
-                          >
-                            No
-                          </Button>
-                        </Modal.Actions>
-                    </Modal>
-                    <Modal open={(this.state.isOpen == 'edit')? true : false} >
-                        <Header icon='warning' color='red' content='ATTENTION' />
-                        <Modal.Content>
-                          <p>You are about to delete a user's account. This action is non-reversible. Are you sure you want to proceed?</p>
+                          <p>Edit form:</p>
                         </Modal.Content>
                         <Modal.Actions>
                           <Button 
@@ -334,6 +321,27 @@ class MoviePage extends Component {
                             color='green'
                             onClick={this.handleEditContent}
                           >
+                            No
+                          </Button>
+                        </Modal.Actions>
+                    </Modal>
+                    <Modal size='tiny' open={(this.state.isOpen === 'delete')? true : false} >
+                        <Header icon='warning' color='red' acontent='ATTENTION' />
+                        <Modal.Content>
+                          <p>You are about to delete a content page. This action is non-reversible. Are you sure you want to proceed?</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                          <Button 
+                            color='green'
+                            onClick={this.handleDeleteContent}
+                          >
+                            <Icon name='check'/> Yes
+                          </Button>
+                          <Button 
+                            color='red'
+                            onClick={this.handleModalClose}
+                          >
+                          <Icon name='remove'/>
                             No
                           </Button>
                         </Modal.Actions>
