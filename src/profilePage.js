@@ -25,11 +25,11 @@ import {
 const imgUrl = "https://image.tmdb.org/t/p/w500/";
 
 const userInfoList = (userInfo, openModal) => {
-    let followingCount = 0;
-    if(userInfo.following) followingCount = userInfo.following.length;
+    
+
     const user = [
-    ['Followers', 'need to get followers'],
-    ['Following', followingCount],
+    ['Followers', userInfo.followerCount],
+    ['Following', userInfo.followingCount],
     ['Profile Views', userInfo.profileViews],
     ['Report User','']]
 
@@ -81,6 +81,8 @@ class ProfilePage extends Component {
 
         this.state = {  
             userInfo: [],
+            followerCount: 0,
+            followingCount: 0,
             isFollowing: false,
             isUser: false,
             isAdmin: false,
@@ -117,10 +119,21 @@ class ProfilePage extends Component {
         axios.get(`http://localhost:8080/api/profile?id=` + params.userId )
         .then(res => {
             const userInfo = res.data;
-            console.log('movie:', userInfo)
+            userInfo.followingCount = 0;
+            userInfo.followerCount = 0;
+            if(userInfo.following) userInfo.followingCount = userInfo.following.length;
+            if(userInfo.followers) userInfo.followerCount = userInfo.followers.length;
+            console.log('user info:', userInfo)
             this.setState({userId:userInfo.id})
             this.setState({ userInfo });
         })
+        .catch(err => {
+            const errMsg = err.response.data.message;
+            if(errMsg.includes("404")){
+                console.log("That user does not exist");
+                this.props.history.push('/404');
+            }
+        });
         axios.get(`http://localhost:8080/secure/verifyadmin`)
         .then(res => {
             const verifiedadmin = res.data;
@@ -134,7 +147,7 @@ class ProfilePage extends Component {
             if(currentUser.following)
             currentUser.following.map(userFollowed => {
                 console.log('curr: ', this.state.userId , 'fl ',userFollowed.id)
-                if(this.state.userId == userFollowed.id) {
+                if(this.state.userId === userFollowed.id) {
                     console.log('i am following this user')
                     this.setState({isFollowing:true})
                 }
@@ -170,11 +183,23 @@ class ProfilePage extends Component {
     }
     
     handleFollow = (e) => {
-        this.setState({isFollowing: !this.state.isFollowing})
         if(this.state.isFollowing){
             console.log('unfollow the user')
+            console.log('follow the user')
+            axios.get(`http://localhost:8080/secure/unfollow?id=` + this.state.userId)
+            .then(res => {
+                console.log("UNFOLLOW USER #" + this.state.userId + ". RESPONSE: ", res)
+                this.state.userInfo.followerCount = this.state.userInfo.followerCount - 1
+                this.setState({isFollowing: !this.state.isFollowing, userInfo: this.state.userInfo})
+            })
         }else{
             console.log('follow the user')
+            axios.get(`http://localhost:8080/secure/follow?id=` + this.state.userId)
+            .then(res => {
+                console.log("FOLLOW USER #" + this.state.userId + ". RESPONSE: ", res)
+                this.state.userInfo.followerCount = this.state.userInfo.followerCount + 1
+                this.setState({isFollowing: !this.state.isFollowing, userInfo: this.state.userInfo})
+            })
         }
     }
 
